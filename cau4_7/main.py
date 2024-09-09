@@ -98,7 +98,7 @@ def plot_solution(name):
 
 def main():
     """
-    File gồm 2 câu chính là câu 4 và câu 7, để kiểm tra câu 4 thì mình xóa dấu hashtag "#", kiểm tra câu 7 thì giữ nguyên file main.py. Câu 7 sẽ tạo ra một file tên là euler.txt. File này sẽ chưa lời giải số cho bất kì phương trình giá trị đầu nào
+    File gồm 2 câu chính là câu 4 và câu 7, để kiểm tra câu 4 thì mình xóa dấu hashtag "#", kiểm tra câu 7 thì giữ nguyên file main.py. Câu 7 sẽ tạo ra một file tên là euler.txt. File này sẽ chưas lời giải số cho bất kì phương trình giá trị đầu nào
     """
     # câu 4
     # print(bisection_algorith(function_x, 0, 10))
