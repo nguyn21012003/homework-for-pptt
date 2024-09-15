@@ -36,14 +36,9 @@ def bisection_algorith(f, a, b):
 
 
 # câu 7
-def ivpfunction(t, y):
-    function = sys.argv[1].replace(" ", "").replace("^", "**")
+def ivpfunction(t, y) -> float:  # chỗ return có thể thay bằng bất kì hàm nào, ở đây là đề bài: 1 + (x+y)^2 trong đó x thay bằng t
 
-    def f(t, y):
-        e = eval(function)
-        return e
-
-    return f(t, y)
+    return 1 + (t + y) ** 2
 
 
 def euler_method(f, tn, yn, h):
