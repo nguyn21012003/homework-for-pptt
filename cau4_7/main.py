@@ -37,6 +37,7 @@ def bisection_algorith(f, a, b):
 
 # câu 7
 def ivpfunction(t, y) -> float:  # chỗ return có thể thay bằng bất kì hàm nào, ở đây là đề bài: 1 + (x+y)^2 trong đó x thay bằng t
+
     return 1 + (t - y) ** 2
 
 
