@@ -28,6 +28,26 @@ def fx6(xn):
 
 
 def fixed_point(fx, p0, a, b, N, eps):
+    """Description
+
+
+    Find the root of a function by using Fixed Point method
+
+    Return the root and the number of loops of a function.
+    Args:
+        fx (callable function): function address
+        p0 (float): the init value in from a to b 
+        a (float): the boundary condition
+        b (float): _description_
+        N (int): the maximum loop
+        eps (float): aka TOL, the amount of value error is allowed
+
+    Returns:
+        n (int): the number of loops 
+        x (float): the value of x at n_th loops  
+
+
+    """
     if a <= p0 <= b:
         x = np.zeros(N)
         x[0] = p0
@@ -54,6 +74,8 @@ def fixed_point(fx, p0, a, b, N, eps):
 
 
 def main():
+    """Co the mo rong them bang cach so sanh thuat toan nao toi uu hon, bang cach so sanh cac gia tri n_i
+    """
     p0 = float(input("Nhập p0: "))
     N = 20
     eps = 1e-5
@@ -85,9 +107,6 @@ def main():
     for n in range(len(x5)):
         res5.append(float(x5[n]))
     
-
-
-
     with open(file, "w", newline="") as writefile:
         header = [f"{"n":<2}" ,f"{"fx1":^18}",f"{"fx2":^25}",f"{"fx3":^18}",f"{"fx4":^18}",f"{"fx5":^18}"]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="|")
