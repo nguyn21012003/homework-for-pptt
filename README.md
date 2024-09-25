@@ -8,6 +8,6 @@ tài liệu môn học:
 - Lapack
 - OpenMP
 
-### Ex1:
+### Bài tập:
 
--Solve equation f(x)=0
+[Câu 1](https://github.com/nguyn21012003/homework-for-pptt/blob/main/buoi_1_1909/pythonfile/bisection.py)
