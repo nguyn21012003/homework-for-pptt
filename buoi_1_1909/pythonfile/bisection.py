@@ -14,11 +14,6 @@ def fx2(x):
     return float(e(x) - 2 - cos(e(x) - 2))
 
 
-def openfile(file):
-    with open(file, "r") as rfile:
-        print(rfile.read())
-
-
 def bisection(fx, a, b, file):
     eps = 1e-6
     count = 0
@@ -69,7 +64,6 @@ def main():
     file = "nghiem.txt"
     # bisection(fx1, 0, 1, file)
     bisection(fx2, 0.5, 1.5, file)
-    # openfile(file)
 
 
 if __name__ == "__main__":
