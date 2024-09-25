@@ -40,7 +40,7 @@ def fixed_point(fx, p0, a, b, N, eps):
         a (float): the boundary condition
         b (float): _description_
         N (int): the maximum loop
-        eps (float): aka TOL, the amount of value error is allowed
+        eps (float): aka TOL, the value error is allowed
 
     Returns:
         n (int): the number of loops 
@@ -57,7 +57,10 @@ def fixed_point(fx, p0, a, b, N, eps):
                 try:
                     x[n + 1] = fx(x[n])
                     print(f"x[{n}] = {x[n]}")
-                    if abs(x[n] - x[n - 1]) <= eps:
+                    if x[n]>= b*10:
+                        print(f"nghiem khong hoi tu voi {count} vong lap.")
+                        return n, x
+                    elif abs(x[n] - x[n - 1]) <= eps and x[n]<= b*10:
                         print(f"nghiem hoi tu {x[count]} voi {count} vong lap.")
                         return n, x
                 except (ZeroDivisionError, ValueError) as Z:
@@ -65,9 +68,8 @@ def fixed_point(fx, p0, a, b, N, eps):
                     return n, x
 
                 count += 1
-
             if n + 1 >= N:
-                print(f"nghiem khong hoi tu voi {count} lap.")
+                print(f"nghiem khong hoi tu voi {count} vong lap.")
                 return n, x
     else:
         p0 = float(input("Nhập lại p0: "))
