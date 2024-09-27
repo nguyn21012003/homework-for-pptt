@@ -27,7 +27,7 @@ def fx6(xn):
     return 1 / (xn - 1)
 
 def fx7(xn):
-    return 1 / (xn - 1)    
+    return 1 / (xn )    
 
 
 def fixed_point(fx, p0, a, b, N, eps):
