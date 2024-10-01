@@ -231,7 +231,7 @@ def main():
     solution_fixedpoint, count, g = fixed_point(g2, p0, a, b, N, eps1)
 
     ##########################################################################################
-
+    ## phan nay de sau nay update them cai gi nua thi lam
     list_g = [g1, g2, g3, g4]
     solution = []
     counts = {}
