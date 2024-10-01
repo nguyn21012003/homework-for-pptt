@@ -2,7 +2,7 @@ import numpy as np
 import csv
 from numpy import exp, cos
 from math import log as ln
-import time
+from tabulate import tabulate
 
 
 def f(x):
@@ -131,7 +131,7 @@ def find_optimal(count_arr, N):
     return optimal_fucn, count_arr[optimal_fucn]
 
 
-##############################################################################################
+########################################################################################
 def secant(f, df, p0, p1, N, eps):
     p = np.zeros(N)
     p[0] = p0
@@ -158,7 +158,7 @@ def secant(f, df, p0, p1, N, eps):
 def save_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
     na, nb, nc = sol_bisection
 
-    with open(file, "w", newline="") as writefile:
+    with open(file, "w", newline="") as writefile, open(file, "r") as readfile:
         header = [
             f"{'n':<3}",
             f"{'Secant':^28}",
@@ -184,24 +184,51 @@ def save_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
             )
 
 
+def read_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
+    na, nb, nc = sol_bisection
+
+    with open(file, "w", newline="") as writefile:
+        header = ["n", "Secant", "Newton Rasphson", "Bisection", "Fixed Point"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(N):
+            writer.writerow(
+                {
+                    "n": i,
+                    "Secant": float(sol_secant[i]),
+                    "Newton Rasphson": float(sol_newton[i]),
+                    "Bisection": float(nc[i]),
+                    "Fixed Point": float(sol_fixedpoint[i]),
+                }
+            )
+    with open(file, "r") as readfile:
+        rows = []
+        reader = csv.DictReader(readfile)
+        for row in reader:
+            rows.append(row)
+
+        return tabulate(rows, headers="keys", tablefmt="fancy_grid")
+
+
 def main():
-    ######################################################### parameters
+    ######################################################################################## parameters
     a, b = 0, 10
     N = 100
     p0 = 2
-    p1 = 3
-    p = 2.4
+    p1 = 4
+    p = 2
     eps1 = 10e-8
     eps2 = 10e-15
     file = "table.txt"
+    file1 = "table1.txt"
     if not a <= p0 <= b:
         p0 = input("Nhap lai p0: ")
-    #################################################################### call function
+    ######################################################################################### call function
 
     solution_secant, count1 = secant(f, df_secant, p0, p1, N, eps1)
     solution_newton, count2 = newtonr(f, df_newton, p0, N, eps1)
     n, count3 = bisection(f, a, b, N, eps1)
-    solution_fixedpoint, count, g = fixed_point(g2, p, a, b, N, eps1)
+    solution_fixedpoint, count, g = fixed_point(g2, p0, a, b, N, eps1)
 
     ##########################################################################################
 
@@ -223,14 +250,9 @@ def main():
     ##########################################################################################
 
     # save file
-    save_log(
-        file,
-        solution_secant,
-        solution_newton,
-        n,
-        solution_fixedpoint,
-        N,
-    )
+    save_log(file, solution_secant, solution_newton, n, solution_fixedpoint, N)
+    read = read_log(file1, solution_secant, solution_newton, n, solution_fixedpoint, N)
+    print(read)
 
 
 if __name__ == "__main__":
