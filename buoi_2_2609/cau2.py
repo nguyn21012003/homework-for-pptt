@@ -1,6 +1,6 @@
 import numpy as np
 import csv
-from numpy import exp
+from numpy import exp, pi
 from math import log as ln, cos, sin
 from tabulate import tabulate
 
@@ -36,11 +36,15 @@ def newtonr(f, df, p0, N, eps):
 
 
 def main():
-    p0 = 1.2
+    a, b = 0, pi / 2
+
+    p0 = b
+    if not a <= p0 <= b:
+        p0 = float(input("nhap lai p0: "))
     N = 100
     eps = 10e-8
     p, count = newtonr(f, df_newton, p0, N, eps)
-    print(p)
+    print(a, b, p)
 
 
 if __name__ == "__main__":
