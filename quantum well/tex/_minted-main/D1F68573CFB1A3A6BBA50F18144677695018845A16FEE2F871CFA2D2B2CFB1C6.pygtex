@@ -1,0 +1,63 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+		\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+		\PYG{k+kn}{from} \PYG{n+nn}{numpy} \PYG{k+kn}{import} \PYG{n}{tan}\PYG{p}{,} \PYG{n}{sqrt}
+		\PYG{k+kn}{from} \PYG{n+nn}{math} \PYG{k+kn}{import} \PYG{n}{pi}
+		
+		
+		\PYG{k}{def} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{z}\PYG{p}{,} \PYG{n}{z0}\PYG{p}{,} \PYG{n}{N}\PYG{p}{):}
+			\PYG{n}{f} \PYG{o}{=} \PYG{n}{tan}\PYG{p}{(}\PYG{n}{z}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{sqrt}\PYG{p}{((}\PYG{n}{z0} \PYG{o}{/} \PYG{n}{z}\PYG{p}{)} \PYG{o}{**} \PYG{l+m+mi}{2} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{)}
+		\PYG{k}{return} \PYG{n}{f}
+		
+		
+		\PYG{k}{def} \PYG{n+nf}{bisection}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{N}\PYG{p}{,} \PYG{n}{eps}\PYG{p}{):}
+		\PYG{n}{a} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}
+		\PYG{n}{b} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{b}\PYG{p}{)}
+		\PYG{k}{if} \PYG{n}{a} \PYG{o}{\PYGZgt{}} \PYG{n}{b}\PYG{p}{:}
+		\PYG{n}{a} \PYG{o}{=} \PYG{n}{b}
+		\PYG{n}{b} \PYG{o}{=} \PYG{n}{a}
+		
+		\PYG{n}{na} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+		\PYG{n}{nb} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+		\PYG{n}{nc} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+		\PYG{n}{na}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{a}
+		\PYG{n}{nb}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{b}
+		
+		\PYG{n}{count} \PYG{o}{=} \PYG{l+m+mi}{0}
+		
+		\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+		\PYG{k}{if} \PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1} \PYG{o}{\PYGZlt{}} \PYG{n}{N}\PYG{p}{:}
+		\PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{na}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+} \PYG{n}{nb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{/} \PYG{l+m+mi}{2}
+		
+		\PYG{k}{if} \PYG{n}{f}\PYG{p}{(}\PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+		\PYG{k}{break}
+		
+		\PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{f}\PYG{p}{(}\PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]))} \PYG{o}{\PYGZlt{}} \PYG{n}{eps}\PYG{p}{:}
+		\PYG{k}{break}
+		
+		\PYG{k}{if} \PYG{n}{f}\PYG{p}{(}\PYG{n}{na}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{*} \PYG{n}{f}\PYG{p}{(}\PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+		\PYG{n}{nb}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+		\PYG{n}{na}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{na}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+		\PYG{n}{count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+		
+		\PYG{k}{elif} \PYG{n}{f}\PYG{p}{(}\PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{*} \PYG{n}{f}\PYG{p}{(}\PYG{n}{nb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+		\PYG{n}{nb}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{nb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+		\PYG{n}{na}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{nc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+		\PYG{n}{count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+		
+		\PYG{k}{return} \PYG{p}{(}\PYG{n}{na}\PYG{p}{,} \PYG{n}{nb}\PYG{p}{,} \PYG{n}{nc}\PYG{p}{),} \PYG{n}{count}
+		
+		
+		\PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{():}
+		\PYG{n}{N} \PYG{o}{=} \PYG{l+m+mi}{100}
+		\PYG{n}{hbar} \PYG{o}{=} \PYG{l+m+mf}{1.05457182e\PYGZhy{}34}
+		\PYG{n}{m} \PYG{o}{=} \PYG{l+m+mf}{9.31e\PYGZhy{}31}
+		\PYG{n}{V0} \PYG{o}{=} \PYG{l+m+mi}{32} \PYG{o}{*} \PYG{n}{hbar}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{o}{/} \PYG{p}{(}\PYG{n}{m} \PYG{o}{*} \PYG{n}{a}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)}
+		\PYG{n}{a} \PYG{o}{=} \PYG{l+m+mi}{1}
+		\PYG{n}{z0} \PYG{o}{=} \PYG{n}{a} \PYG{o}{/} \PYG{n}{hbar} \PYG{o}{*} \PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{m} \PYG{o}{*} \PYG{n}{V0}\PYG{p}{)}
+		\PYG{n}{function}\PYG{p}{(}\PYG{n}{z0}\PYG{p}{,} \PYG{n}{hbar}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)}
+		
+		
+		\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZdq{}}\PYG{p}{:}
+		\PYG{n}{main}\PYG{p}{()}
+		
+\end{Verbatim}
