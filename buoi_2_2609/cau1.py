@@ -3,6 +3,7 @@ import csv
 from numpy import exp, cos
 from math import log as ln
 from tabulate import tabulate
+import matplotlib.pyplot as plt
 
 
 def f(x):
@@ -158,7 +159,7 @@ def secant(f, df, p0, p1, N, eps):
 def save_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
     na, nb, nc = sol_bisection
 
-    with open(file, "w", newline="") as writefile, open(file, "r") as readfile:
+    with open(file, "w", newline="") as writefile:
         header = [
             f"{'n':<3}",
             f"{'Secant':^28}",
@@ -168,17 +169,15 @@ def save_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
         ]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="|")
         writer.writeheader()
+
         for i in range(N):
+            bisection_values = f"{na[i]:^28} | {nb[i]:^28} | {nc[i]:^28}"
             writer.writerow(
                 {
                     f"{'n':<3}": f"{i:^3}",
                     f"{'Secant':^28}": f"{sol_secant[i]:^28}",
                     f"{'Newton Rasphson':^28}": f"{sol_newton[i]:^28}",
-                    f"{'Bisection':^96}": [
-                        f"{na[i]:^28}",
-                        f"{nb[i]:^28}",
-                        f"{nc[i]:^28}",
-                    ],
+                    f"{'Bisection':^96}": bisection_values,
                     f"{'Fixed Point':^28}": f"{sol_fixedpoint[i]:^28}",
                 }
             )
@@ -210,6 +209,26 @@ def read_log(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
         return tabulate(rows, headers="keys", tablefmt="fancy_grid")
 
 
+def plot_solution(file, sol_secant, sol_newton, sol_bisection, sol_fixedpoint, N):
+    an, bn, cn = sol_bisection
+    fig, ax = plt.subplots()
+
+    plt.plot(sol_secant)
+    plt.plot(sol_newton)
+    plt.plot(cn)
+    plt.plot(sol_fixedpoint)
+
+    plt.legend(
+        [
+            "Secant",
+            "Newton Raphson",
+            "Bisection",
+            "Fixed point",
+        ]
+    )
+    plt.show()
+
+
 def main():
     ######################################################################################## parameters
     a, b = 0, 10
@@ -218,7 +237,7 @@ def main():
     p1 = 4
     p = 2
     eps1 = 10e-8
-    eps2 = 10e-15
+    eps2 = 10e-20
     file = "table.txt"
     file1 = "table1.txt"
     if not a <= p0 <= b:
@@ -228,7 +247,7 @@ def main():
     solution_secant, count1 = secant(f, df_secant, p0, p1, N, eps1)
     solution_newton, count2 = newtonr(f, df_newton, p0, N, eps1)
     n, count3 = bisection(f, a, b, N, eps1)
-    solution_fixedpoint, count, g = fixed_point(g2, p0, a, b, N, eps1)
+    solution_fixedpoint, count4, g = fixed_point(g2, p0, a, b, N, eps1)
 
     ##########################################################################################
     ## phan nay de sau nay update them cai gi nua thi lam
@@ -249,10 +268,23 @@ def main():
     # print()
     ##########################################################################################
 
-    # save file
+    ####### save file
     save_log(file, solution_secant, solution_newton, n, solution_fixedpoint, N)
     read = read_log(file1, solution_secant, solution_newton, n, solution_fixedpoint, N)
     print(read)
+    ###### plot file
+
+    maxcount = count1
+    if maxcount < count2:
+        maxcount = count2
+
+    if maxcount < count3:
+        maxcount = count3
+
+    if maxcount < count4:
+        maxcount = count4
+
+    plot_solution(file, solution_secant, solution_newton, n, solution_fixedpoint, maxcount)
 
 
 if __name__ == "__main__":
