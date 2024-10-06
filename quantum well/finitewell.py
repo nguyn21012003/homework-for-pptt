@@ -3,9 +3,10 @@ from numpy import sqrt, sin, cos, tan
 from math import pi
 import matplotlib.pyplot as plt
 from math import exp
+from matplotlib.widgets import Button, Slider
 
 
-def z0_cal():
+def z0_cal(a, V0):
     hbar = 1.05457182e-34
     m = 9.11e-31
     a = 0.5e-9
@@ -14,10 +15,9 @@ def z0_cal():
     return z0
 
 
-def f(z):
+def fz(z):
     z0 = z0_cal()
-    f = tan(z) - sqrt((z0 / z) ** 2 - 1)
-    return f
+    return tan(z) - sqrt((z0 / z) ** 2 - 1)
 
 
 def bisection(f, a, b, N, eps):
@@ -111,12 +111,26 @@ def secant(f, df, p0, p1, N, eps):
     return p, count
 
 
-def save_log(arg):
+def psi_region1(F, k, x):
+    return F * exp(-k * x)
+
+
+def psi_region2(D, l, x):
+    return D * cos(l * x)
+
+
+def psi_region3(psi, x):
+    return -psi(-x)
+
+
+def save_log(file, nc, solnewton, solsecant):
     pass
 
 
-def plot_data(arg):
-    pass
+def plot_data(k, l):
+
+    fig, ax = plt.subplots()
+    (line,) = ax.plot()
 
 
 def main():
@@ -128,15 +142,19 @@ def main():
     p0 = x0
     p1 = x1
 
-    sol_bisection, count1 = bisection(f, x0, x1, N, eps)
+    file = "datafinitewell.txt"
+
+    sol_bisection, count1 = bisection(fz, x0, x1, N, eps)
     na, nb, nc = sol_bisection
     print(nc, "\n")
 
-    sol_newton, count2 = newtonr(f, df_newton, p0, N, eps)
+    sol_newton, count2 = newtonr(fz, df_newton, p0, N, eps)
     print(sol_newton, "\n")
 
-    sol_secant, count3 = secant(f, df_secant, p0, p1, N, eps)
+    sol_secant, count3 = secant(fz, df_secant, p0, p1, N, eps)
     print(sol_secant, "\n")
+
+    save_log(nc, sol_newton, sol_secant)
 
 
 if __name__ == "__main__":
