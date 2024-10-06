@@ -1,22 +1,50 @@
 import numpy as np
-from numpy import sqrt, sin, cos, tan
+from numpy import sqrt, sin, cos, tan, exp
 from math import pi
 import matplotlib.pyplot as plt
-from math import exp
 from matplotlib.widgets import Button, Slider
+import csv
+from tabulate import tabulate
+
+a0 = 0.529e-10  ## Hang so Bohr
+m = 9.109e-31  # kg
+Ce = 1.6e-19  # MeV to Joule(J)
+hbar = 1.0546e-34  # J*s
+
+a = None
+V0 = None
+z0 = None
 
 
-def z0_cal(a, V0):
-    hbar = 1.05457182e-34
-    m = 9.11e-31
-    a = 0.5e-9
-    V0 = 25 * 1.61e-19
-    z0 = a / hbar * sqrt(2 * m * V0)
-    return z0
+def para(id):
+    global a, V0, z0
+    match id:
+        case 1:  ########### Nông,hẹp => z0 bé ~ 2.4222738389475014
+            a = 2 * a0  # meter
+            V0 = 20 * Ce
+            z0 = a / hbar * sqrt(2 * m * V0)
+            print(z0)
+
+        case 2:  ########### Sâu,rộng => z0 lớn ~ 7.266821516842505
+            a = 6 * a0  # meter
+            V0 = 20 * Ce
+            z0 = a / hbar * sqrt(2 * m * V0)
+            print(z0)
+
+        case 3:  ########### Sâu,rộng => z0 lớN ~ 2.4222738389475014
+            a = 0.1 * a0  # meter
+            V0 = 0.2 * Ce
+            z0 = a / hbar * sqrt(2 * m * V0)
+            print(z0)
+
+        case 4:  ########### Sâu,rộng => z0 lớN ~ 2.4222738389475014
+            a = 50 * a0  # meter
+            V0 = 100 * Ce
+            z0 = a / hbar * sqrt(2 * m * V0)
+            print(z0)
 
 
 def fz(z):
-    z0 = z0_cal()
     return tan(z) - sqrt((z0 / z) ** 2 - 1)
 
 
@@ -58,8 +86,8 @@ def bisection(f, a, b, N, eps):
     return (na, nb, nc), count
 
 
-def df_newton(x):
-    return exp(x) - 4
+def df_newton(z):
+    return 1 / (cos(z) ** 2) + (-z0) ** 2 / (z**2 * sqrt(z0**2 - z**2))
 
 
 def newtonr(f, df, p0, N, eps):
@@ -111,50 +139,108 @@ def secant(f, df, p0, p1, N, eps):
     return p, count
 
 
-def psi_region1(F, k, x):
-    return F * exp(-k * x)
+def calc_psi(z, z0, a):
+
+    k = sqrt(z0**2 - z**2) / a
+    l = z / a
+
+    Ek = -((k * hbar) ** 2) / (2 * m)
+    El = ((l * hbar) ** 2) / (2 * m) - V0
+
+    D = 1 / sqrt(a + 1 / k)
+    F = exp(k * a) * cos(l * a) / sqrt(a + 1 / k)
+
+    return D, F, k, l
 
 
-def psi_region2(D, l, x):
-    return D * cos(l * x)
+def read_log(file, solbisection, solnewton, solsecant, N):
+    with open(file, "w", newline="") as writefile:
+        header = ["n", "Bisection", "Newton Raphson", "Secant"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(N):
+            writer.writerow(
+                {
+                    "n": i,
+                    "Bisection": solbisection[i],
+                    "Newton Raphson": solnewton[i],
+                    "Secant": solsecant[i],
+                }
+            )
+    with open(file, "r") as readfile:
+        reader = csv.DictReader(readfile)
+        rows = []
+        for row in reader:
+            rows.append(row)
+        return tabulate(rows, headers="keys", tablefmt="fancy_grid")
 
 
-def psi_region3(psi, x):
-    return -psi(-x)
+def table_log(file, solbisection, solnewton, solsecant, N):
+    with open(file, "w", newline="") as writefile:
+        header = [f"{'n':^3}", f"{'Bisection':^18}", f"{'Newton Raphson':^18}", f"{'Secant':^18}"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(N):
+            writer.writerow(
+                {
+                    f"{'n':^3}": f"{i:^3}",
+                    f"{'Bisection':^18}": f"{solbisection[i]:^18}",
+                    f"{'Newton Raphson':^18}": f"{solnewton[i]:^18}",
+                    f"{'Secant':^18}": f"{solsecant[i]:^18}",
+                }
+            )
 
 
-def save_log(file, nc, solnewton, solsecant):
+def plot_data(x0, x1, z, z0, N):
+    fig, axs = plt.subplots(2, 2, figsize=(15, 7))
+    z = np.linspace(0, 5 * pi, N)
+    rhs = tan(z)
+    lhs = sqrt((z0 / z) ** 2 - 1)
+    print(z, z0)
+    axs[0, 0].plot(z, rhs)
+    axs[0, 0].plot(z, lhs)
+    axs[0, 0].set_ylim(-10, 100)
+    axs[0, 0].grid(True)
+
+    axs[0, 0].axhline(0, color="red", linewidth=0.5)
+    axs[0, 0].axvline(0, color="red", linewidth=0.5)
+
+    plt.show()
+
+
+def fname(arg):
     pass
 
 
-def plot_data(k, l):
-
-    fig, ax = plt.subplots()
-    (line,) = ax.plot()
-
-
 def main():
-    N = 100
-    x0 = 4
-    x1 = 5
-    eps = 10e-15
+
+    id = int(input("Nhập trường hợp muốn tính toán: "))
+
+    para(id)
+
+    file_log = "datafinitewell.txt"
+    file_table_log = "datafinitewell.table.txt"
+
+    N = 1000
+    eps = 1e-14
+    x0 = 2
+    x1 = 4.8
 
     p0 = x0
     p1 = x1
 
-    file = "datafinitewell.txt"
-
     sol_bisection, count1 = bisection(fz, x0, x1, N, eps)
-    na, nb, nc = sol_bisection
-    print(nc, "\n")
+    na, nb, z_bisection = sol_bisection
 
-    sol_newton, count2 = newtonr(fz, df_newton, p0, N, eps)
-    print(sol_newton, "\n")
+    z_newton, count2 = newtonr(fz, df_newton, p0, N, eps)
 
-    sol_secant, count3 = secant(fz, df_secant, p0, p1, N, eps)
-    print(sol_secant, "\n")
+    z_secant, count3 = secant(fz, df_secant, p0, p1, N, eps)
 
-    save_log(nc, sol_newton, sol_secant)
+    table_log(file_table_log, z_bisection, z_newton, z_secant, N)
+    read = read_log(file_log, z_bisection, z_newton, z_secant, N)
+    print(read)
+
+    plot_data(x0, x1, z_secant, z0, N)
 
 
 if __name__ == "__main__":
