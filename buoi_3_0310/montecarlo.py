@@ -6,12 +6,16 @@ import sympy as sym
 from sympy.printing import latex
 import matplotlib.pyplot as plt
 import time
+from numba import njit
+import numba as nb
+
+
+nb.set_num_threads(6)
 
 
 def promp_user(id: int):
     N = int(input("Nhập số vòng lặp N(nhập N từ 10->100 sẽ cho ra kết quả nhanh hơn, từ 1000->10000 kết quả sẽ 'smooth' hơn): "))
     eps = sqrt(N)
-
     match id:
         case 1:
             ##################################################################################
@@ -34,26 +38,52 @@ def promp_user(id: int):
             ans3, list_x3, list_y3, hx3, hy3 = riemann2D(f1, x0, y0, a, b, c, d, N, eps)
             print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} \n")
             print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3}")
-            plotc2(f1, a, b, c, d, list_x2, list_y2, list_x3, N)
-
             ##################################################################################
         case 3:
             ##################################################################################
-            # Câu 3: Tính tích phân x = [0,pi/2] và y = [0,pi/2] của xsin(x6y)
+            # Câu 3: Tính tích phân x = [0,pi/2] và y = [0,pi/2] của xsin(x+y)
             a, b, c, d = 0, pi / 2, 0, pi / 2
             x0 = a
             y0 = c
+
+            start_mc = time.time()
             ans2, list_x2, list_y2 = monte2D(f2, a, b, c, d, N, eps)
+            end_mc = time.time()
+
+            start_rm = time.time()
             ans3, list_x3, list_y3, hx3, hy3 = riemann2D(f2, x0, y0, a, b, c, d, N, eps)
-            print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} \n")
-            print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3}")
+            end_rm = time.time()
+            print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} với thời gian là {end_mc - start_mc}s \n")
+            print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3} với thời gian là {end_rm - start_rm}s")
         case 4:
             a, b, c, d, g, h = 0, 1, 0, 1, 0, 1
             x0 = a
             y0 = c
-            z0 = c
+            z0 = g
+
+            start_mc = time.time()
             ans2, list_x2, list_y2, listz2 = monte3D(f3, a, b, c, d, g, h, N, eps)
-            print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} \n")
+            end_mc = time.time()
+
+            start_rm = time.time()
+            ans3, list_x3, list_y3, list_z3, hx3, hy3, hz3 = riemann3D(f3, x0, y0, z0, a, b, c, d, g, h, N, eps)
+            end_rm = time.time()
+            print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} với thời gian là {end_mc - start_mc}s \n")
+            print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3} với thời gian là {end_rm - start_rm}s")
+        case 5:
+            a = 0
+            b = 1
+            x1, x3, x5, x7, x9 = [a for i in range(5)]
+            x2, x4, x6, x8, x10 = [b for i in range(5)]
+            start_mc = time.time()
+            ans2 = monte10D(f4, a, b, N, eps)
+            end_mc = time.time()
+
+            start_rm = time.time()
+            ans3 = riemann10D(f4, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, a, b, N, eps)
+            end_rm = time.time()
+            print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} với thời gian là {end_mc - start_mc}s \n")
+            # print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3} với thời gian là {end_rm - start_rm}s")
 
 
 def f(x):
@@ -64,12 +94,19 @@ def f1(x, y):
     return cos(x**4) + 3 * y**2
 
 
+@njit
 def f2(x, y):
     return x * sin(x + y)
 
 
+@njit
 def f3(x, y, z):
     return x**2 + y**2 + z**2
+
+
+@njit
+def f4(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
+    return (x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10) ** 2
 
 
 def monte(f, a, b, N, eps):
@@ -95,17 +132,16 @@ def riemann(f, x0, a, b, N, eps):
     S = np.zeros(N)
     S[0] = 0
     ans = 0
-    count = 0
     x = np.zeros(N)
     x[0] = x0
     for i in range(1, N):
         x[i] = a + i * h
-        count += i
         S[i] = f(x[i])
-        ans += (b - a) * S[i] / N
+        ans += h * S[i]
     return ans, x, h
 
 
+@njit(parallel=True)
 def monte2D(f, a, b, c, d, N, eps):
     S = np.zeros(N)
     count = 0
@@ -124,6 +160,7 @@ def monte2D(f, a, b, c, d, N, eps):
     return ans, list_x, list_y
 
 
+@njit(parallel=True)
 def monte3D(f, a, b, c, d, g, h, N, eps):
     S = np.zeros(N)
     count = 0
@@ -132,7 +169,7 @@ def monte3D(f, a, b, c, d, g, h, N, eps):
     list_x = np.zeros(N)
     list_y = np.zeros(N)
     list_z = np.zeros(N)
-    for i in range(N):
+    for i in nb.prange(N):
         x = uniform(a, b)
         y = uniform(c, d)
         z = uniform(g, h)
@@ -145,24 +182,138 @@ def monte3D(f, a, b, c, d, g, h, N, eps):
     return ans, list_x, list_y, list_z
 
 
-def riemann2D(f, x0, y0, a, b, c, d, N, eps):
-    count = 0
-    ans = 0
-    hx = (b - a) / N
-    hy = (d - c) / N
+@njit(parallel=True)
+def monte10D(fx, a, b, N, eps):
     S = np.zeros(N)
     S[0] = 0
+    ans = 0
+    for i in range(N):
+        x1 = uniform(a, b)
+        x2 = uniform(a, b)
+        x3 = uniform(a, b)
+        x4 = uniform(a, b)
+        x5 = uniform(a, b)
+        x6 = uniform(a, b)
+        x7 = uniform(a, b)
+        x8 = uniform(a, b)
+        x9 = uniform(a, b)
+        x10 = uniform(a, b)
+
+        S[i] = fx(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
+        ans += (b - a) ** 10 * S[i] / N
+    return ans
+
+
+@njit(parallel=True)
+def riemann2D(f, x0, y0, a, b, c, d, N, eps):
+    ans = 0
+
+    hx = (b - a) / N
+    hy = (d - c) / N
+
+    S = np.zeros(N)
+    S[0] = 0
+
     x = np.zeros(N)
     y = np.zeros(N)
     x[0] = x0
     y[0] = y0
+
     for i in range(1, N):
         x[i] = x0 + i * hx
-        y[i] = y0 + i * hy
-        count += i
-        S[i] = f(x[i], y[i])
-        ans += (b - a) * (d - c) * S[i] / N
+        for j in range(1, N):
+            y[j] = y0 + j * hy
+
+            S[i] = f(x[i], y[j])
+            ans += hx * hy * S[i]
     return ans, x, y, hx, hy
+
+
+@njit(parallel=True)
+def riemann3D(f, x0, y0, z0, a, b, c, d, g, h, N, eps):
+    ans = 0
+
+    hx = (b - a) / N
+    hy = (d - c) / N
+    hz = (h - g) / N
+
+    S = np.zeros(N)
+    S[0] = 0
+
+    x = np.zeros(N)
+    y = np.zeros(N)
+    z = np.zeros(N)
+    x[0] = x0
+    y[0] = y0
+    z[0] = z0
+
+    for i in nb.prange(1, N):
+        x[i] = x0 + i * hx
+        for j in range(1, N):
+            y[j] = y0 + j * hy
+            for k in range(1, N):
+                z[k] = z0 + k * hz
+                S[i] = f(x[i], y[j], z[k])
+                ans += hx * hy * hz * S[i]
+    return ans, x, y, z, hx, hy, hz
+
+
+@njit(parallel=True)
+def riemann10D(f, x1_0, x2_0, x3_0, x4_0, x5_0, x6_0, x7_0, x8_0, x9_0, x10_0, a, b, N, eps):
+    count = 0
+    ans = 0
+
+    hx = (b - a) / N
+
+    S = np.zeros(N)
+    S[0] = 0
+
+    x1 = np.zeros(N)
+    x2 = np.zeros(N)
+    x3 = np.zeros(N)
+    x4 = np.zeros(N)
+    x5 = np.zeros(N)
+    x6 = np.zeros(N)
+    x7 = np.zeros(N)
+    x8 = np.zeros(N)
+    x9 = np.zeros(N)
+    x10 = np.zeros(N)
+
+    x1[0] = x1_0
+    x2[0] = x2_0
+    x3[0] = x3_0
+    x4[0] = x4_0
+    x5[0] = x5_0
+    x6[0] = x6_0
+    x7[0] = x7_0
+    x8[0] = x8_0
+    x9[0] = x9_0
+    x10[0] = x10_0
+
+    for k1 in nb.prange(1, N):
+        x1[k1] = x1_0 + k1 * hx
+        for k2 in nb.prange(1, N):
+            x2[k2] = x2_0 + k2 * hx
+            for k3 in nb.prange(1, N):
+                x3[k3] = x3_0 + k3 * hx
+                for k4 in nb.prange(1, N):
+                    x4[k4] = x4_0 + k4 * hx
+                    for k5 in nb.prange(1, N):
+                        x5[k5] = x5_0 + k5 * hx
+                        for k6 in nb.prange(1, N):
+                            x6[k6] = x6_0 + k6 * hx
+                            for k7 in nb.prange(1, N):
+                                x7[k7] = x7_0 + k7 * hx
+                                for k8 in nb.prange(1, N):
+                                    x8[k8] = x8_0 + k8 * hx
+                                    for k9 in nb.prange(1, N):
+                                        x9[k9] = x9_0 + k9 * hx
+                                        for k10 in nb.prange(1, N):
+                                            x10[k10] = x10_0 + k10 * hx
+
+                                            S[k1] = f(x1[k1], x2[k2], x3[k3], x4[k4], x5[k5], x6[k6], x7[k7], x8[k8], x9[k9], x10[k10])
+                                            ans += hx**10 * S[k1]
+    return ans
 
 
 def plot(f, a, b, xmonte1D, ymonte1D, xrieman1D, h, N):
@@ -222,12 +373,9 @@ def plot(f, a, b, xmonte1D, ymonte1D, xrieman1D, h, N):
     plt.show()
 
 
-def plotc2(f1, a, b, c, d, xmonte2D, ymonted2D, xrieman2D, N):
-    pass
-
-
 def main():
-    id = int(input("Nhập câu thứ ... để in ra kết quả của câu đó(có 3 câu): "))
+    id = int(input("Nhập câu thứ ... để in ra kết quả của câu đó(có 5 câu): "))
+
     promp_user(id)
     # test print
     # print(list_x2)
