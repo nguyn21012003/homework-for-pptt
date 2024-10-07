@@ -37,7 +37,7 @@ def para(id):
             z0 = a / hbar * sqrt(2 * m * V0)
             print(z0)
 
-        case 4:  ########### Sâu,rộng => z0 lớN ~ 2.4222738389475014
+        case 4:  ########### Sâu,rộng => z0 lớN ~ 135
             a = 50 * a0  # meter
             V0 = 100 * Ce
             z0 = a / hbar * sqrt(2 * m * V0)
@@ -147,6 +147,8 @@ def calc_psi(z, z0, a):
     Ek = -((k * hbar) ** 2) / (2 * m)
     El = ((l * hbar) ** 2) / (2 * m) - V0
 
+    print(Ek)
+    print(El)
     D = 1 / sqrt(a + 1 / k)
     F = exp(k * a) * cos(l * a) / sqrt(a + 1 / k)
 
@@ -199,7 +201,7 @@ def plot_data(x0, x1, z, z0, N):
     print(z, z0)
     axs[0, 0].plot(z, rhs)
     axs[0, 0].plot(z, lhs)
-    axs[0, 0].set_ylim(-10, 100)
+    axs[0, 0].set_ylim(0, z0)
     axs[0, 0].grid(True)
 
     axs[0, 0].axhline(0, color="red", linewidth=0.5)
@@ -221,7 +223,7 @@ def main():
     file_log = "datafinitewell.txt"
     file_table_log = "datafinitewell.table.txt"
 
-    N = 1000
+    N = 100
     eps = 1e-14
     x0 = 2
     x1 = 4.8
@@ -239,6 +241,8 @@ def main():
     table_log(file_table_log, z_bisection, z_newton, z_secant, N)
     read = read_log(file_log, z_bisection, z_newton, z_secant, N)
     print(read)
+
+    calc_psi(z_newton, z0, a)
 
     plot_data(x0, x1, z_secant, z0, N)
 
