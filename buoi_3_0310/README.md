@@ -130,7 +130,7 @@ def save_log(file: str, t: list, y: list, yeuler: list, yrk4: list, ymidpoint: l
 ## Kết quả
 Chi tiết kết quả thì trong code.
 
-![Result](res/data.pdf)
+![Result](res/data.png)
 
 
 |  n  |  t  |         y          |     Euler     |  Euler modified   |
