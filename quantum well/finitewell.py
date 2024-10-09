@@ -198,10 +198,9 @@ def plot_data(x0, x1, z, z0, N):
     z = np.linspace(0, 5 * pi, N)
     rhs = tan(z)
     lhs = sqrt((z0 / z) ** 2 - 1)
-    print(z, z0)
     axs[0, 0].plot(z, rhs)
     axs[0, 0].plot(z, lhs)
-    axs[0, 0].set_ylim(0, z0)
+    axs[0, 0].set_ylim(-5   , z0)
     axs[0, 0].grid(True)
 
     axs[0, 0].axhline(0, color="red", linewidth=0.5)
