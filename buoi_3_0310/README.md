@@ -130,7 +130,7 @@ def save_log(file: str, t: list, y: list, yeuler: list, yrk4: list, ymidpoint: l
 ## Kết quả
 Chi tiết kết quả thì trong code.
 
-![[data.pdf]]
+![[\res\data.pdf]]
 
 
 |  n  |  t  |         y          |     Euler     |  Euler modified   |
