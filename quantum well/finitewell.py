@@ -43,6 +43,12 @@ def para(id):
             z0 = a / hbar * sqrt(2 * m * V0)
             print(z0)
 
+        case 5:
+            a = 50 * a0  # meter
+            V0 = 100 * Ce
+            z0 = a / hbar * sqrt(2 * m * V0)
+            print(z0)
+
 
 def fz(z):
     return tan(z) - sqrt((z0 / z) ** 2 - 1)
@@ -87,7 +93,7 @@ def bisection(f, a, b, N, eps):
 
 
 def df_newton(z):
-    return 1 / (cos(z) ** 2) + (-z0) ** 2 / (z**2 * sqrt(z0**2 - z**2))
+    return 1 / (cos(z) ** 2) + (z0) ** 2 / (z**2 * sqrt(z0**2 - z**2))
 
 
 def newtonr(f, df, p0, N, eps):
@@ -198,12 +204,12 @@ def table_log(file, solbisection, solnewton, solsecant, N):
 
 def plot_data(x0, x1, z, z0, N):
     fig, axs = plt.subplots(2, 2, figsize=(15, 7))
-    z = np.linspace(0, 5 * pi, N)
+    z = np.arange(0, 5 * pi, 1 / N)
     rhs = tan(z)
     lhs = sqrt((z0 / z) ** 2 - 1)
     axs[0, 0].plot(z, rhs)
     axs[0, 0].plot(z, lhs)
-    axs[0, 0].set_ylim(-1, z0)
+    axs[0, 0].set_ylim(-0.5, z0)
     axs[0, 0].grid(True)
 
     axs[0, 0].axhline(0, color="red", linewidth=0.5)
