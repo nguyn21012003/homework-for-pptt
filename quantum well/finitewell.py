@@ -152,6 +152,9 @@ def calc_psi(z, z0, a):
     D = 1 / sqrt(a + 1 / k)
     F = exp(k * a) * cos(l * a) / sqrt(a + 1 / k)
 
+    print(D, "\n")
+    print(F)
+
     return D, F, k, l
 
 
@@ -200,7 +203,7 @@ def plot_data(x0, x1, z, z0, N):
     lhs = sqrt((z0 / z) ** 2 - 1)
     axs[0, 0].plot(z, rhs)
     axs[0, 0].plot(z, lhs)
-    axs[0, 0].set_ylim(-5   , z0)
+    axs[0, 0].set_ylim(-1, z0)
     axs[0, 0].grid(True)
 
     axs[0, 0].axhline(0, color="red", linewidth=0.5)
@@ -224,8 +227,9 @@ def main():
 
     N = 100
     eps = 1e-14
-    x0 = 2
-    x1 = 4.8
+
+    x0 = 0.1
+    x1 = 1.5
 
     p0 = x0
     p1 = x1
