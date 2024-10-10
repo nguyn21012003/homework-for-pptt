@@ -13,12 +13,13 @@ m = 9.31e-31
 Ce = 1.6e-19  # MeV to Joule(J)
 hbar_ev = 6.582119569e-16  # eV*s
 
-hbar_Js = 1.054571817e-34
+hbar_Js = 1.054571817e-34  # J*s
 
-a = 1 * a0
-V0 = 10
+V0 = 20
+a = 5 * a0
 z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
 
+print(z0)
 
 """def para(id_):
     global a, V0, z0
@@ -71,8 +72,6 @@ def bisection(f, a, b, N, eps):
     na[0] = a
     nb[0] = b
 
-    count = 0
-
     for i in range(N):
         if i + 1 < N:
             nc[i] = (na[i] + nb[i]) / 2
@@ -86,14 +85,12 @@ def bisection(f, a, b, N, eps):
             if f(na[i], z0) * f(nc[i], z0) < 0:
                 nb[i + 1] = nc[i]
                 na[i + 1] = na[i]
-                count += 1
 
             elif f(nc[i], z0) * f(nb[i], z0) < 0:
                 nb[i + 1] = nb[i]
                 na[i + 1] = nc[i]
-                count += 1
 
-    return (na, nb, nc), count
+    return (na, nb, nc)
 
 
 def df_newton(z, z0):
@@ -103,23 +100,21 @@ def df_newton(z, z0):
 def newtonr(f, df, p0, N, eps):
     p = np.zeros(N)
     p[0] = p0
-    count = 0
     listp = []
     for i in range(1, N + 1):
         if i + 1 < N:
             p[i] = p[i - 1] - f(p[i - 1], z0) / df(p[i - 1], z0)
-            count += 1
             if abs(p[i] - p[i - 1]) <= eps:
                 break
         else:
-            print(f"Nghiem khong hoi tu voi {count} vong lap !")
+            print(f"Nghiem khong hoi tu voi {i} vong lap !")
             break
 
     # for i in range(len(p)):
     #    if p[i] != 0:
     #        listp.append(float(p[i]))
 
-    return p, count
+    return p
 
 
 def df_secant(f, pn1, pn2):
@@ -130,23 +125,21 @@ def secant(f, df, p0, p1, N, eps):
     p = np.zeros(N)
     p[0] = p0
     p[1] = p1
-    count = 0
     listp = []
     for i in range(2, N + 2):
         if i + 1 < N:
             p[i] = p[i - 1] - f(p[i - 1], z0) / df(f, p[i - 1], p[i - 2])
-            count += 1
             if abs(p[i] - p[i - 1]) <= eps:
                 break
         else:
-            print(f"Nghiem khong hoi tu voi {count} vong lap !")
+            print(f"Nghiem khong hoi tu voi {i} vong lap !")
             break
 
     # for i in range(len(p)):
     #    if p[i] != 0:
     #        listp.append(float(p[i]))
 
-    return p, count
+    return p
 
 
 def read_log(file, solbisection, solnewton, solsecant, N):
@@ -199,21 +192,22 @@ def V(x, V0, a):
 
 
 def sqWellsolution(z0: float, h_step: float) -> tuple:
-    even_sol = np.array([], dtype=float)
-    odd_sol = np.array([], dtype=float)
+    even_solution = np.array([], dtype=float)
+    odd_solution = np.array([], dtype=float)
     income_wave = np.arange(h_step, z0, h_step)
 
     even = True
     for i in range(len(income_wave) - 1):
         if even == True:
             if fz(income_wave[i], z0) * fz(income_wave[i + 1], z0) < 0:
-                even_sol = np.append(even_sol, optimize.brentq(fz, income_wave[i], income_wave[i + 1], args=z0))
-            if even == False:
-                if odd_sol(income_wave[i], z0) * odd_sol(income_wave[i + 1], z0) < 0:
-                    odd_sol = np.append(odd_sol, optimize.brentq(odd_sol, income_wave[i], income_wave[i + 1], args=z0))
+                even_solution = np.append(even_solution, optimize.brentq(fz, income_wave[i], income_wave[i + 1], args=z0))
+                even = False
+        if even == False:
+            if fz(income_wave[i], z0) * fz(income_wave[i + 1], z0) < 0:
+                odd_solution = np.append(odd_solution, optimize.brentq(fz, income_wave[i], income_wave[i + 1], args=z0))
 
                 even = True
-    return even_sol, odd_sol
+    return even_solution, odd_solution
 
 
 esol, osol = sqWellsolution(z0, 0.1)
@@ -226,8 +220,6 @@ okappa = abs(2 * osol) / a * tan(osol)
 
 eneer_even = (2 * hbar_Js**2 * esol**2 / (m * a**2)) / Ce
 eneer_odd = (2 * hbar_Js**2 * osol**2 / (m * a**2)) / Ce
-
-print(z0, "nang luong")
 
 
 def wavefunc(x, V0, el, ekappa, a):
@@ -269,9 +261,9 @@ def plot_data(x0, x1, z, z0, N):
     axs[0, 1].set_ylabel("V(x)", fontsize=14)
 
     for i in range(len(el)):
-        axs[0, 1].plot(x, eneer_even[i] + wavefunc(x, V0, el[i], ekappa[i], a))
-        axs[0, 1].axhline(y=eneer_even[i], xmin=0.1666, xmax=0.8333)
-        axs[0, 1].annotate("E= %3.2f eV" % eneer_even[i], xy=(x[-1], eneer_even[i]), xycoords="data")
+        axs[0, 1].plot(x, -(eneer_even[i] + wavefunc(x, V0, el[i], ekappa[i], a)))
+        axs[0, 1].axhline(y=-eneer_even[i], xmin=0.1666, xmax=0.8333)
+        axs[0, 1].annotate(f"E= {-eneer_even[i]:3.2f} eV", xy=(x[-1], eneer_even[i]))
 
     plt.show()
 
@@ -302,12 +294,12 @@ def main():
     p0 = 1
     p1 = x1
 
-    sol_bisection, count1 = bisection(fz, x0, x1, N, eps)
+    sol_bisection = bisection(fz, x0, x1, N, eps)
     na, nb, z_bisection = sol_bisection
 
-    z_newton, count2 = newtonr(fz, df_newton, p0, N, eps)
+    z_newton = newtonr(fz, df_newton, p0, N, eps)
 
-    z_secant, count3 = secant(fz, df_secant, p0, p1, N, eps)
+    z_secant = secant(fz, df_secant, p0, p1, N, eps)
 
     table_log(file_table_log, z_bisection, z_newton, z_secant, N)
     read = read_log(file_log, z_bisection, z_newton, z_secant, N)
