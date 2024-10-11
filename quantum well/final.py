@@ -7,18 +7,13 @@ import csv
 from tabulate import tabulate
 from scipy import optimize
 
+####################### Local
 
-a0 = 0.529e-9  ## Hang so Bohr
-m = 9.31e-31
-Ce = 1.6e-19  # MeV to Joule(J)
-hbar_ev = 6.582119569e-16  # eV*s
+from para import case_
+from bisection import bisection
+from Secant import secant
 
-hbar_Js = 1.054571817e-34  # J*s
-
-V0 = 20
-a = 5 * a0
-z1 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
-z0 = 0.7
+a, m, Ce, V0, z0, hbar_ev, hbar_Js = case_(int(input("Nhập trường hợp: ")))
 print(z0)
 
 
@@ -28,77 +23,6 @@ def fz_even(z, z0):  # even_sol
 
 def fz_odd(z, z0):  # odd_sol
     return -1 / tan(z) - sqrt((z0 / z) ** 2 - 1)
-
-
-def bisection(f, a, b, N, eps):
-    a = float(a)
-    b = float(b)
-    if a > b:
-        a = b
-        b = a
-
-    na = np.zeros(N)
-    nb = np.zeros(N)
-    nc = np.zeros(N)
-    na[0] = a
-    nb[0] = b
-
-    for i in range(N):
-        if i + 1 < N:
-            nc[i] = (na[i] + nb[i]) / 2
-
-            if f(nc[i], z0) == 0:
-                break
-
-            if abs(f(nc[i], z0)) < eps:
-                break
-
-            if f(na[i], z0) * f(nc[i], z0) < 0:
-                nb[i + 1] = nc[i]
-                na[i + 1] = na[i]
-
-            elif f(nc[i], z0) * f(nb[i], z0) < 0:
-                nb[i + 1] = nb[i]
-                na[i + 1] = nc[i]
-
-    return (na, nb, nc)
-
-
-def df_newton(z, z0):
-    return 1 / (cos(z) ** 2) + z0**2 / (z**2 * sqrt(z0**2 - z**2))
-
-
-def newtonr(f, df, p0, N, eps):
-    p = np.zeros(N)
-    p[0] = p0
-    for i in range(1, N + 1):
-        p[i] = p[i - 1] - f(p[i - 1], z0) / df(p[i - 1], z0)
-        if abs(p[i] - p[i - 1]) <= eps:
-            break
-        elif i == N + 1:
-            print(f"Nghiem khong hoi tu voi {i} vong lap !")
-            break
-
-    return p
-
-
-def df_secant(f, pn1, pn2):
-    return (f(pn1, z0) - f(pn2, z0)) / (pn1 - pn2)
-
-
-def secant(f, df, p0, p1, N, eps):
-    p = np.zeros(N)
-    p[0] = p0
-    p[1] = p1
-    for i in range(2, N + 2):
-        p[i] = p[i - 1] - f(p[i - 1], z0) / df(f, p[i - 1], p[i - 2])
-        if abs(p[i] - p[i - 1]) <= eps:
-            break
-        if i == N + 2:
-            print(f"Nghiem khong hoi tu voi {i} vong lap !")
-            break
-
-    return p
 
 
 def read_log(file, solbisection, solnewton, solsecant, N):
@@ -146,7 +70,6 @@ def V(x, V0, a):
     for i in range(len(x)):
         if -width / 2 <= abs(x[i]) <= width / 2:
             Vp[i] = -V0
-
     return Vp
 
 
@@ -204,10 +127,10 @@ def plot_data(x0, x1, z, z0, N):
 
     z1 = np.arange(0, 4 * pi, 1 / N)
     rhs = tan(z1)
-    lhs = sqrt((z0 / z1) ** 2 - 1)
+    lhs = sqrt((z0 / z) ** 2 - 1)
 
     axs[0, 0].plot(z1, rhs, "magenta")
-    axs[0, 0].plot(z1, lhs, "navy")
+    axs[0, 0].plot(z, lhs, "navy")
     axs[0, 0].set_ylim(-0.2, 10 * z0)
     axs[0, 0].grid(True)
 
@@ -230,44 +153,43 @@ def plot_data(x0, x1, z, z0, N):
 
 
 def main():
-
-    # id_ = int(input("Nhập trường hợp muốn tính toán: "))
-
-    # para(id_)
-
     file_log = "datafinitewell.txt"
     file_table_log = "datafinitewell.table.txt"
 
     N = 100
     eps = 1e-15
 
+    x0 = 1
+    x1 = 2
+
     interval = {
-        "intv1": [0 + eps, pi / 2 - eps],
-        "intv2": [pi / 2 + eps, pi - eps],
-        "intv3": [pi + eps, 3 / 2 * pi - eps],
-        "intv4": [3 / 2 * pi + eps, 4 / 2 * pi - eps],
-        "intv5": [4 / 2 * pi + eps, 5 / 2 * pi - eps],
+        0: [0 + eps, pi / 2 - eps],
     }
 
-    x0 = 0.1
-    x1 = 1.5
+    k = 0
+    while k < int(z0):
+        inter_i = []
+        p0 = pi / 2 + k * pi + 2 * eps
+        p1 = pi / 2 + (k + 1) * pi - 2 * eps
+        interval[k + 1] = inter_i
+        if p1 >= z0:
+            p1 = z0 - eps
+            inter_i.append(p0)
+            inter_i.append(p1)
 
-    p0 = x0
-    p1 = x0 + x0 / 4
+            break
+        inter_i.append(p0)
+        inter_i.append(p1)
+        k += 1
 
-    sol_bisection = bisection(fz_even, x0, x1, N, eps)
-    na, nb, z_bisection = sol_bisection
-
-    z_newton = newtonr(fz_even, df_newton, p0, N, eps)
-
-    z_secant = secant(fz_even, df_secant, p0, p1, N, eps)
-
-    table_log(file_table_log, z_bisection, z_newton, z_secant, N)
-    read = read_log(file_log, z_bisection, z_newton, z_secant, N)
-    print(read)
-
-    plot_data(x0, x1, z_bisection, z0, N)
-    sqWellsolution(z0, 0.001)
+    # sol_bisection = bisection(fz_even, x0, x1, N, eps)
+    # na, nb, z_bisection = sol_bisection
+    sol_Secant = []
+    for i in interval:
+        p0, p1 = interval[i]
+        ket_qua = secant(fz_even, p0, p1, eps, N, z0)
+        sol_Secant.append(ket_qua)
+    plot_data(x0, x1, sol_Secant, z0, N)
 
 
 if __name__ == "__main__":
