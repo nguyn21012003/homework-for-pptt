@@ -71,8 +71,8 @@ def main():
     file_log = "datafinitewell.txt"
     file_table_log = "datafinitewell.table.txt"
 
-    N = 100000
-    eps = 1e-8
+    N = 100
+    eps = 1e-15
     delta_inte = 1e-4
 
     interval = {}

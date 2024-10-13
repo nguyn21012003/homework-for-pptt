@@ -37,8 +37,13 @@ def para(_):
             a = 20 * a0
             z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
             return a, m, Ce, V0, z0, hbar_ev, hbar_Js
-        case 5:  # z0 ~ 42.42301016380012
+        case 5:  # z0 ~ 237.15183634105392
             V0 = 50
             a = 50 * a0
+            z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
+            return a, m, Ce, V0, z0, hbar_ev, hbar_Js
+        case 6:  # z0 ~ 1341.5333731808123
+            V0 = 100
+            a = 200 * a0
             z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
             return a, m, Ce, V0, z0, hbar_ev, hbar_Js
