@@ -69,11 +69,10 @@ def df_newton(z, z0):
 
 
 def newtonr(f, df, p0, N, eps):
-    p = np.zeros(N)
-    p[0] = p0
+    p = p0
     for i in range(1, N + 1):
-        p[i] = p[i - 1] - f(p[i - 1], z0) / df(p[i - 1], z0)
-        if abs(p[i] - p[i - 1]) <= eps:
+        p = p - f(p, z0) / df(p, z0)
+        if abs(f(p, z0)) <= eps:
             break
         elif i == N + 1:
             print(f"Nghiem khong hoi tu voi {i} vong lap !")
