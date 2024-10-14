@@ -14,8 +14,7 @@ def secant(f: float, p0: float, p1: float, eps: float, N: int, z0: float) -> flo
     Returns:
         p_n: Nghiệm hay điểm cắt nhau hay điểm làm cho f(x) = 0. Nếu như hàm f(x) tại các điểm p0,p1,p_n cùng dấu nhau thì chúng ta được nghiệm không hội tụ với n vòng lặp
     """
-    if f(p0, z0) * f(p1, z0) >= 0:
-        return None
+
     p0_n = p0
     p1_n = p1
     for n in range(N + 1):
