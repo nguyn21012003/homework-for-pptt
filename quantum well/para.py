@@ -2,13 +2,13 @@ from numpy import sqrt
 
 
 def para(_):
-    """_summary_
+    """Description
 
     Args:
-        _ (_type_): _description_
+        _ (int): Nhập số trường hợp để tính z0 từ bé tới lớn tương đương với thế nông, chiều dài giếng hẹp cho tới thế sâu, chiều dài giếng rộng,
 
     Returns:
-        _type_: _description_
+        tuple: Chứa các parameter cần dùng để giải bài toán ví dụ như a,m,V0,z0,....
     """
     a0 = 1e-9
     m = 9.31e-31  # kg
@@ -46,4 +46,14 @@ def para(_):
             V0 = 100
             a = 200 * a0
             z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
+            return a, m, Ce, V0, z0, hbar_ev, hbar_Js
+        case 7:  # z0 ~ 42423.01016380013
+            V0 = 1000
+            a = 2000 * a0
+            z0 = sqrt(0.067 * m * V0 * a * a / (2 * (hbar_ev) ** 2 * Ce))
+            return a, m, Ce, V0, z0, hbar_ev, hbar_Js
+        case 8:  # z0 ~ 42423.01016380013
+            V0 = 83e6
+            a = 2.0e-15
+            z0 = 0.094
             return a, m, Ce, V0, z0, hbar_ev, hbar_Js
