@@ -41,20 +41,15 @@ def solve_sys_ode(fArr1, fArr2: npt.NDArray, a: float, b: float, h: float, solve
     small = []
     yn = np.zeros(2)
     yn1 = np.zeros(2)
-    yn[0] = pi / 30
-    yn1[0] = pi / 30
+    yn[0] = pi / 6
+    yn1[0] = pi / 6
     yn[1] = 0
     yn1[1] = 0
     t = np.arange(a, b + h, h)
     for j in range(N + 1):
         yn = solver(fArr1, t, yn, h)
         big.append(yn)
-        # if yn[0] > 1:
-        #    yn = solver(fArr1, times, yn, h)
-        #    y.append(yn)
-        # if yn[0] <= 1:
-        #    yn = solver(fArr2, times, yn, h)
-        #    y.append(yn)
+
     for i in range(N + 1):
         yn1 = solver(fArr2, t, yn1, h)
         small.append(yn1)
@@ -100,7 +95,7 @@ def saveLog(file, t, big_theta, small_theta):
 
 def main():
 
-    N = 50
+    N = 500
     t0 = 0
     tn = 10
 
