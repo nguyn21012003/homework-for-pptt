@@ -31,10 +31,10 @@
 \fancyfoot[L]{Vật lý Lý thuyết}%
 \fancyfoot[C]{\hspace{4cm} \thepage}%
 
-\newcommand{\image}[2]{
+\newcommand{\image}[3]{
 	\begin{center}
 		\includegraphics[width=1\textwidth]{#1}
-		\textbf{Figure. 1:} #2
+		\textbf{Figure. #2:} #3
 		\label{fig:#1}
 	\end{center}
 }
@@ -48,13 +48,13 @@
 }
 
 \renewcommand{\baselinestretch}{2.0}
-
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
 
 \title{\Huge{GIẾNG THẾ VUÔNG HỮU HẠN}}
 
 \hypersetup{
 	colorlinks=true,
-	linkcolor=red,
+	linkcolor=black,
 	filecolor=magenta,      
 	urlcolor=cyan,
 	pdftitle={},
@@ -68,9 +68,12 @@
 	\newpage
 	\author{TRẦN KHÔI NGUYÊN \\LÊ QUỐC DUY \\ PHẠM NGUYỄN THÀNH ĐẠT \\NGUYỄN LÊ KHẢI HOÀN \\ LÊ THƯỢNG PHƯƠNG ANH}
 	\maketitle
+	
+	\newpage
+	\tableofcontents
 	\newpage
 	\section{Lý thuyết}
-	\subsection{Giếng thế vuông hữu hạn}
+	\subsection{Bài toán vật lý}
 	Xét giếng thế vuông hữu hạn:
 	\begin{align}
 		V(x) = 
@@ -80,6 +83,8 @@
 		\end{cases}
 	\end{align}
 	trong đó $V_0$ là hằng số dương.
+	
+	
 	
 	Xét trường hợp trạng thái liên kết. Trong vùng $x<a$, $V(x) = 0$(nằm ngoài giếng), phương trình Schr\"{o}dinger có dạng:
 	\begin{align}
@@ -145,28 +150,30 @@
 	\begin{align}
 		(l^2 + \kappa^2)a = a\frac{2mV_0}{\hbar^2} = z_0^2 \nonumber\\
 		\Rightarrow \kappa a = \sqrt{z_0^2 - z^2} \\
-		\Rightarrow \tan z = \sqrt{\left( \dfrac{z0}{z} \right)^2 - 1}.
+		\Rightarrow \tan z = \sqrt{\left( \dfrac{z_0}{z} \right)^2 - 1}.
 	\end{align}
 	Phương trình (15) có thể giải số để tìm ra tất cả nghiệm có thể bằng các điểm cắt nhau giữa $RHS$ và $LHS$.
 	\begin{itemize}
-		\item \textbf{Giếng sâu, rộng}. Với $a,V_0 \gg$, điều này đồng nghĩa với $z_0 \gg$. 
-		\item \textbf{Giếng nông, hẹp}. Với $a,V_0 \ll$, điều này đồng nghĩa với $z_0 \ll$. $z_0$ càng giảm ta càng có ít nghiệm cho trạng thái liên kết. Với $z_0 < \dfrac{\pi}{2}$, ta chỉ còn lại một nghiệm cho trạng thái liên kết. Mặc cho $z_0$ có nhỏ bao nhiêu, ta luôn tìm được một nghiệm cho trạng thái liên, mặc dù rất yếu.
+		\item \textbf{Trường hợp giếng sâu rộng:} $a_0$ và $V_0$ càng lớn nên $z_0$ càng lớn, đồ thị vế phải sẽ giao với đồ thị của vế trái càng nhiều điểm. Với điều kiện xác định của căn thức thì ta sẽ sẽ có tập xác định của z là $0 < z < z_0$. Cộng thêm tính tuần hoàn của $\tan{z}$ thì $z \in (0,\frac{\pi}{2}) \cup (\frac{\pi}{2} + k\pi , \frac{\pi}{2} + (k+1)\pi) (k= 0,1,2,3...)$. Với mỗi điểm cắt sẽ ứng với một mức năng lượng ( $z$ là hàm của năng lượng ). Và với mỗi điểm đó sẽ ứng với một hàm sóng.
+		\item \textbf{Trường hợp giếng nông hẹp:} Là khi $z_0$ rất nhỏ. Số nghiệm của phương trình sẽ ít vì hàm căn thức rất hẹp nên sẽ cắt hàm $\tan{z}$ ít điểm hơn. Nhưng dù $z_0$ rất nhỏ tiến tới 0 thì vẫn tồn tại ít nhất một điểm cắt, nghĩa là vẫn sẽ luôn tồn tại một trạng thái cơ bản của hệ. rất yếu.
 	\end{itemize}
 	
+	\newpage
 	
+	\section{Phương pháp giải}
+	\subsection{Phương pháp hình học}
 	
+	Một cách nhanh nhất để giải và tìm nghiệm cho $\tan z = \sqrt{\left( \dfrac{z_0}{z} \right)^2 - 1}$ đó là vẽ $LHS$ và $RHS$ trên cùng một đồ thị. Tại những điểm cắt nhau trên đồ thị, đó là nghiệm của bài toán.
+	\image{tan.pdf}{1}{Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$}
+	Mặc dù cho $z_0$ rất bé, ta luôn tìm được một nghiệm chẵn. Không nhất thiết phải cần có nghiệm lẻ.
+	\subsection{Giải số}
 	
+	Sử dụng phương pháp hình học đem lại cho ta kết quả nhanh, tiện lợi. Nhưng bên cạnh đó cũng có thể giải phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$ bằng thuật toán truy hồi sử dụng các phương pháp Chia đôi khoảng cách, phương pháp Newton - Raphson, phương pháp Secant.
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	\section{Giải số}
-	giải số như nào v.v
+	\begin{align}
+		y(z) = \tan z - \sqrt{\left( \frac{z_0}{z} \right)^2 - 1} = 0
+	\end{align}
+	Mục tiêu bây giờ là tìm ra điểm giao nhau bằng 0 của hàm này và đó sẽ là nghiệm ta cần tìm. Nhưng ở số hạng thứ nhất hàm $\tan$ sẽ bị phân kì khi $z = \pi/2 + k \pi$, và ở số hạng thứ hai bị phân kì khi $z = 0$ hoặc $z_0 < z$. Để giải quyết vấn đề này, chúng tôi đưa ra một phương pháp giải đó là giải số $y(z)$ trong khoảng lân cận $0+ \epsilon$ $\rightarrow $ $\dfrac{\pi}{2} - \epsilon$ và cứ thế tăng một $k\pi$ với $k = 0,1,2,3...$
 	
 	\newpage
 	\section{Phương pháp}
@@ -220,8 +227,45 @@ if f(p_n, z0) == 0:
 return p_n
 	\end{minted}
 	\section{Kết quả}
-	\image{Final.pdf}{a) Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z0}{z} \right)^2 - 1}$. b) Hàm sóng ứng với các mức năng lượng khi $a = 10nm, V_0 = 1eV$ .}
+	\image{Final.pdf}{2}{a) Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z0}{z} \right)^2 - 1}$. b) Hàm sóng ứng với các mức năng lượng khi $a = 10nm, V_0 = 1eV$ .}
 	
+	Khi giải số cho phương trình $\tan z = \sqrt{\left( \frac{z0}{z} \right)^2 - 1}$, chúng ta đã sử dụng các thông số như sau: $V_0 = 1eV, a = 10 nm,m = 0.067 \times m_e,D = V_0/20$ với số lần lặp $N= 10000$. 
 
+	\clearpage
+	\section{Appendix}
+	\subsection{Hệ số chuẩn hóa}
+	\begin{align*}
+		1 &= 2 \int_{0}^{\infty} \abs{\psi(x)}^2 \, dx \\
+		&= 2 \left[ \int_{0}^{a} \abs{D}^{2} \cos^{2}(lx) \, dx + \int_{a}^{\infty} \abs{F}^{2} e^{-2\kappa x} \, dx \right] \\
+		&= 2 \left[ \int_{0}^{a} \abs{D}^{2} \left(\frac{1}{2} + \frac{1}{2} \cos(2lx)\right) \, dx + \int_{a}^{\infty} \abs{F}^{2} e^{-2\kappa x} \, dx \right]\\
+		&= 2\left[\abs{D}^{2}\left(\frac{x}{2} + \frac{\sin(2lx)}{4l}\right)\at{0}{a} + \abs{F}^{2} \frac{e^{-2 \kappa x}}{-2\kappa} \at{a}{\infty} \right]\\
+		&= 2 \left[ \abs{D}^2 \left(\frac{a}{2} + \frac{\sin(2la)}{4l}\right) + \abs{F}^2 \frac{e^{-2\kappa a}}{2\kappa}\right]
+	\end{align*}
+	Ta xét điều kiện biên liên tục tại $x = a$:
+	\begin{align}
+		&F e^{-\kappa a} = D \cos(la) \nonumber\\
+		\Rightarrow &F = D e^{ka} \cos(la)
+	\end{align}
+	Xét đạo hàm theo biến $x$ của $\psi$:
+	\begin{align}
+		&\frac{d(F e^{-kx})}{dx} \at{x=a^+}{} = \frac{d(D \cos(lx))}{dx} \at{x=a^-}{} \nonumber \\
+		&\Rightarrow -\kappa F e^{-\kappa a}  = - l D \sin(la) \nonumber\\
+		&\Rightarrow \kappa = l \tan(la).
+	\end{align}
+	Thay (1) và (3) vào ta được:
+	\begin{align*}
+		1 &= 2 \left[ \abs{D}^2 \left(\dfrac{a}{2} + \dfrac{\sin(2la)}{4l}\right) + 	e^{2\kappa a} \cos^{2}(la) \frac{e^{-2\kappa a}}{2k}\right] \\
+		&= 2 \left[ \abs{D}^2 \left(\dfrac{a}{2} + \dfrac{\sin(2la)}{4l}\right) + \abs{D}^2 	\dfrac{\cos^{2}(la)}{2\kappa}\right] \\
+		&= \abs{D}^2 \left[a + \dfrac{\sin(2la)}{2l} + \dfrac{\cos^{2}(la)}{\kappa}\right] \\
+		&= \abs{D}^2 \left(a + \dfrac{\sin(2la)}{2l} + \dfrac{\cos^{2}(la)}{l 	\tan(la)}\right) \\
+		&= \abs{D}^2 \left[ a + \dfrac{\sin(la)\cos(la)}{l} + \frac{\cos^{3}(la)}{l 	\sin(la)}\right] \\
+		&= \abs{D}^2 \left[a + \dfrac{\cos(la)}{l \sin(la)} \left(\sin^2(la) + 	\cos^2(la)\right)\right] \\
+		&= \abs{D}^2 \left[a + \dfrac{1}{l \tan(la)}\right] \\
+		1 &= \abs{D}^2 \left(a + 1/\kappa \right) \\
+		\Rightarrow D &= \sqrt{\dfrac{1}{a + 1/\kappa }} \\
+		\Rightarrow F &= D e^{\kappa a} \cos(la) \\
+		&= \sqrt{\dfrac{1}{a + 1/\kappa }} e^{\kappa a} \cos(la)\kappa
+	\end{align*}
+	
 	
 \end{document}
