@@ -127,7 +127,7 @@ def main():
 
     tableLog(file_table_log, listSolBisection, listSolNewton, listSolSecant, len(listSolSecant))
 
-    plotWaveFunction(listSolBisection, a, V0, N, hbar_Js, m, Ce)
+    plotWaveFunction(listSolBisection, z0, a, V0, N, hbar_Js, m, Ce)
 
 
 if __name__ == "__main__":
