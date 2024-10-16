@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.6.2)  11 OCT 2024 11:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2024.6.2)  16 OCT 2024 22:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -708,7 +708,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen191
 \Gm@dimlist=\toks33
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 56.
+Package hyperref Info: Option `colorlinks' set `true' on input line 62.
 runsystem(for ^%i in (pygmentize.exe pygmentize.bat pygmentize.cmd) do set > ma
 in.aex <nul: /p x=^%~$PATH:i>> main.aex)...executed.
 
@@ -717,26 +717,26 @@ runsystem(del main.aex)...executed.
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
 
 (m:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -768,7 +768,7 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 )
-Package hyperref Info: Link coloring ON on input line 60.
+Package hyperref Info: Link coloring ON on input line 66.
 
 (m:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -781,9 +781,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count331
 )
-LaTeX Info: Redefining \ref on input line 60.
-LaTeX Info: Redefining \pageref on input line 60.
-LaTeX Info: Redefining \nameref on input line 60.
+LaTeX Info: Redefining \ref on input line 66.
+LaTeX Info: Redefining \pageref on input line 66.
+LaTeX Info: Redefining \nameref on input line 66.
 
 (./main.out) (./main.out)
 \@outlinefile=\write5
@@ -824,14 +824,14 @@ LaTeX Info: Redefining \nameref on input line 60.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Calculating math sizes for size <15.59996> on input line 65
+LaTeX Font Info:    Calculating math sizes for size <15.59996> on input line 71
 .
-LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
 
 (m:/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
 
 
 (m:/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -839,10 +839,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {m:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Calculating math sizes for size <13> on input line 75.
+ [2] [3] [4]
 \openout3 = `main.pyg'.
 
- (./_minted-main/default.pygstyle)
-(./_minted-main/D1F68573CFB1A3A6BBA50F18144677695018845A16FEE2F871CFA2D2B2CFB1C
+
+(./_minted-main/default.pygstyle)
+(./_minted-main/DB270FEC03D7D6E5683C7227DE93678B5018845A16FEE2F871CFA2D2B2CFB1C
 6.pygtex
 LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 1
 .
@@ -851,36 +854,53 @@ File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T5/cmtt/bx/n' in size <13> not available
 (Font)              Font shape `T5/cmtt/m/n' tried instead on input line 2.
-) [2]
-Underfull \vbox (badness 10000) detected at line 135
- []
+)
+\openout3 = `main.pyg'.
 
 
-Underfull \vbox (badness 10000) detected at line 135
- []
+(./_minted-main/E28747990A6CD2863E87A59F523917B85018845A16FEE2F871CFA2D2B2CFB1C
+6.pygtex)
+\openout3 = `main.pyg'.
 
-[3] [4] (./main.aux)
+ [5]
+(./_minted-main/FA45865CB40A1F88673D51D6AD3C8CB45018845A16FEE2F871CFA2D2B2CFB1C
+6.pygtex)
+<Final.pdf, id=86, 1084.05pt x 505.89pt>
+File: Final.pdf Graphic file (type pdf)
+<use Final.pdf>
+Package pdftex.def Info: Final.pdf  used on input line 223.
+(pdftex.def)             Requested size: 483.69684pt x 225.72629pt.
+ [6] [7 <./Final.pdf>] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4A9283DBB7B9909032BCF85595D23281;1027.
+(rerunfilecheck)             Checksum: 035DDFA2E883C00D891BD36040C62119;1124.
 runsystem(del main.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 16979 strings out of 478268
- 285457 string characters out of 5850346
- 721898 words of memory out of 5000000
- 34869 multiletter control sequences out of 15000+600000
- 482018 words of font info for 55 fonts, out of 8000000 for 9000
+ 17063 strings out of 478268
+ 287353 string characters out of 5850346
+ 726143 words of memory out of 5000000
+ 34917 multiletter control sequences out of 15000+600000
+ 489930 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,81p,516b,640s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<m:/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb><m:/texlive/2022
-/texmf-dist/fonts/type1/vntex/vnr/vnr10.pfb><m:/texlive/2022/texmf-dist/fonts/t
-ype1/vntex/vnr/vnr12.pfb><m:/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnr1
-7.pfb><m:/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vntt12.pfb>
-Output written on main.pdf (4 pages, 62802 bytes).
+ 75i,15n,81p,516b,601s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{m:/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<m:/tex
+live/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><m:/texlive/2022
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><m:/texlive/2022/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi9.pfb><m:/texlive/2022/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr12.pfb><m:/texlive/2022/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmr9.pfb><m:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy10.pfb><m:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.
+pfb><m:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+<m:/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><m:/texliv
+e/2022/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb><m:/texlive/2022/texmf-dist/
+fonts/type1/vntex/vnr/vnr10.pfb><m:/texlive/2022/texmf-dist/fonts/type1/vntex/v
+nr/vnr12.pfb><m:/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb><m:/te
+xlive/2022/texmf-dist/fonts/type1/vntex/vnr/vntt12.pfb>
+Output written on main.pdf (7 pages, 174451 bytes).
 PDF statistics:
- 86 PDF objects out of 1000 (max. 8388607)
- 69 compressed objects within 1 object stream
- 13 named destinations out of 1000 (max. 500000)
- 65 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 191 PDF objects out of 1000 (max. 8388607)
+ 131 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 70 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -31,7 +31,13 @@
 \fancyfoot[L]{Vật lý Lý thuyết}%
 \fancyfoot[C]{\hspace{4cm} \thepage}%
 
-
+\newcommand{\image}[2]{
+	\begin{center}
+		\includegraphics[width=1\textwidth]{#1}
+		\textbf{Figure. 1:} #2
+		\label{fig:#1}
+	\end{center}
+}
 
 \usepackage{geometry}
 \geometry{
@@ -64,77 +70,158 @@
 	\maketitle
 	\newpage
 	\section{Lý thuyết}
-	\subsection{Potential}
+	\subsection{Giếng thế vuông hữu hạn}
+	Xét giếng thế vuông hữu hạn:
+	\begin{align}
+		V(x) = 
+		\begin{cases}
+			-V_0 &, \quad \quad -a  \leq x \leq a ,\\ 
+			0    &, \quad \quad \abs{x} > a,
+		\end{cases}
+	\end{align}
+	trong đó $V_0$ là hằng số dương.
+	
+	Xét trường hợp trạng thái liên kết. Trong vùng $x<a$, $V(x) = 0$(nằm ngoài giếng), phương trình Schr\"{o}dinger có dạng:
+	\begin{align}
+		-\dfrac{\hbar}{2m}\dfrac{d^2\psi}{dx^2} = E \psi, \quad \text{hoặc} \; \dfrac{d^2\psi}{dx^2} = \kappa^2 \psi,
+	\end{align}
+	với $\kappa \equiv \dfrac{\sqrt{-2mE}}{\hbar}$ là số thực dương. Nghiệm tổng quát cho $\psi(x) = A e^{-\kappa x} + B e^{\kappa x}$. Số hạng thứ nhất bị triệt tiêu khi $x \rightarrow -\infty$. Nên nghiệm tổng quát cho $\psi$ đơn giản thành:
+	\begin{align}
+		\psi(x) = B e^{\kappa x} , \quad(x< -a)
+	\end{align}
+	Trong vùng $-a < x < a$, phương trình Schr\"{o}dinger có dạng:
+	\begin{align}
+		-\dfrac{\hbar}{2m}\dfrac{d^2\psi}{dx^2} - V_0 \psi = E \psi, \quad \text{hoặc} \; \dfrac{d^2\psi}{dx^2} = -l^2 \psi,
+	\end{align}
+	với $l \equiv \dfrac{\sqrt{2m(E + V_0)}}{\hbar}$. Mặc dù $E$ mang giá trị âm, nhưng đối với trạng thái liên kết, $E$ vẫn phải lớn hơn $-V_0$, và $l$ cũng phải là số thực dương. Nghiệm tổng quát cho $\psi$ trong vùng $-a < x < a$ là:
+	\begin{align}
+		\psi(x) = C \sin (lx) + D \cos (lx) , \quad \quad ( -a < x < a),
+	\end{align}
+	$C,D$ là các hằng số bất kì. Nghiệm tổng quát cho $\psi$ tại vùng $x>a$: $\psi(x) = F e^{-\kappa x} + G e^{\kappa x}$, nhưng số hạng cuối bị triệt tiêu khi $x \rightarrow \infty$. Vậy hàm sóng đơn giản thành:
+	\begin{align}
+		\psi(x) = F e^{-\kappa x}, \quad \quad (x>a).
+	\end{align}
+	
+	Hàm sóng cho 3 vùng có dạng:
+	\begin{align}
+		\psi(x) =
+		\begin{cases}
+			F e^{-\kappa x} ,&\quad \quad (x>a),\\
+			D \cos (lx) , &\quad \quad (0<x<a),\\
+			\psi(-x), &\quad \quad (x<0).
+		\end{cases}
+	\end{align}
+	Nhờ vào tính liên tục của hàm sóng $\psi$, tại $x = a$:
+	\begin{align}
+		F e^{-\kappa a} = D \cos (la),
+	\end{align}
+	và tính liên tục của đạo hàm hàm sóng $\psi$:
+	\begin{align}
+		-\kappa F e^{-\kappa a} = -l D \sin (la)
+	\end{align}
+	Chia 2 vế phương trình (8) , (9) ta được:
+	\begin{align}
+		\kappa = l \tan (la)
+	\end{align}
+	
+	Khi lấy $l^2 + \kappa ^2$, thành phần năng lượng bị triệt tiêu. Nên ta có:
+	\begin{align}
+		l^2 + \kappa^2 = \frac{2mV_0}{\hbar^2}
+	\end{align}
+	Vì $\kappa ,l$ là các hàm theo $E$, để giải tìm $E$ chúng ta sẽ cần đưa ra một số kí hiệu:
+	\begin{align}
+		z \equiv la, \quad \quad z_0 \equiv \frac{a}{\hbar} \sqrt{2mV_0} 
+	\end{align}
+	Phân tích thứ nguyên cho $z_0$
+	\begin{align}
+		[z_0] &= \left[ \dfrac{m}{eV\times s} (kg \times eV \times 1.6e-19)^{1/2}  \right] \nonumber \\
+		& = \left[ \dfrac{m}{eV\times s} (kg \times J)^{1/2}  \right] \nonumber \\
+		& = \left[ \dfrac{m}{eV\times s} (kg \times \dfrac{kg \times m^2}{s^2})^{1/2}  \right] \nonumber\\
+		& = \left[ \dfrac{kg\times m^2}{eV\times s^2}\right]  = \left[\dfrac{J}{eV}\right] = constant,
+	\end{align}
+	ta có thể thấy $z_0$ là đại lượng không có thứ nguyên.
+	
+	Từ phương trình (11):
+	\begin{align}
+		(l^2 + \kappa^2)a = a\frac{2mV_0}{\hbar^2} = z_0^2 \nonumber\\
+		\Rightarrow \kappa a = \sqrt{z_0^2 - z^2} \\
+		\Rightarrow \tan z = \sqrt{\left( \dfrac{z0}{z} \right)^2 - 1}.
+	\end{align}
+	Phương trình (15) có thể giải số để tìm ra tất cả nghiệm có thể bằng các điểm cắt nhau giữa $RHS$ và $LHS$.
+	\begin{itemize}
+		\item \textbf{Giếng sâu, rộng}. Với $a,V_0 \gg$, điều này đồng nghĩa với $z_0 \gg$. 
+		\item \textbf{Giếng nông, hẹp}. Với $a,V_0 \ll$, điều này đồng nghĩa với $z_0 \ll$. $z_0$ càng giảm ta càng có ít nghiệm cho trạng thái liên kết. Với $z_0 < \dfrac{\pi}{2}$, ta chỉ còn lại một nghiệm cho trạng thái liên kết. Mặc cho $z_0$ có nhỏ bao nhiêu, ta luôn tìm được một nghiệm cho trạng thái liên, mặc dù rất yếu.
+	\end{itemize}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	\section{Giải số}
 	giải số như nào v.v
+	
+	\newpage
 	\section{Phương pháp}
 	\subsection{Phương pháp Bisection}
 	\begin{minted}[bgcolor=LightGray]{python}
-		import numpy as np
-		from numpy import tan, sqrt
-		from math import pi
-		
-		
-		def function(z, z0, N):
-			f = tan(z) - sqrt((z0 / z) ** 2 - 1)
-		return f
-		
-		
-		def bisection(f, a, b, N, eps):
-		a = float(a)
-		b = float(b)
-		if a > b:
-		a = b
-		b = a
-		
-		na = np.zeros(N)
-		nb = np.zeros(N)
-		nc = np.zeros(N)
-		na[0] = a
-		nb[0] = b
-		
-		count = 0
-		
-		for i in range(N):
-		if i + 1 < N:
-		nc[i] = (na[i] + nb[i]) / 2
-		
-		if f(nc[i]) == 0:
+def bisection(f, a, b, eps, N, z0):
+for i in range(N):
+	c = (a + b) / 2
+	if abs(f(c, z0)) < eps:
 		break
-		
-		if abs(f(nc[i])) < eps:
+	if f(a, z0) * f(c, z0) < 0:
+		b = c
+	elif f(c, z0) * f(b, z0) < 0:
+		a = c
+	else:
 		break
-		
-		if f(na[i]) * f(nc[i]) < 0:
-		nb[i + 1] = nc[i]
-		na[i + 1] = na[i]
-		count += 1
-		
-		elif f(nc[i]) * f(nb[i]) < 0:
-		nb[i + 1] = nb[i]
-		na[i + 1] = nc[i]
-		count += 1
-		
-		return (na, nb, nc), count
-		
-		
-		def main():
-		N = 100
-		hbar = 1.05457182e-34
-		m = 9.31e-31
-		V0 = 32 * hbar**2 / (m * a**2)
-		a = 1
-		z0 = a / hbar * sqrt(2 * m * V0)
-		function(z0, hbar, N)
-		
-		
-		if __name__ == "__main__":
-		main()
-		
+return c
 	\end{minted}
 	\subsection{Phương pháp Newton Raphson}
+	\begin{minted}[bgcolor=LightGray]{python}
+def newton(f, p0, eps, N, z0):
+p0_n = p0
+for n in range(0, N + 1):
+p0_n = p0_n - f(p0_n, z0) / df(p0_n, z0)
+if df(p0_n, z0) == 0:
+	break
+if abs(f(p0_n, z0)) < eps:
+	break
+return p0_n
+	\end{minted}
 	\subsection{Phương pháp Secant}
+	\begin{minted}[bgcolor=LightGray]{python}
+def secant(f, p0, p1, eps, N, z0):
+p0_n = p0
+p1_n = p1
+for n in range(N + 1):
+	df = (f(p1_n, z0) - f(p0_n, z0)) / (p1_n - p0_n)
+	p_n = p0_n - f(p0_n, z0) / df
+if f(p0_n, z0) * f(p_n, z0) < 0:
+	p0_n = p0_n
+	p1_n = p_n
+elif f(p1_n, z0) * f(p_n, z0) < 0:
+	p0_n = p_n
+	p1_n = p1_n
+if abs(f(p_n, z0)) < eps:
+	break
+if abs(p1_n - p0_n) < eps:
+	break
+if f(p_n, z0) == 0:
+	break
+return p_n
+	\end{minted}
 	\section{Kết quả}
+	\image{Final.pdf}{a) Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z0}{z} \right)^2 - 1}$. b) Hàm sóng ứng với các mức năng lượng khi $a = 10nm, V_0 = 1eV$ .}
+	
+
 	
 \end{document}

@@ -45,6 +45,7 @@ def plotWaveFunction(z, z0, a, V0, N, hbar_Js, m, Ce):
     fig, ax = plt.subplots(1, 2, figsize=(15, 7))
     U = V(x, V0, a)
     ax[1].plot(x, U)
+    ax[1].set_title("b)")
     ax[1].grid(True)
     for i in range(len(l)):
         ax[1].plot(x, energy[i] + Ψ(x, V0, l[i], kappa[i], a))
@@ -56,7 +57,10 @@ def plotWaveFunction(z, z0, a, V0, N, hbar_Js, m, Ce):
     lhs = sqrt((z0 / z1) ** 2 - 1)
     ax[0].plot(z1, rhs)
     ax[0].plot(z1, lhs)
-    ax[0].set_ylim(-0.2, 1000 * z0)
+    ax[0].set_ylim(-0.2, 10 * z0)
     ax[0].grid(True)
+    ax[0].set_title("a)")
+
+    plt.savefig("Final.pdf")
 
     plt.show()
