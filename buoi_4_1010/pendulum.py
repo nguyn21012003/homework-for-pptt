@@ -41,8 +41,8 @@ def solve_sys_ode(fArr1, fArr2: npt.NDArray, a: float, b: float, h: float, solve
     small = []
     yn = np.zeros(2)
     yn1 = np.zeros(2)
-    yn[0] = pi / 6
-    yn1[0] = pi / 6
+    yn[0] = pi / 4
+    yn1[0] = pi / 4
     yn[1] = 0
     yn1[1] = 0
     t = np.arange(a, b + h, h)
@@ -67,7 +67,7 @@ def plotTheta(t, big_theta, small_theta):
         [r"$\displaystyle\frac{d\theta^2}{dt^2} + \frac{g}{L} \sin\theta$", r"$\displaystyle\frac{d\theta^2}{dt^2} + \frac{g}{L}\theta$"],
         loc="best",
     )
-    plt.savefig("pendulumTheta.png")
+    plt.savefig("pendulumThetapilon.png")
 
     plt.show()
 
