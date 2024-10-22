@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
+\usepackage[fontsize=13pt]{scrextend} %Font
+\usepackage{mathptmx} %Times New Roman
+\usepackage{titletoc} 
+\usepackage{commath}
+\usepackage{blindtext}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{slashed}
+\usepackage{indentfirst}
+\usepackage{pdfpages}
+\usepackage{graphicx} %Thư viện chèn ảnh
+\usepackage{float} %
+%\usepackage{tikz-feynman}
+\usepackage{pythonhighlight}
+\usepackage{nccmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref}
+\usepackage{leftindex,tensor}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage{physics}
+%\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\renewcommand{\baselinestretch}{2}
+
+
+
+\usepackage[T5]{fontenc}
+% Set fontsize=13pt
+% Chuẩn A4, căn lề phải, trái, trên, dưới
+\usepackage[paperheight=29.7cm, paperwidth=21cm, right=2cm, left=3cm, top=2cm, bottom=2.5cm]{geometry}
+% Set vị trí chèn ảnh
+% Thư viện tạo khung bìa
+% Thư viện tikz
+% Dãn dòng 1.2https://www.overleaf.com/project/61a79539013204b56e95fd9d
+% Spacing after
+% Set khoảng cách thụt đầu dòng mỗi đoạn
+% Thư viện để set up các ki chữ
+\begin{document}
+	\section{Tính chẵn lẻ của hàm sóng}
+	Thế năng ta chọn là hằng số nên xem là hàm chẵn $V_0(-x)=V_0(x)$. Khi đó có thể chứng minh rằng, hàm sóng sẽ là hàm chẵn hoặc hoặc lẻ $\psi (-x) = \pm \psi (x)$. Trong bài toán này, ta sẽ chọn nghiệm là hàm chẵn. Do đó ta dùng sự đối xứng để tinh chỉnh hàm sóng:
+	\begin{itemize}
+		\item Bỏ số hạng $C \sin{lx}$ của hàm sóng trong khoảng $(-a,a)$.
+		\item $\psi(x<-a)=\psi(x>a)=Fe^{\kappa x}$
+	\end{itemize} 
+	\begin{align}
+		\psi(x)=
+		\begin{cases}
+			F e^{-\kappa x}, & (x>a) \\
+			D \cos{lx}, & (0<x<a) \\
+			\psi(-x), & (x<0)
+		\end{cases}
+	\end{align}
+	Với hàm sóng trên thì ta chỉ cần làm việc với $\psi(x>0)$.
+	\section{Điều kiện biên}
+	Hàm sóng và đạo hàm bậc một của chúng phải liên tục tại biên $x=a$:
+	\begin{itemize}
+		\item $lim_{x \rightarrow a^-} \psi(x) = lim_{x \rightarrow a^+} \psi(x)$
+			\begin{equation}
+				F e^{-\kappa a} = D \cos{la}
+			\end{equation}
+		\item $ \dv{\psi}{x} \Big|_{x=a^-} = \dv{\psi}{x} \Big|_{x=a^+} $
+			\begin{equation}
+				- \kappa F e^{-\kappa a} = - l D \sin{la}
+			\end{equation}
+	\end{itemize}
+	Chia hai vế cho nhau ta được
+	\begin{equation}
+		\kappa = l \tan{la}
+	\end{equation}
+	$\kappa$ và $l$ đều là hàm của năng lượng $E$, nên giải phương trình trên thì ta sẽ thu được các mức năng lượng. Để giải phương trình trên, ta thực hiện đổi biến để thuận tiện cho tính toán.
+	Ta có:
+	\begin{align}
+		\kappa  \equiv & \frac{\sqrt{-2mE}}{cc} \qquad l \equiv \frac{\sqrt{2m(E+V_0)}}{cc} \\ 
+		&  \implies \kappa^2 + l^2 = \frac{2mV_0}{cc^2} \\
+		&  \implies \kappa^2 a^2 = \frac{2mV_0}{cc^2} a^2 - l^2a^2
+	\end{align}
+	Đặt $z \equiv la$ và $z_0 \equiv \frac{a}{cc} \sqrt{2mV_0}$. Từ phương trình (4) suy ra:
+	\begin{align}
+		&z_0^2 - z^2 = z^2 \tan{z}^2 \\
+		\implies &\tan{z} = \sqrt{\left(\frac{z_0}{z}\right)^2 -1}
+	\end{align}
+	\textbf{Trường hợp giếng sâu rộng:} $a_0$ và $V_0$ càng lớn nên $z_0$ càng lớn, đồ thị vế phải sẽ giao với đồ thị của vế trái càng nhiều điểm. Với điều kiện xác định của căn thức thì ta sẽ sẽ có tập xác định của z là $0 < z < z_0$. Cộng thêm tính tuần hoàn của $\tan{z}$ thì $z \in (0,\frac{\pi}{2}) \cup (\frac{\pi}{2} + k\pi , \frac{\pi}{2} + (k+1)\pi) (k= 0,1,2,3...)$. Với mỗi điểm cắt sẽ ứng với một mức năng lượng ( $z$ là hàm của năng lượng ). Và với mỗi điểm đó sẽ ứng với một hàm sóng. \\
+	\textbf{Trường hợp giếng nông hẹp:} Là khi $z_0$ rất nhỏ. Số nghiệm của phương trình sẽ ít vì hàm căn thức rất hẹp nên sẽ cắt hàm $\tan{z}$ ít điểm hơn. Nhưng dù $z_0$ rất nhỏ tiến tới 0 thì vẫn tồn tại ít nhất một điểm cắt, nghĩa là vẫn sẽ luôn tồn tại một trạng thái cơ bản của hệ.
+\end{document}

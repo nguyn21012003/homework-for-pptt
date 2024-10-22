@@ -36,7 +36,8 @@
 		\textbf{Figure. #2:} #3
 		\label{fig:#1}
 	\end{center}
-}
+}	
+
 
 \usepackage{geometry}
 \geometry{
@@ -105,7 +106,12 @@
 	\begin{align}
 		\psi(x) = F e^{-\kappa x}, \quad \quad (x>a).
 	\end{align}
-	
+	\subsection{Tính chẵn lẻ của hàm sóng}
+	Thế năng ta chọn là hằng số nên xem là hàm chẵn $V_0(-x)=V_0(x)$. Khi đó có thể chứng minh rằng, hàm sóng sẽ là hàm chẵn hoặc hoặc lẻ $\psi (-x) = \pm \psi (x)$. Trong bài toán này, ta sẽ chọn nghiệm là hàm chẵn. Do đó ta dùng sự đối xứng để hiệu chỉnh hàm sóng:
+	\begin{itemize}
+		\item Bỏ số hạng $C \sin{lx}$ của hàm sóng trong khoảng $(-a,a)$.
+		\item $\psi(x < -a) = \psi( x > a )=F e^{ \kappa x }$
+	\end{itemize} 
 	Hàm sóng cho 3 vùng có dạng:
 	\begin{align}
 		\psi(x) =
@@ -121,11 +127,11 @@
 	\end{align}
 	và tính liên tục của đạo hàm hàm sóng $\psi$:
 	\begin{align}
-		-\kappa F e^{-\kappa a} = -l D \sin (la)
+		-\kappa F e^{-\kappa a} = -l D \sin (la).
 	\end{align}
 	Chia 2 vế phương trình (8) , (9) ta được:
 	\begin{align}
-		\kappa = l \tan (la)
+		\kappa = l \tan (la).
 	\end{align}
 	
 	Khi lấy $l^2 + \kappa ^2$, thành phần năng lượng bị triệt tiêu. Nên ta có:
@@ -134,7 +140,7 @@
 	\end{align}
 	Vì $\kappa ,l$ là các hàm theo $E$, để giải tìm $E$ chúng ta sẽ cần đưa ra một số kí hiệu:
 	\begin{align}
-		z \equiv la, \quad \quad z_0 \equiv \frac{a}{\hbar} \sqrt{2mV_0} 
+		z \equiv la, \quad \quad z_0 \equiv \frac{a}{\hbar} \sqrt{2mV_0} .
 	\end{align}
 	Phân tích thứ nguyên cho $z_0$
 	\begin{align}
@@ -147,14 +153,14 @@
 	
 	Từ phương trình (11):
 	\begin{align}
-		(l^2 + \kappa^2)a = a\frac{2mV_0}{\hbar^2} = z_0^2 \nonumber\\
-		\Rightarrow \kappa a = \sqrt{z_0^2 - z^2} \\
-		\Rightarrow \tan z = \sqrt{\left( \dfrac{z_0}{z} \right)^2 - 1}.
+		(l^2 + \kappa^2)a^2 &= a^2\frac{2mV_0}{\hbar^2} = z_0^2 \nonumber\\
+		\Rightarrow \kappa a &= \sqrt{z_0^2 - z^2} \\
+		\Rightarrow \tan z &= \sqrt{\left( \dfrac{z_0}{z} \right)^2 - 1}.
 	\end{align}
 	Phương trình (15) có thể giải số để tìm ra tất cả nghiệm có thể bằng các điểm cắt nhau giữa $RHS$ và $LHS$.
 	\begin{itemize}
-		\item \textbf{Trường hợp giếng sâu rộng:} $a_0$ và $V_0$ càng lớn nên $z_0$ càng lớn, đồ thị vế phải sẽ giao với đồ thị của vế trái càng nhiều điểm. Với điều kiện xác định của căn thức thì ta sẽ sẽ có tập xác định của z là $0 < z < z_0$. Cộng thêm tính tuần hoàn của $\tan{z}$ thì $z \in (0,\frac{\pi}{2}) \cup (\frac{\pi}{2} + k\pi , \frac{\pi}{2} + (k+1)\pi) (k= 0,1,2,3...)$. Với mỗi điểm cắt sẽ ứng với một mức năng lượng ( $z$ là hàm của năng lượng ). Và với mỗi điểm đó sẽ ứng với một hàm sóng.
-		\item \textbf{Trường hợp giếng nông hẹp:} Là khi $z_0$ rất nhỏ. Số nghiệm của phương trình sẽ ít vì hàm căn thức rất hẹp nên sẽ cắt hàm $\tan{z}$ ít điểm hơn. Nhưng dù $z_0$ rất nhỏ tiến tới 0 thì vẫn tồn tại ít nhất một điểm cắt, nghĩa là vẫn sẽ luôn tồn tại một trạng thái cơ bản của hệ. rất yếu.
+		\item \textbf{Trường hợp giếng sâu rộng:} $a_0$ và $V_0$ càng lớn nên $z_0$ càng lớn, đồ thị vế phải sẽ giao với đồ thị của vế trái càng nhiều điểm. Với điều kiện xác định của căn thức thì ta sẽ sẽ có tập xác định của z là $0 < z < z_0$. Cộng thêm tính tuần hoàn của $\tan{z}$ thì $z \in (0,\frac{\pi}{2}) \cup (\frac{\pi}{2} + k\pi , \frac{\pi}{2} + (k+1)\pi) (k= 0,1,2,3...)$. Với mỗi điểm cắt sẽ ứng với một mức năng lượng ($z$ là hàm của năng lượng). Và với mỗi điểm đó sẽ ứng với một hàm sóng.
+		\item \textbf{Trường hợp giếng nông hẹp:} Là khi $z_0$ rất nhỏ. Số nghiệm của phương trình sẽ ít vì hàm căn thức rất hẹp nên sẽ cắt hàm $\tan{z}$ ít điểm hơn. Nhưng dù $z_0$ rất nhỏ tiến tới 0 thì vẫn tồn tại ít nhất một điểm cắt, nghĩa là vẫn sẽ luôn tồn tại một trạng thái cơ bản của hệ rất yếu.
 	\end{itemize}
 	
 	\newpage
@@ -174,14 +180,20 @@
 	\end{align}
 	Mục tiêu bây giờ là tìm ra điểm giao nhau bằng 0 của hàm này và đó sẽ là nghiệm ta cần tìm. Nhưng ở số hạng thứ nhất hàm $\tan$ sẽ bị phân kì khi $z = \pi/2 + k \pi$, và ở số hạng thứ hai bị phân kì khi $z = 0$ hoặc $z_0 < z$. Để giải quyết vấn đề này, chúng tôi đưa ra một phương pháp giải đó là giải số $y(z)$ trong khoảng lân cận $0+ \epsilon$ $\rightarrow $ $\dfrac{\pi}{2} - \epsilon$ và cứ thế tăng một $k\pi$ với $k = 0,1,2,3...$
 	
+	\subsubsection{Thuật toán các phuơng pháp}
+	\image{Bisection.png}{2}{Thuật toán Bisection}
+	\image{Secant.png}{3}{Thuật toán Secant}
+	\image{Newton.png}{4}{Thuật toán Newton - Raphson}
+	
 	\newpage
 	
 	\section{Kết quả}
-	\image{Final.pdf}{2}{a) Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$. b) Hàm sóng ứng với các mức năng lượng khi $a = 10nm, V_0 = 1eV$ .}
+	\image{Final.pdf}{5}{a) Nghiệm của phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$. b) Hàm sóng ứng với các mức năng lượng khi $a = 10nm, V_0 = 1eV$. c) Các mức năng lượng ứng với mỗi $z_0$}
 	
-	Khi giải số cho phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$, chúng ta đã sử dụng các thông số như sau: $V_0 = 1eV, a = 10 nm,m = 0.067 \times m_e,D = V_0/20$ với số lần lặp $N= 10000$. 
+	\image{wavefunctions.pdf}{6}{Hàm sóng ở các trạng thái dừng. Với $a_0 = 10nm, V_0 = 1eV $}
 
-	\image{wavefunctions.pdf}{3}{Hàm sóng ở các trạng thái dừng. Với $a_0 = 10nm, V_0 = 1eV $}
+	Khi giải số cho phương trình $\tan z = \sqrt{\left( \frac{z_0}{z} \right)^2 - 1}$, chúng ta đã sử dụng các thông số như sau: $V_0 = 1eV, a = 10 nm,m = 0.067 \times m_e$ với số lần lặp $N= 10000$. \\
+	Với $z_1$ ứng với mức năng lượng $E_1 = - 0.9894098922642349 eV$ , $z_2$ ứng với mức năng lượng $E_2 = - 0.9063791214121885 eV$, $z_3$ ứng với mức năng lượng là $E_3 = - 0.7600531455945667 eV$.
 
 	\clearpage
 	\section{Appendix}

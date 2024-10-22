@@ -58,7 +58,7 @@ def Psi2A(x):
 
 # Giá trị a và z
 # ---------------------------------
-a = 1e-9
+a = 10 * 1e-9
 z = np.array([1.3637840514290067, 4.054915182534266, 6.491617892999432])
 # ---------------------------------
 
@@ -75,7 +75,7 @@ x2B = np.linspace(1, 10, 1000)
 
 for i in range(len(z)):
     m = (random.random(), random.random(), random.random())
-    plt.plot(x1, Psi1(x1)[i], color=m, label="φ" + str(i+1) + " ,z" + str(i+1) + " = " + str(z[i]))
+    plt.plot(x1, Psi1(x1)[i], color=m, label="φ" + str(i + 1) + " ,z" + str(i + 1) + " = " + str(z[i]))
     plt.plot(x2A, Psi2A(x2A)[i], color=m)
     plt.plot(x2B, Psi2B(x2B)[i], color=m)
 plt.title("Hàm riêng")
