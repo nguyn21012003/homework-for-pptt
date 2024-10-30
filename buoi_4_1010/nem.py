@@ -85,7 +85,7 @@ def solve_sys_ode(fArr1, fArr2, a: float, b: float, h: float, solver: npt.NDArra
         argsFriction[3] = v0 * sin(theta)
 
         for i in range(len(tn) - 1):
-            args = solver(fArr1, tn, args, h)
+            args = rk4(fArr1, tn, args, h)
             if args[2] > 0:
                 dataXY["x"].append(args[0])
                 dataXY["ax"].append(args[1])
