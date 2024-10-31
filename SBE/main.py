@@ -81,7 +81,7 @@ def dF(t, Y):
 
 
 def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
-    y = []
+    y = []  # để lưu giá trị của Y
     Y = np.zeros([2, N + 1], dtype=complex)
     tSpan = np.linspace(t0, t_max, N)
     print(tSpan)
