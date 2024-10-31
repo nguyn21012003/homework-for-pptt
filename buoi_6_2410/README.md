@@ -45,6 +45,7 @@ $$
 với $k = 2$, $m = 1$, $\omega = \sqrt{\frac{k}{m}}$ .
 
 Ta viết lại (1), dưới dạng ma trận trong python:
+
 $$
 \begin{align} \tag{2}
 	\begin{cases}
@@ -66,7 +67,7 @@ $$
 \begin{pmatrix}
 	f_{1}(t,x(t))\\
 	f_{2}(t,\dot{x}(t))
-\end{pmatrix}
+\end{pmatrix}\\
 \xrightarrow{\text{Runge-Kutta 4}} x,\dot{x}
 $$
 
