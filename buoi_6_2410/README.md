@@ -45,7 +45,6 @@ $$
 với $k = 2$, $m = 1$, $\omega = \sqrt{\frac{k}{m}}$ .
 
 Ta viết lại (1), dưới dạng ma trận trong python:
-
 $$
 \begin{align} \tag{2}
 	\begin{cases}
