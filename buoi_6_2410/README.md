@@ -1,40 +1,51 @@
 # Giải hệ phương trình ODE
+
 ## Nonlinear Oscillations
 
 ### Lý thuyết
 
-Xét bài toán vật lý gắn vật vào lò xo với lực đàn hồi là $F_k(x)$.  Có thêm trường ngoài tác động lên vật theo phương chuyển động:
+Xét bài toán vật lý gắn vật vào lò xo với lực đàn hồi là $F_k(x)$. Có thêm trường ngoài tác động lên vật theo phương chuyển động:
+
 $$
 \begin{align}
 F_k(x) + F_{ext}(x,t) = m \dfrac{d^2 x}{dt^2}.
 \end{align}
 $$
+
 Xét thế năng tới bậc 3 của $x$, có dáng điệu là:
+
 $$
 V(x) \approx \dfrac{1}{2}kx^2 - \dfrac{1}{3}k a x^3,
 $$
+
 với $ax \ll 1$ ; $1<ax<2$ .
 
 Ta tìm được $F_k(x)$ là:
+
 $$
 \begin{align}
 F_{k}(x) = - \nabla V = - kx + k a x^2
 \end{align}
 $$
+
 ### Thuật toán
 
 Ta đặt:
+
 $$
 \begin{align} \tag{1}
 	\begin{cases}
 		y_{1} &= x(t) \\
 		y_{2} &= \dfrac{d y_{1}}{dt} = \dfrac{dx}{dt} = v \\
-		y_{3} &= \dfrac{d y_{2}}{dt} = \dfrac{d^2x}{dt^2} = \dfrac{- kx + k a x^2}{m} 
+		y_{3} &= \dfrac{d y_{2}}{dt} = \dfrac{d^2x}{dt^2} = \dfrac{- kx + k a x^2}{m}
 	\end{cases}
 \end{align}
 $$
-với $k = 2$, $m = 1$, $\omega = \sqrt{\frac{k}{m}}$ . 
+
+với $k = 2$, $m = 1$, $\omega = \sqrt{\frac{k}{m}}$ .
+
 Ta viết lại (1), dưới dạng ma trận trong python:
+
 $$
 \begin{align} \tag{2}
 	\begin{cases}
@@ -44,21 +55,24 @@ $$
 	\end{cases}
 \end{align}
 $$
-với $f_{1},f_{2}$ là các thành phần ma trận của $\ket{f}$ trong python. 
+
+với $f_{1},f_{2}$ là các thành phần ma trận của $\ket{f}$ trong python.
 
 $$
 \begin{pmatrix}
 \dot{x} \\
 \ddot{x}
-\end{pmatrix} 
+\end{pmatrix}
 =
 \begin{pmatrix}
 f_{1}(t,x(t))\\
 f_{2}(t,\dot{x}(t))
-\end{pmatrix} 
+\end{pmatrix}
 \xrightarrow{\text{Runge-Kutta 4}} x,\dot{x}
 $$
+
 Ta có điều kiện đầu cho $x,\dot{x}$ là 1,0
+
 ### Source code
 
 ```python
@@ -76,26 +90,26 @@ b = 0.5 * m * omega0
 
 def FArr(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     x, velocity = initInput
-  
+
     F = np.zeros(2)
     F[0] = velocity
     F[1] = -(k * x - k * x * alphax) / m
 
-    return F  
+    return F
 
 def FArrExt(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     x, velocity = initInput
-  
+
     F = np.zeros(2)
     F_Ext = 15 * sin(omega0 * t)
     F[0] = velocity
     F[1] = -(k * x - k * x * alphax) / m + F_Ext
 
-    return F  
+    return F
 
 def FArrVis(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     x, velocity = initInput
-    
+   
     F = np.zeros(2)
     F_Viscous = -b * velocity
     F[0] = velocity
@@ -144,14 +158,14 @@ def plot(
 ):
     x = {"xWOExtField": [], "xWExtField": [], "xWVis": [], "xWExtFieldVis": []}
     velocity = {"vWOExtField": [], "vWExtField": [], "vWVis": [], "vWExtFieldVis": []}
-    
+   
     for n in range(len(t)):
         x["xWOExtField"].append(solutionWOExtField[n][0])
         velocity["vWOExtField"].append(solutionWOExtField[n][1])
 
         x["xWExtField"].append(solutionWExtField[n][0])
         velocity["vWExtField"].append(solutionWExtField[n][1])
-  
+
         x["xWVis"].append(solutionWVis[n][0])
         velocity["vWVis"].append(solutionWVis[n][1])
 
@@ -159,7 +173,7 @@ def plot(
         velocity["vWExtFieldVis"].append(solutionWExtFieldVis[n][1])
 
     fig, ax = plt.subplots(2, 2, figsize=(15, 7))
-    
+   
     ax[0][0].plot(t, x["xWOExtField"])
     ax[0][0].plot(t, velocity["vWOExtField"])
     ax[0][0].legend([r"$x$", r"v(m/s)"], fontsize=15)
@@ -183,8 +197,8 @@ def plot(
     plt.savefig(file)
     plt.show()
 
-  
-  
+
+
 
 def solve(F: npt.NDArray, N: int, t0: float, t1: float, h: float, solver: npt.NDArray) -> npt.NDArray:
     initInput = np.zeros(2)
@@ -223,7 +237,7 @@ if __name__ == "__main__":
 
 ### Kết quả
 
-Với bộ tham số là $N = 1000,k = 2, m = 0.5, \omega_0 =\sqrt{\dfrac{k}{m}}, b = 0.5 m\omega_0$ và $\alpha x \ll 1 \approx 0.001$. 
+Với bộ tham số là $N = 1000,k = 2, m = 0.5, \omega_0 =\sqrt{\dfrac{k}{m}}, b = 0.5 m\omega_0$ và $\alpha x \ll 1 \approx 0.001$.
 
 ![[nonlinearOSC.png]]
 
@@ -233,4 +247,4 @@ Khi $b = 2 m\omega_0$ và các thông số trên giữ nguyên.
 Khi $b = 10 m\omega_0$ và các thông số trên giữ nguyên.
 ![[b10.png]]
 
->Có thể thấy hình vẽ trên có ''dáng điệu'' hợp lý ứng với mỗi $b$ khác nhau. Khi có trường ngoài thì vận tốc biến đổi theo trường ngoài và tiếp tục tăng. Còn khi có lực ma sát, và xét trường hợp đơn giản nhất $\alpha = 0$, thì ta có thể thấy dao động bị tắt dần.
+> Có thể thấy hình vẽ trên có ''dáng điệu'' hợp lý ứng với mỗi $b$ khác nhau. Khi có trường ngoài thì vận tốc biến đổi theo trường ngoài và tiếp tục tăng. Còn khi có lực ma sát, và xét trường hợp đơn giản nhất $\alpha = 0$, thì ta có thể thấy dao động bị tắt dần.
