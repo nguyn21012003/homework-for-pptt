@@ -67,7 +67,7 @@ $$
 \begin{pmatrix}
 	f_{1}(t,x(t))\\
 	f_{2}(t,\dot{x}(t))
-\end{pmatrix}\\
+\end{pmatrix}
 \xrightarrow{\text{Runge-Kutta 4}} x,\dot{x}
 $$
 
