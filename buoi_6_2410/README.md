@@ -467,7 +467,79 @@ if __name__ == "__main__":
     main()
 ```
 
-#### Kết quả
+## Cấu trúc giàn
+
+### Lý thuyết
+
+Tìm ma trận $A$
+
+$$
+\begin{align}
+A=
+\begin{pmatrix}
+-1 & 0 & 0 & \frac{\sqrt{2}}{2} & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & -\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{3}}{2} & 0 & 0 \\
+0 & 0 & 0 & 0 & -1 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 0 & -\frac{\sqrt{3}}{2} & -1 \\
+0 & -1 & 0 & \frac{\sqrt{2}}{2} & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & -\frac{\sqrt{2}}{2} & 0 & -1 & -\frac{1}{2} & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & -1 & 0 & 0 & 0 & \frac{1}{2} & 0
+\end{pmatrix}
+\end{align}
+$$
+
+Ta có thể thấy nếu để dạng ma trận như này thì phương pháp Jacobian sẽ không giải được bởi vì không thỏa mãn được điều kiện tồn tại $D^{-1}$ trong đó $D$ là ma trận đường chéo. Ta phải xây dựng lại ma trận $A$ sao cho thành phần ma trận trên đường chéo khác $\textit{không}$.
+
+$$
+\begin{align}
+A=
+\begin{pmatrix}
+-1 & 0 & 0 & \frac{\sqrt{2}}{2} & 1 & 0 & 0 & 0 \\
+0 & -1 & 0 & \frac{\sqrt{2}}{2} & 0 & 0 & 0 & 0 \\
+0 & 0 & -1 & 0 & 0 & 0 & \frac{1}{2} & 0\\
+0 & 0 & 0 & -\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{3}}{2} & 0 & 0 \\
+0 & 0 & 0 & 0 & -1 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & -\frac{\sqrt{2}}{2} & 0 & -1 & -\frac{1}{2} & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & -\frac{\sqrt{3}}{2} & -1 \\
+\end{pmatrix}
+\end{align}
+$$
+
+### Source code
+
+```python
+import numpy as np
+from numpy import sqrt
+from Jacobi import FArrMatrixGauss, FArrMatrixJacobian, solveLoop, saveLog
+
+AMatrix = [
+    [-1, 0, 0, sqrt(2) / 2, 1, 0, 0, 0],
+    [0, -1, 0, sqrt(2) / 2, 0, 0, 0, 0],
+    [0, 0, -1, 0, 0, 0, 1 / 2, 0],
+    [0, 0, 0, -sqrt(2) / 2, 0, sqrt(3) / 2, 0, 0],
+    [0, 0, 0, 0, -1, 0, 0, 1],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, -sqrt(2) / 2, 0, -1, -1 / 2, 0],
+    [0, 0, 0, 0, 0, 0, -sqrt(3) / 2, -1],
+]
+BMatrix = [0, 0, 0, 0, 0, 1e4, 0, 0]
+
+def main():
+    dim = 8
+    N = 100
+    x = np.full(dim, 1)
+    fileLog = "truss.txt"
+    xByhand = []
+    xMatrix, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
+    xGauss, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixGauss, N, x)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Kết quả
 
 ![truss.png.png](truss.png.png)
 
