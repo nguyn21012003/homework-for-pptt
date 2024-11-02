@@ -369,7 +369,7 @@ $$
 Từ (5), ta có thể viết ma trận $x$ dưới dạng tổng như sau:
 
 $$
-\mathbf{x} = \sum^{n}_{i}x_{i} =\sum_{i}^{n} \dfrac{1}{a_{ii}}\left(\sum^{n}_{j\neq i} -a_{ij}x_{j} +b_{i}\right),
+\mathbf{x}=\sum^{n}_{i}x_{i}=\sum_{i}^{n} \dfrac{1}{a_{ii}}\left(\sum^{n}_{j\neq i}-a_{ij}x_{j} +b_{i}\right),
 $$
 
 với $i=1,2,...,n$ và $n$ là số chiều của ma trận $A$.
