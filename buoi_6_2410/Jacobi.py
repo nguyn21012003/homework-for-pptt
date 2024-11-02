@@ -53,7 +53,7 @@ def FArrMatrixGauss(dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa mảng v
     return F
 
 
-def Jacobian(dim: int, F: npt.NDArray, N: int) -> list:
+def solveLoop(dim: int, F: npt.NDArray, N: int) -> list:
     x = np.zeros(4)
     listX = [x]  ### Lưu giá trị vào mảng để kiểm soát
     for i in range(1, N):
@@ -92,9 +92,9 @@ def main():
     N = 40
     fileLog = "Jacobi&GaussSeidel.txt"
 
-    xByhand, i = Jacobian(dim, FArr, N)
-    xMatrix, i = Jacobian(dim, FArrMatrixJacobian, N)
-    xGauss, i = Jacobian(dim, FArrMatrixGauss, N)
+    xByhand, i = solveLoop(dim, FArr, N)
+    xMatrix, i = solveLoop(dim, FArrMatrixJacobian, N)
+    xGauss, i = solveLoop(dim, FArrMatrixGauss, N)
     saveLog(fileLog, N, xByhand, xMatrix, xGauss)
 
 
