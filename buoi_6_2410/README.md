@@ -1,15 +1,20 @@
 ** Table of contents **
 
-- [[#Nonlinear Oscillations|Nonlinear Oscillations]]
-  - [[#Nonlinear Oscillations#Lý thuyết|Lý thuyết]]
-  - [[#Nonlinear Oscillations#Thuật toán|Thuật toán]]
-  - [[#Nonlinear Oscillations#Source code|Source code]]
-  - [[#Nonlinear Oscillations#Kết quả|Kết quả]]
-- [[#Iterative methods|Iterative methods]]
-  - [[#Iterative methods#Lý thuyết|Lý thuyết]]
-    - [[#Lý thuyết#Jacobian iterative method|Jacobian iterative method]]
-    - [[#Lý thuyết#Thuật toán|Thuật toán]]
-  - [[#Iterative methods#Source code cho Jacobian & Gaussian - Seidel|Source code cho Jacobian & Gaussian - Seidel]]
+- [Giải hệ phương trình ODE](#giải-hệ-phương-trình-ode)
+	- [Nonlinear Oscillations](#nonlinear-oscillations)
+		- [Lý thuyết](#lý-thuyết)
+		- [Thuật toán](#thuật-toán)
+		- [Source code](#source-code)
+		- [Kết quả](#kết-quả)
+	- [Iterative methods](#iterative-methods)
+		- [Lý thuyết](#lý-thuyết-1)
+			- [Jacobian iterative method](#jacobian-iterative-method)
+			- [Thuật toán](#thuật-toán-1)
+		- [Source code cho Jacobian \& Gaussian - Seidel](#source-code-cho-jacobian--gaussian---seidel)
+	- [Cấu trúc giàn](#cấu-trúc-giàn)
+		- [Lý thuyết](#lý-thuyết-2)
+		- [Source code](#source-code-1)
+		- [Kết quả](#kết-quả-1)
 
 # Giải hệ phương trình ODE
 
