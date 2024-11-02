@@ -20,7 +20,7 @@ def main():
     dim = 8
     N = 100
     x = np.full(dim, 1)
-    fileLog = "truss.txt"
+
     xByhand = []
     xMatrix, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
     xGauss, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixGauss, N, x)
