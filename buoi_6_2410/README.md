@@ -80,10 +80,10 @@ $$
 f_{1}(t,x(t))\\
 f_{2}(t,\dot{x}(t))
 \end{pmatrix}
-\xrightarrow{\text{Runge-Kutta 4}} x,\dot{x}
+\xrightarrow{\text{RK4}} x,\dot{x}
 $$
 
-Ta có điều kiện đầu cho $x,\dot{x}$ là 1,0
+Ta có điều kiện đầu cho $x,\dot{x}$ là 1,0.
 
 ### Source code
 
@@ -210,8 +210,6 @@ def plot(
     plt.show()
 
 
-
-
 def solve(F: npt.NDArray, N: int, t0: float, t1: float, h: float, solver: npt.NDArray) -> npt.NDArray:
     initInput = np.zeros(2)
     initInput[0] = 5  # Điều kiện đầu cho tại x = 1 so với vị trí cân bằng là x = 0
@@ -243,7 +241,6 @@ def main():
     savelog(fileWrite, N, solutionWOExtField)
 
 if __name__ == "__main__":
-
     main()
 ```
 
@@ -251,13 +248,13 @@ if __name__ == "__main__":
 
 Với bộ tham số là $N = 1000,k = 2, m = 0.5, \omega_0 =\sqrt{\dfrac{k}{m}}, b = 0.5 m\omega_0$ và $\alpha x \ll 1 \approx 0.001$.
 
-![[nonlinearOSC.png]]
+![nonlinearOSC.png](nonlinearOSC.png)
 
 Khi $b = 2 m\omega_0$ và các thông số trên giữ nguyên.
-![[b2.png]]
+![b2.png](b2.png)
 
 Khi $b = 10 m\omega_0$ và các thông số trên giữ nguyên.
-![[b10.png]]
+![b10.png](b10.png)
 
 > Có thể thấy hình vẽ trên có ''dáng điệu'' hợp lý ứng với mỗi $b$ khác nhau. Khi có trường ngoài thì vận tốc biến đổi theo trường ngoài và tiếp tục tăng. Còn khi có lực ma sát, và xét trường hợp đơn giản nhất $\alpha = 0$, thì ta có thể thấy dao động bị tắt dần.
 
@@ -294,8 +291,7 @@ x_{1} \\
 x_{2} \\
 \vdots\\
 x_{n}
-\end{pmatrix}
-=
+\end{pmatrix}=
 \begin{pmatrix}
 b_{1} \\
 b_{2} \\
