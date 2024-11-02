@@ -251,7 +251,7 @@ if __name__ == "__main__":
 
 ### Kết quả
 
-Với bộ tham số là $N = 1000,k = 2, m = 0.5, \omega_0 =\sqrt{\dfrac{k}{m}}, b = 0.5 m\omega_0$ và $\alpha x \ll 1 \approx 0.001$.
+Với bộ tham số là $N = 1000,k = 2, m = 0.5, \omega_0 =\sqrt{\frac{k}{m}}, b = 0.5 m\omega_0$ và $\alpha x \ll 1 \approx 0.001$.
 
 ![nonlinearOSC.png](nonlinearOSC.png)
 
