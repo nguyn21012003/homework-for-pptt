@@ -361,7 +361,7 @@ $$
 Nếu tồn tại $D^{-1}$ , ta xây dựng được ma trận $x$
 
 $$
-\mathbf{x} = D^{-1}(L+U)\mathbf{x} + D^{-1}\mathbf{b}. \tag{5}
+\mathbf{x}=D^{-1}(L+U)\mathbf{x}+D^{-1}\mathbf{b}. \tag{5}
 $$
 
 #### Thuật toán
