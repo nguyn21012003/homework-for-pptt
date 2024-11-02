@@ -73,10 +73,9 @@ với $f_{1},f_{2}$ là các thành phần ma trận của $\ket{f}$ trong pytho
 
 $$
 \begin{pmatrix}
-\dot{x} \\
+\dot{x}\\
 \ddot{x}
-\end{pmatrix}
-=
+\end{pmatrix} =
 \begin{pmatrix}
 f_{1}(t,x(t))\\
 f_{2}(t,\dot{x}(t))
