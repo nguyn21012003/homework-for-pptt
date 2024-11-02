@@ -318,16 +318,12 @@ a_{11} & 0 & \cdots & 0 \\
 0 & a_{22} & \cdots & 0 \\
 \vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \cdots & a_{nn}
-\end{pmatrix}
--
-\begin{pmatrix}
+\end{pmatrix}-\begin{pmatrix}
 0 & -a_{12} & \cdots & -a_{1n} \\
 0 & 0 & \cdots & -a_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \cdots & 0
-\end{pmatrix}
--
-\begin{pmatrix}
+\end{pmatrix}-\begin{pmatrix}
 0 & 0 & \cdots & 0 \\
 -a_{21} & 0 & \cdots & 0\\
 \vdots & \vdots & \ddots & \vdots \\
