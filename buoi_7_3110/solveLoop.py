@@ -9,7 +9,7 @@ def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> 
         listX.append(x)
         print(x, F.__qualname__, f"tại k = {i}", "\n")
 
-        if abs(max(listX[i]) - max(listX[i - 1])) / max(listX[i]) <= 1e-3:
+        if abs(max(listX[i]) - max(listX[i - 1])) / max(listX[i]) <= 1e-15:
 
             break
 
