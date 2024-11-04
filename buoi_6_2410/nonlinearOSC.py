@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import csv
 
 
-alphax = 0.001
+alphax = 1.1
 k = 2
 m = 0.5
 omega0 = sqrt(k / m)
@@ -17,7 +17,7 @@ def FArr(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     F = np.zeros(2)
 
     F[0] = velocity
-    F[1] = -(k * x - k * x * alphax) / m
+    F[1] = -(k * x + k * x * alphax) / m
 
     return F
 
