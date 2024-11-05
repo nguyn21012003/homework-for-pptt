@@ -1,0 +1,14 @@
+CC = gcc
+
+PC = python3 
+
+
+step1: main.py
+	${PC} sbe_ncore.py
+step2:  plot.py
+	${PC} plotfull.py
+run: step1 step2 
+rout: 
+	rm -rf *.out
+rpng:
+	rm -rf *.png

@@ -1,0 +1,17 @@
+CC = gcc
+
+PC = python3 
+
+
+step1: sbe_v1.c
+	${CC}  sbe_v1.c -o sbe_v1.out -lm
+step2: ./sbe_v1.out
+	./sbe_v1.out
+step3:  plot.py
+	${PC} plot.py
+run: step1 step2 step3
+
+rout: 
+	rm -rf *.out
+rpng:
+	rm -rf *.png
