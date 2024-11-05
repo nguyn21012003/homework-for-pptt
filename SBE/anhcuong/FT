@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def f(x):
+    return np.cos(x)
+pi = np.pi 
+e = np.e
+a = -5
+b = 5 
+M = 1000
+h = (b-a)/M
+i = complex(0,1)
+res = np.zeros((M+1),np.complex_)
+x = np.array([a + i*h for i in range(M+1)])
+for n in range(M+1):
+        res[n] = 1/(np.sqrt(2*pi))*h*np.sum(f(x)*e**(i*(a + n*h)*x))
+
+plt.plot(x,res,color = 'red', linewidth = 2, linestyle = 'solid')
+plt.grid()
+plt.savefig("test.png",dpi = 100)
+print(res)
