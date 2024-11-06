@@ -5,12 +5,11 @@ from math import sqrt, log, pi, exp
 from numpy import real as RE, imag as IM, conjugate
 from numpy import typing as npt
 from time import time
-import multiprocessing as mp
-import sys
 from matplotlib.backends.backend_pdf import PdfPages
+from tqdm import tqdm
 
 # Input variables
-N = 1000
+N = 100
 hbar = 658.5  # meV.fs
 chi_0 = 0.5
 E_R = 4.2  # meV
@@ -68,7 +67,7 @@ def dF(t, Y):
 
     F = np.zeros((2, N + 1), dtype=complex)
 
-    print(RE(Y[0]))
+    # print(RE(Y[0]))
     for n in range(1, N + 1):
         E = E_n(n, g, RE(Y[0]), IM(Y[0]))
         OMEGA = omega_R(n, t, g, Y[1])
@@ -90,7 +89,7 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
     EnergyEps = np.zeros(N)
     fe = []
     p = []
-    for ti in tSpan:
+    for ti in tqdm(tSpan):
         Y = rk4(dF, ti, Y, h)
         fe_t = []
         p_t = []
