@@ -32,8 +32,9 @@ def g(n, n1):
 def En(Y, n):
     summ = 0
     for i in range(1, N + 1):
-        if i != n:
-            summ += g(n, i) * ((Y[0][i]).real + (Y[0][i]).imag)
+        if i == n:
+            continue
+        summ += g(n, i) * ((Y[0][i]).real + (Y[0][i]).imag)
     E = (sqrt(E_R) / pi) * delta_e * summ
     return E
 
@@ -41,8 +42,9 @@ def En(Y, n):
 def Omega(Y, n, t):
     summ = 0
     for i in range(1, N + 1):
-        if i != n:
-            summ += g(n, i) * Y[1][i]
+        if i == n:
+            continue
+        summ += g(n, i) * Y[1][i]
     Omega1 = (sqrt(pi) / (2 * delta_t)) * khi_o * exp(-((t / delta_t) ** 2))
     Omega2 = (sqrt(E_R) / (hbar * pi)) * delta_e * summ
     return Omega1 + Omega2
