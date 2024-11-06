@@ -1,4 +1,5 @@
 from numpy import typing as npt
+import numpy as np
 
 
 def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> list:
@@ -9,8 +10,10 @@ def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> 
         listX.append(x)
         print(x, F.__qualname__, f"tại k = {i}", "\n")
 
-        if abs(max(listX[i]) - max(listX[i - 1])) / max(listX[i]) <= 1e-15:
+        if abs(max(listX[i]) - max(listX[i - 1])) / max(listX[i]) <= 1e-20:
 
             break
 
-    return listX, i
+    s = np.array(listX)
+
+    return s, i

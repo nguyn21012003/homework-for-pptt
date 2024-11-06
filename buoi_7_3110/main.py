@@ -1,39 +1,62 @@
 import numpy as np
 from mpmath import *
-import matplotlib.pyplot as plt
 from Jacobi import FArrMatrixJacobian
 from solveLoop import solveLoop
 
-dim = 35
+
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import matplotlib.pyplot as plt
+import numpy as np
 
 
-def createMatrix():
-    # or any other size you need
+def createMatrix(dim):
 
-    # Initialize an n x n matrix with zeros
+    n = int(dim / 40)
+
     AMatrix = np.zeros((dim, dim))
     BMatrix = np.zeros(dim)
-    BMatrix[dim - 1] = -100
-    # Use a for loop to set the values on the diagonals
+    for i in range(n):
+        BMatrix[n] = -100
+
     for i in range(dim):
-        AMatrix[i, i] = -4  # Main diagonal
-        if i > 0:
-            AMatrix[i, i - 1] = 1  # Lower diagonal
-        if i < dim - 1:
-            AMatrix[i, i + 1] = 1  # Upper diagonal
+        AMatrix[i, i] = -4
+
+        if i - 1 >= 0:
+            AMatrix[i, i - 1] = 1
+
+        if i + 1 < dim:
+            AMatrix[i, i + 1] = 1
+
+        if i - n >= 0:
+            AMatrix[i, i - n] = 1
+
+        if i + n < dim:
+            AMatrix[i, i + n] = 1
 
     return AMatrix, BMatrix
 
 
+def plotSol(solution, x):
+    pass
+
+
 def main():
-    N = 100
+    N = 10000
+    dim = 120
     x = np.full(dim, 1)
-    AMatrix, BMatrix = createMatrix()
+    AMatrix, BMatrix = createMatrix(dim)
 
-    s = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
+    s, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
 
-    a = np.linalg.solve(AMatrix, BMatrix)
-    print(a)
+    fig = plt.figure()
+    ax = fig.add_subplot(projection="3d")
+
+    X, Y = np.linspace(0, 40, dim), np.linspace(0, 40, dim)
+
+    ax.plot_wireframe(X, Y, s, rstride=10, cstride=10)
+    plt.show()
 
 
 if __name__ == "__main__":
