@@ -9,7 +9,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
 
 # Input variables
-N = 100
+N = 1000
 hbar = 658.5  # meV.fs
 chi_0 = 0.5
 E_R = 4.2  # meV
@@ -82,7 +82,7 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
 
     Y = np.zeros((2, N + 1), dtype=complex)
 
-    tSpan = np.linspace(t0, t_max, 100)
+    tSpan = np.linspace(t0, t_max, N)
 
     Polarization = np.zeros(N)
     NumberDensity = np.zeros(N)
@@ -175,7 +175,7 @@ def main():
     # ax3 = fig.add_subplot(133, projection="3d")
     # ax3.plot_surface(T, E, P, cmap="copper")
 
-    multipage(f"{delta_t}&{delta_0}fs with N=f{N}.pdf")
+    multipage(f"{delta_t}&{delta_0}fs with N={N}.pdf")
 
     plt.show()
 

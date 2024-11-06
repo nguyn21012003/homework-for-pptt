@@ -2,7 +2,7 @@ import numpy as np
 from math import pi, sqrt, log, exp
 import matplotlib.pyplot as plt
 import time
-
+from tqdm import tqdm
 
 # Define constants
 N = 100
@@ -52,7 +52,7 @@ def Omega(Y, n, t):
 
 def Ft(t, Y):
     F = np.zeros((2, N + 1), dtype="complex")
-    print(np.real(Y[0]))
+    # print(np.real(Y[0]))
     for i in range(N):
         F[0][i] = -2 * (Omega(Y, i, t) * np.conj(Y[1][i])).imag + 1j * -2 * (Omega(Y, i, t) * np.conj(Y[1][i])).imag
         F[1][i] = (
@@ -84,7 +84,7 @@ with open("SBE.txt", "w") as file:
     file.write("=" * 100 + "\n")
     start = time.time()
     # Vòng lặp qua các bước thời gian
-    for t_step in time_steps:
+    for t_step in tqdm(time_steps):
         Y = RK4(Ft, t_step, Y)
         Y1_e = []
         Y2_p = []
