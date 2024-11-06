@@ -7,9 +7,10 @@ from numpy import typing as npt
 from time import time
 from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
+import sys
 
 # Input variables
-N = 1000
+N = 100
 hbar = 658.5  # meV.fs
 chi_0 = 0.5
 E_R = 4.2  # meV
@@ -35,19 +36,23 @@ def rk4(dF, tn, yn, h):
     k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1)
     k3 = dF(tn + 0.5 * h, yn + 0.5 * h * k2)
     k4 = dF(tn + h, yn + h * k3)
+
     return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
 
 
 def g(n, n1):
+
     return (1 / sqrt(n * delta_e)) * log(abs((sqrt(n) + sqrt(n1)) / (sqrt(n) - sqrt(n1))))
 
 
 def E_n(n, g, f_e, f_h):
+
     E = 0
     for n1 in range(1, N + 1):
         if n1 == n:
             continue
         E += (sqrt(E_R) / pi) * delta_e * g(n, n1) * (f_e[n1] + f_h[n1])
+
     return E
 
 
@@ -72,7 +77,7 @@ def dF(t, Y):
         E = E_n(n, g, RE(Y[0]), IM(Y[0]))
         OMEGA = omega_R(n, t, g, Y[1])
 
-        F[0][n] = -2 * IM(OMEGA * conjugate(Y[1][n])) + 1j * -2 * IM(OMEGA * conjugate(Y[1][n]))
+        F[0][n] = -2 * IM(OMEGA * conjugate(Y[1][n]))
         F[1][n] = -(1j / hbar) * (n * delta_e - delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2)
 
     return F
@@ -89,16 +94,22 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
     EnergyEps = np.zeros(N)
     fe = []
     p = []
+
     for ti in tqdm(tSpan):
+
         Y = rk4(dF, ti, Y, h)
         fe_t = []
         p_t = []
-        for n in range(0, N):
+
+        for n in range(N):
+
             fe_t.append(RE(Y[0][n]))
             p_t.append((abs(Y[1][n])))
+
             Polarization[n] = abs(constant * sqrt(n) * RE(Y[1][n]))
             NumberDensity[n] = sqrt(n) * RE(Y[0][n])
             EnergyEps[n] = n * delta_e
+
         fe.append(fe_t)
         p.append(p_t)
 
@@ -114,6 +125,7 @@ def FourierTrans(arg):
 
 
 def multipage(filename, figs=None, dpi=200):
+
     pp = PdfPages(filename)
     if figs is None:
         figs = [plt.figure(n) for n in plt.get_fignums()]
@@ -143,7 +155,7 @@ def main():
 
     fig1 = plt.figure(figsize=(16, 10))
     fig2 = plt.figure(figsize=(16, 10))
-    fig3 = plt.figure(figsize=(16, 10))
+    # fig3 = plt.figure(figsize=(16, 10))
 
     ax1 = fig1.add_subplot(121, projection="3d")
     ax1.plot_wireframe(T, E, fe)
