@@ -1,30 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from math import sqrt, log, pi, exp
 
-# from scipy.constants import hbar
-from numpy import real as RE, imag as IM, conjugate, sqrt, log, pi, exp
+from numpy import real as RE, imag as IM, conjugate
 from numpy import typing as npt
 from time import time
-import cProfile
+import multiprocessing as mp
+import sys
 
 # Input variables
 N = 100
-hbar = 658.5  # MeV fs
+hbar = 658.5  # meV.fs
 chi_0 = 0.5
-E_R = 4.2
-delta_t = 200  # fs
+E_R = 4.2  # meV
+delta_t = 100  # femtosecond
 delta_0 = 100  # meV
-dt = 2  # fs
-t_max = 500  # fs
+t_max = 500  # femtosecond
 t0 = -3 * delta_t
+dt = 2  # femtosecond
 e_max = 300  # meV
 delta_e = e_max / N
-T2 = 200  # fs
-a0 = 125
+T2 = 200  # femtosecond
+a0 = 125  # ban kinh borh
+
+constant = delta_e * sqrt(delta_e)
 
 
-def rk4(dF: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.NDArray:
-    # tn í value in tSpan  array
+def rk4(dF, tn, yn, h):
+    # tn is value in tSpan  array
     k1 = dF(tn, yn)
     k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1)
     k3 = dF(tn + 0.5 * h, yn + 0.5 * h * k2)
@@ -59,7 +62,7 @@ def omega_R(n, t, g, p_n):
 
 def dF(t, Y):
 
-    F = np.zeros((2, N + 1), dtype="complex")
+    F = np.zeros((2, N + 1), dtype=complex)
 
     print(RE(Y[0]))
     for n in range(1, N + 1):
@@ -74,11 +77,12 @@ def dF(t, Y):
 
 def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
 
-    Y = np.zeros((2, N + 1), dtype="complex")
+    Y = np.zeros((2, N + 1), dtype=complex)
 
     tSpan = np.linspace(t0, t_max, N)
 
-    Polarization = np.zeros(N)
+    Polarization = np.zeros(N, dtype=complex)
+    NumberDensity = np.zeros(N, dtype=complex)
     Energy = np.zeros(N)
     fe = []
     p = []
@@ -89,18 +93,20 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
         for n in range(0, N):
             fe_t.append(RE(Y[0][n]))
             p_t.append((abs(Y[1][n])))
-            Polarization[n] = delta_e * sqrt(delta_e) * sqrt(n) * RE(Y[0][n])
+            Polarization[n] = constant * sqrt(n) * RE(Y[0][n])
+            NumberDensity[n] = constant * sqrt(n) * RE(Y[0][n])
             Energy[n] = n * delta_e
         fe.append(fe_t)
         p.append(p_t)
 
-    return tSpan, Energy, fe, p
+    return tSpan, Energy, fe, p, Polarization, NumberDensity
 
 
 def main():
+
     start = time()
 
-    t, Energy, fe, p = solve_sys_ode(dF, dt, rk4, N)
+    t, Energy, fe, p, Polarization, NumberDensity = solve_sys_ode(dF, dt, rk4, N)
     E, T = np.meshgrid(Energy, t)
     fe = np.array(fe)
     p = np.array(p)
@@ -113,17 +119,19 @@ def main():
     ax1 = fig.add_subplot(121, projection="3d")
     ax1.plot_wireframe(T, E, fe, cmap="viridis")
     ax1.set_ylabel(r"Năng lượng MeV")
+    ax1.set_xlabel(r"Thời gian t(s)")
     ax1.set_title(r"Hàm phân bố $f_e$ theo thời gian và năng lượng")
 
     ax2 = fig.add_subplot(122, projection="3d")
     ax2.plot_wireframe(T, E, p, cmap="plasma")
     ax2.set_ylabel(r"Năng lượng MeV")
+    ax2.set_xlabel(r"Thời gian t(s)")
     ax2.set_title(r"Hàm phân bố $f_p$ theo thời gian và năng lượng")
 
     # ax3 = fig.add_subplot(133, projection="3d")
     # ax3.plot_surface(T, E, P, cmap="copper")
 
-    plt.savefig("delta20fs")
+    plt.savefig(f"{delta_t}&{delta_0}fs")
 
     plt.show()
 
