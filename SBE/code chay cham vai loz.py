@@ -1,139 +1,139 @@
 import numpy as np
+from math import pi, sqrt, log, exp
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import time
 
-# from scipy.constants import hbar
-from numpy import real as RE, imag as IM, conjugate, sqrt, log, pi, exp
-from numpy import typing as npt
-from time import time
-from numba import njit
-import numba as nb
-import multiprocessing as mp
-from multiprocessing import Pool
-
-# Input variables
+# Define constants
 N = 100
-hbar = 658.5  # MeV fs
-chi_0 = 0.5
-E_R = 4.2
-delta_t = 100  # fs
+hbar = 658.5  # meV.fs
+khi_o = 0.5
+E_R = 4.2  # meV
+delta_t = 100  # femtosecond
 delta_0 = 100  # meV
-dt = 2  # fs
-t_max = 500  # fs
-t0 = -3 * delta_t
+t_max = 500  # femtosecond
+t_0 = -3 * delta_t
+dt = 2  # femtosecond
 e_max = 300  # meV
 delta_e = e_max / N
-T2 = 200  # fs
-a0 = 125
+T2 = 200  # femtosecond
 
+Y = np.zeros((2, N + 1), dtype="complex")
+Y[0][0] = 0 + 1j * 0  # Khởi tạo giá trị cho Y[0][0]
+Y[1][0] = 0 + 1j * 0  # Khởi tạo giá trị cho Y[1][0]
 
-
-def rk4(dF: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.NDArray:
-    # tn í value in tSpan  array
-    k1 = dF(tn, yn)
-    k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1)
-    k3 = dF(tn + 0.5 * h, yn + 0.5 * h * k2)
-    k4 = dF(tn + h, yn + h * k3)
-    return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+# Hàm tính toán
 
 
 def g(n, n1):
-    return (1 / sqrt(n * delta_e)) * log(abs((sqrt(n) + sqrt(n1)) / (sqrt(n) - sqrt(n1))))
+    d = (sqrt(n + 1) + sqrt(n1 + 1)) / (sqrt(n + 1) - sqrt(n1 + 1))
+    G = (1 / sqrt((n + 1) * delta_e)) * log(abs(d))
+    return G
 
 
-def E_n(n, g, f_e, f_h):
-    E = 0
-    for n1 in range(1, N + 1):
-        if n1 != n:
-            E += (sqrt(E_R) / pi) * delta_e * g(n, n1) * (f_e[n1] + f_h[n1])
+def En(Y, n):
+    sum = 0
+    for i in range(1, N + 1):
+        if i != n:
+            sum += g(n, i) * ((Y[0][i]).real + (Y[0][i]).imag)
+    E = (sqrt(E_R) / pi) * delta_e * sum
     return E
 
 
-def omega_R(n, t, g, p_n):
+def Omega(Y, n, t):
+    sum = 0
+    for i in range(1, N + 1):
+        if i != n:
+            sum += g(n, i) * Y[1][i]
+    Omega1 = (sqrt(pi) / (2 * delta_t)) * khi_o * exp(-((t / delta_t) ** 2))
+    Omega2 = (sqrt(E_R) / (hbar * pi)) * delta_e * sum
+    return Omega1 + Omega2
 
-    sum1 = 0
-    for n1 in range(1, N + 1):
-        if n1 != n:
-            sum1 += g(n, n1) * p_n[n1]
-    OMEGA = (0.5 * (hbar * sqrt(pi) / delta_t) * chi_0 * exp(-(t**2) / delta_t**2) + (sqrt(E_R) / pi) * delta_e * sum1) / hbar
 
-    return OMEGA
-
-
-def dF(t, Y):
-
+def Ft(t, Y):
     F = np.zeros((2, N + 1), dtype="complex")
-
-    f_e = RE(Y[0])
-    f_h = IM(Y[0])
-    p_n = Y[1]
-    print(f_e)
-    for n in range(1, N + 1):
-        E = E_n(n, g, f_e, f_h)
-        OMEGA = omega_R(n, t, g, p_n)
-
-        F[0][n] = -2 * IM(OMEGA * conjugate(p_n[n])) + 1j * -2 * IM(OMEGA * conjugate(p_n[n]))
-        F[1][n] = -(1j / hbar) * (n * delta_e - delta_0 - E) * p_n[n] + 1j * (1 - f_e[n] - f_h[n]) * OMEGA - (p_n[n] / T2)
-
+    for i in range(N):
+        F[0][i] = -2 * (Omega(Y, i, t) * np.conj(Y[1][i])).imag + 1j * -2 * (Omega(Y, i, t) * np.conj(Y[1][i])).imag
+        F[1][i] = (
+            (-1j / hbar) * (i * delta_e - delta_0 - En(Y, i)) * (Y[1][i])
+            + 1j * (1 - np.real(Y[0][i]) - np.imag(Y[0][i])) * Omega(Y, i, t)
+            - Y[1][i] / T2
+        )
     return F
 
 
-def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
-
-    Y = np.zeros((2, N + 1), dtype="complex")
-
-    tSpan = np.linspace(t0, t_max, N)
-
-    Polarization = np.zeros(N)
-    Energy = np.zeros(N)
-    Nt = np.zeros(N)
-    fe = []
-    p = []
-    for ti in tSpan:
-        Y = rk4(dF, ti, Y, h)
-        fe_t = []
-        p_t = []
-        for n in range(0, N):
-            fe_t.append(RE(Y[0][n]))
-            p_t.append((abs(Y[1][n])))
-            Polarization[n] = delta_e * sqrt(delta_e) * sqrt(n) * RE(Y[0][n])
-            Energy[n] = n * delta_e
-            Nt[n] += sqrt(n) * RE(Y[0][n])
-        fe.append(fe_t)
-        p.append(p_t)
-
-    return tSpan, Energy, fe, p
+def RK4(Ft, t, Y):
+    k1 = dt * Ft(t, Y)
+    k2 = dt * Ft(t + dt / 2, Y + k1 / 2)
+    k3 = dt * Ft(t + dt / 2, Y + k2 / 2)
+    k4 = dt * Ft(t + dt, Y + k3)
+    Y = Y + (k1 + 2 * k2 + 2 * k3 + k4) / 6
+    return Y
 
 
-def main():
-    start = time()
+# Lưu trữ kết quả theo thời gian
+epsilon = [(i + 1) * delta_e for i in range(N)]
+Y1_e_collection = []
+Y2_p_collection = []
+time_steps = np.linspace(t_0, t_max, 100)
+print(time_steps)
+# Vòng lặp tính toán theo các bước thời gian
+with open("SBE.txt", "w") as file:
+    file.write(f"{'Time t':^20} {'Epsilon':^20} {'Y1_e':^20} {'Y2_p':^40} \n")
+    file.write("=" * 100 + "\n")
+    start = time.time()
+    # Vòng lặp qua các bước thời gian
+    for t_step in time_steps:
+        Y = RK4(Ft, t_step, Y)
+        Y1_e = []
+        Y2_p = []
 
-    t, Energy, fe, p = solve_sys_ode(dF, dt, rk4, N)
-    E, T = np.meshgrid(Energy, t)
-    fe = np.array(fe)
-    p = np.array(p)
+        # Vòng lặp qua các mức năng lượng
+        for i in range(N):
+            Y1_e.append(float((Y[0][i]).real))  # Phần thực của Y[0]
+            Y2_p.append(abs(Y[1][i]))  # Độ lớn của Y[1]
 
-    end = time()
+        # Lưu kết quả cho biểu đồ
+        Y1_e_collection.append(Y1_e)
+        Y2_p_collection.append(Y2_p)
+
+        # Ghi kết quả vào file
+        for i in range(len(Y1_e)):
+            file.write(f"{t_step:^20.5e} {epsilon[i]:^20.5e} {Y1_e[i]:^20.5e} {Y2_p[i]:^40} \n")
+        file.write("=" * 100 + "\n")
+    end = time.time()
     print(end - start)
 
-    fig = plt.figure(figsize=(16, 8))
+# Chuyển đổi kết quả thành mảng numpy để vẽ biểu đồ
+Y1_e_collection = np.array(Y1_e_collection).T  # Hình dạng: (N, số bước thời gian)
+Y2_p_collection = np.array(Y2_p_collection).T  # Hình dạng: (N, số bước thời gian)
 
-    ax1 = fig.add_subplot(121, projection="3d")
-    ax1.plot_wireframe(T, E, fe, cmap="viridis")
-    ax1.set_ylabel(r"Năng lượng MeV")
-    ax1.set_title(r"Hàm phân bố $f_e$ theo thời gian và năng lượng")
+# Tạo lưới để vẽ biểu đồ
+T, Eps = np.meshgrid(time_steps, epsilon)
 
-    ax2 = fig.add_subplot(122, projection="3d")
-    ax2.plot_wireframe(T, E, p, cmap="plasma")
-    ax2.set_ylabel(r"Năng lượng MeV")
-    ax2.set_title(r"Hàm phân bố $f_p$ theo thời gian và năng lượng")
+# Tạo biểu đồ 3D cho Y1_e_collection (Hình 1)
+fig1 = plt.figure(figsize=(10, 6))
+ax1 = fig1.add_subplot(111, projection="3d")
+surf1 = ax1.plot_surface(T, Eps, Y1_e_collection, cmap="viridis")
+ax1.set_xlabel("Time (fs)")
+ax1.set_ylabel("Energy (meV)")
+ax1.set_zlabel("Y1_e")
+ax1.set_title("Y1_e theo thời gian và mức năng lượng")
 
-    # ax3 = fig.add_subplot(133, projection="3d")
-    # ax3.plot_surface(T, E, P, cmap="copper")
+# Thêm thanh màu cho đồ thị thứ nhất
+fig1.colorbar(surf1, ax=ax1, shrink=0.5, aspect=5)
 
-    plt.savefig("delta20fs")
+# Tạo biểu đồ 3D cho Y2_p_collection (Hình 2)
+fig2 = plt.figure(figsize=(10, 6))
+ax2 = fig2.add_subplot(111, projection="3d")
+surf2 = ax2.plot_surface(T, Eps, Y2_p_collection, cmap="plasma")
+ax2.set_xlabel("Time (fs)")
+ax2.set_ylabel("Energy (meV)")
+ax2.set_zlabel("Y2_p")
+ax2.set_title("Y2_p theo thời gian và mức năng lượng")
 
-    plt.show()
+# Thêm thanh màu cho đồ thị thứ hai
+fig2.colorbar(surf2, ax=ax2, shrink=0.5, aspect=5)
 
-
-if __name__ == "__main__":
-    main()
+# Hiển thị cả hai biểu đồ
+plt.show()
