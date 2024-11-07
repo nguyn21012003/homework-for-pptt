@@ -12,11 +12,11 @@ import sys
 # Input variables
 N = 100
 hbar = 658.5  # meV.fs
-chi_0 = 0.5
+chi_0 = 2
 E_R = 4.2  # meV
-delta_t = 100  # femtosecond
-delta_0 = 100  # meV
-t_max = 500  # femtosecond
+delta_t = 20  # femtosecond
+delta_0 = -10  # meV
+t_max = 300  # femtosecond
 t0 = -3 * delta_t
 dt = 2  # femtosecond
 e_max = 300  # meV
@@ -78,7 +78,7 @@ def dF(t, Y):
         OMEGA = omega_R(n, t, g, Y[1])
 
         F[0][n] = -2 * IM(OMEGA * conjugate(Y[1][n]))
-        F[1][n] = -(1j / hbar) * (n * delta_e - delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2)
+        F[1][n] = -(1j / hbar) * (n * delta_e - delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2) * 0
 
     return F
 
@@ -88,27 +88,31 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
     Y = np.zeros((2, N + 1), dtype=complex)
 
     tSpan = np.linspace(t0, t_max, N)
-
+    # tSpan = np.arange(t0, t_max, h)
+    print(tSpan)
     Polarization = np.zeros(N)
     NumberDensity = np.zeros(N)
     EnergyEps = np.zeros(N)
     fe = []
     p = []
+    for ti in tqdm(range(len(tSpan)), desc="Processing", unit="step "):
 
-    for ti in tqdm(tSpan):
-
-        Y = rk4(dF, ti, Y, h)
+        Y = rk4(dF, tSpan[ti], Y, h)
         fe_t = []
         p_t = []
-
+        NumberDensity_sum = 0
+        Polarization_sum = 0
         for n in range(N):
-
             fe_t.append(RE(Y[0][n]))
             p_t.append((abs(Y[1][n])))
 
-            Polarization[n] = abs(constant * sqrt(n) * RE(Y[1][n]))
-            NumberDensity[n] = sqrt(n) * RE(Y[0][n])
-            EnergyEps[n] = n * delta_e
+            EnergyEps[n] = (n + 1) * delta_e
+
+            NumberDensity_sum += sqrt(n + 1) * RE(Y[0][n])
+            Polarization_sum += abs(constant * sqrt(n + 1) * RE(Y[1][n]))
+
+        NumberDensity[ti] = NumberDensity_sum
+        Polarization[ti] = Polarization_sum
 
         fe.append(fe_t)
         p.append(p_t)
@@ -144,8 +148,7 @@ def main():
 
     print(end - start)
     E, T = np.meshgrid(EnergyEps, t)
-    P, T = np.meshgrid(Polarization, t)
-    Nt, T = np.meshgrid(NumberDensity, t)
+
     fe = np.array(fe)
     p = np.array(p)
 
@@ -158,27 +161,29 @@ def main():
     # fig3 = plt.figure(figsize=(16, 10))
 
     ax1 = fig1.add_subplot(121, projection="3d")
-    ax1.plot_wireframe(T, E, fe)
+    ax1.plot_surface(T, E, fe, cmap=color)
     ax1.set_ylabel(r"Năng lượng MeV")
-    ax1.set_xlabel(r"Thời gian t(s)")
+    ax1.set_xlabel(r"Thời gian t(fs)")
     ax1.set_title(r"Hàm phân bố $f_e$ theo thời gian và năng lượng")
 
     ax2 = fig1.add_subplot(122, projection="3d")
     ax2.plot_wireframe(T, E, p)
     ax2.set_ylabel(r"Năng lượng MeV")
-    ax2.set_xlabel(r"Thời gian t(s)")
-    ax2.set_title(r"Hàm phân bố $f_p$ theo thời gian và năng lượng")
+    ax2.set_xlabel(r"Thời gian t(fs)")
+    ax2.set_title(r"Hàm phân bố $f_p$ theo thời gian và năng lượ9ng")
 
-    ax3 = fig2.add_subplot(121, projection="3d")
-    ax3.plot_surface(T, E, P, cmap=color, alpha=transparent)
-    ax3.set_ylabel(r"Năng lượng MeV")
-    ax3.set_xlabel(r"Thời gian t(s)")
+    ax3 = fig2.add_subplot(121)
+    ax3.plot(t, Polarization, color="purple")
+    ax3.set_ylabel(r"Phân cực toàn phần")
+    ax3.grid()
+    ax3.set_xlabel(r"Thời gian t(fs)")
     ax3.set_title(r"Hàm phân cực $|P_n(t)|$ theo thời gian và năng lượng")
 
-    ax4 = fig2.add_subplot(122, projection="3d")
-    ax4.plot_surface(T, E, Nt, cmap=color, alpha=transparent)
-    ax4.set_ylabel(r"Năng lượng MeV")
-    ax4.set_xlabel(r"Thời gian t(s)")
+    ax4 = fig2.add_subplot(122)
+    ax4.plot(t, NumberDensity, color="purple")
+    ax4.grid()
+    ax4.set_ylabel(r"Mật độ toàn phần")
+    ax4.set_xlabel(r"Thời gian t(fs)")
     ax4.set_title(r"Hàm phân bố toàn phần $N(t)$ theo thời gian và năng lượng")
 
     # ax5 = fig3.add_subplot(122)
