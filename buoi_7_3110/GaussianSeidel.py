@@ -1,10 +1,10 @@
 import numpy as np
-from numpy import abs
-import csv
 from numpy import typing as npt
 
 
-def FArrMatrixGauss(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa mảng vào bằng ma trận sử dụng pp Gaussian-Seidel
+def FArrMatrixGauss(
+    AMatrix: npt.NDArray, BMatrix: npt.NDArray, dim: int, x: npt.NDArray
+) -> npt.NDArray:  ## Đưa mảng vào bằng ma trận sử dụng pp Gaussian-Seidel
     F = np.zeros(dim)
 
     for i in range(dim):

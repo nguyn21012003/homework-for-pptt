@@ -1,24 +1,19 @@
 import numpy as np
-from mpmath import *
 from Jacobi import FArrMatrixJacobian
 from solveLoop import solveLoop
 
 
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
 import numpy as np
 
+np.set_printoptions(precision=10, linewidth=120, edgeitems=12)
 
-def createMatrix(dim):
 
-    n = int(dim / 40)
+def createMatrix(subDiagonal, dim):
 
     AMatrix = np.zeros((dim, dim))
-    BMatrix = np.zeros(dim)
-    for i in range(n):
-        BMatrix[n] = -100
+
+    BMatrix = np.full((dim, 1), -100)
 
     for i in range(dim):
         AMatrix[i, i] = -4
@@ -29,11 +24,11 @@ def createMatrix(dim):
         if i + 1 < dim:
             AMatrix[i, i + 1] = 1
 
-        if i - n >= 0:
-            AMatrix[i, i - n] = 1
+        if i - subDiagonal >= 0:
+            AMatrix[i, i - subDiagonal] = 1
 
-        if i + n < dim:
-            AMatrix[i, i + n] = 1
+        if i + subDiagonal < dim:
+            AMatrix[i, i + subDiagonal] = 1
 
     return AMatrix, BMatrix
 
@@ -44,19 +39,21 @@ def plotSol(solution, x):
 
 def main():
     N = 10000
-    dim = 120
-    x = np.full(dim, 1)
-    AMatrix, BMatrix = createMatrix(dim)
+    grid = 10
+    m, n, subDiagonal = 2, 2, 3
+    dim = m * subDiagonal + n + 1
+    eigenFunction = np.full(dim, 1)
+    AMatrix, BMatrix = createMatrix(subDiagonal, dim)
 
-    s, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
+    print(AMatrix)
+    print(BMatrix)
+    u, step = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, eigenFunction)
+    print(u)
 
-    fig = plt.figure()
-    ax = fig.add_subplot(projection="3d")
+    v = np.zeros([m + 1, n + 1])
+    v = np.reshape(u, (m + 1, n + 1))
 
-    X, Y = np.linspace(0, 40, dim), np.linspace(0, 40, dim)
-
-    ax.plot_wireframe(X, Y, s, rstride=10, cstride=10)
-    plt.show()
+    print(v)
 
 
 if __name__ == "__main__":

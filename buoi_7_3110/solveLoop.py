@@ -1,19 +1,19 @@
 from numpy import typing as npt
 import numpy as np
+from tqdm import tqdm
 
 
-def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> list:
-    x = initInput
-    listX = [x]  ### Lưu giá trị vào mảng để kiểm soát
-    for i in range(1, N):
-        x = F(AMatrix, BMatrix, dim, x)
-        listX.append(x)
-        print(x, F.__qualname__, f"tại k = {i}", "\n")
+def solveLoop(AMatrix: npt.NDArray, BMatrix: npt.NDArray, dim: int, F: npt.NDArray, N: int, initInput) -> list:
 
-        if abs(max(listX[i]) - max(listX[i - 1])) / max(listX[i]) <= 1e-20:
+    eigenFunction = initInput
+    listEigenFunction = [eigenFunction]  ### Lưu giá trị vào mảng để kiểm soát
 
-            break
+    for i in tqdm(range(1, N), desc="Processing", unit="step"):
 
-    s = np.array(listX)
+        eigenFunction = F(AMatrix, BMatrix, dim, eigenFunction)
+        listEigenFunction.append(eigenFunction)
+        # print(eigenFunction, F.__qualname__, f"tại k = {i}", "\n")
 
-    return s, i
+    s = np.array(listEigenFunction)
+
+    return eigenFunction, i
