@@ -24,6 +24,8 @@ def main():
     xByhand = []
     xMatrix, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, N, x)
     xGauss, i = solveLoop(AMatrix, BMatrix, dim, FArrMatrixGauss, N, x)
+    s = np.linalg.solve(AMatrix, BMatrix)
+    print(s)
 
 
 if __name__ == "__main__":
