@@ -6,8 +6,9 @@ from tqdm import tqdm
 def u_values(d):
     u = np.zeros((d, d))
     for i in range(d):
-        u[i][0] = 100
-        u[i][d - 1] = 0
+        u[0][i] = 100
+        u[d - 1][i] = -100
+    print(u)
     return u
 
 

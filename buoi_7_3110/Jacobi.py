@@ -2,6 +2,8 @@ import numpy as np
 from numpy import typing as npt
 
 
+
+
 def FArrMatrixJacobian(
     AMatrix: npt.NDArray, BMatrix: npt.NDArray, dim: int, eigenFunction: npt.NDArray
 ) -> npt.NDArray:  ## Đưa mảng vào bằng ma trận sử dụng pp Jacobian
