@@ -66,6 +66,7 @@ $$
 &\quad  \quad  100 + u_1 - 4u_2 + \quad + \quad + u_5 = 0
 \end{align}\tag{1}
 $$
+
 $$
 \begin{align}
 &u_0 \quad \quad - 4u_3 + u_4 + \quad + u_6 = 0 \\
@@ -73,6 +74,7 @@ $$
 &\quad \quad u_2 \quad \quad + u_4 - 4u_5 \quad \quad u_8 = 0
 \end{align}\tag{2}
 $$
+
 $$
 \begin{align}
 &u_3 \quad \quad - 4u_6 + u_7 \quad = 0 \\
@@ -83,7 +85,6 @@ $$
 
 Như vậy $A$ sẽ có dạng đường chéo
 
-
 ![amatrix.png](amatrix.png)
 
 Hình trên là với $11$ điểm chưa biết.
@@ -92,5 +93,4 @@ Ta có thể giải ma trận trên bằng phương trình hàm riêng trị ri�
 
 ### Kết quả
 
-![Electrostatic Potentials](ElectricPotentials.png)
-
+![Electrostatic Potentials](ElectricPotential.png)
