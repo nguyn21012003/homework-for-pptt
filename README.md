@@ -1,4 +1,4 @@
-# Computational for Physics
+o# Computational for Physics
 
 ## Buổi 1:
 
