@@ -10,17 +10,18 @@ from tqdm import tqdm
 np.set_printoptions(precision=10, linewidth=120, edgeitems=12)
 
 
-def createMatrix(subDiagonal: int, dim: int):
+def createMatrix(dim: int):
 
-    AMatrix = np.zeros([dim, dim])
+    AMatrix = np.zeros([dim**2, dim**2])
 
-    for i in range(1, int(sqrt(dim)) - 1):
-        for j in range(1, int(sqrt(dim)) - 1):
-            north = (i - 1) * int(sqrt(dim)) + j
-            west = i * int(sqrt(dim)) + j - 1
-            index = i * int(sqrt(dim)) + j
-            east = i * int(sqrt(dim)) + j + 1
-            south = (i + 1) * int(sqrt(dim)) + j
+    for i in range(1, dim - 1):
+        for j in range(1, dim - 1):
+            north = (i - 1) * dim + j
+            west = i * dim + j - 1
+            index = i * dim + j
+            east = i * dim + j + 1
+            south = (i + 1) * dim + j
+
             AMatrix[index, north] = 1
             AMatrix[index, west] = 1
             AMatrix[index, index] = -4
@@ -28,48 +29,52 @@ def createMatrix(subDiagonal: int, dim: int):
             AMatrix[index, south] = 1
 
     i = 0
-    for j in range(1, int(sqrt(dim)) - 1):
-        west = i * int(sqrt(dim)) + j - 1
-        index = i * int(sqrt(dim)) + j
-        east = i * int(sqrt(dim)) + j + 1
-        south = (i + 1) * int(sqrt(dim)) + j
+    for j in range(1, dim - 1):
+        west = i * dim + j - 1
+        index = i * dim + j
+        east = i * dim + j + 1
+        south = (i + 1) * dim + j
+
         AMatrix[index, west] = 1
         AMatrix[index, index] = -4
         AMatrix[index, east] = 1
         AMatrix[index, south] = 1
 
     j = 0
-    for i in range(1, int(sqrt(dim)) - 1):
-        north = (i - 1) * int(sqrt(dim)) + j
-        index = i * int(sqrt(dim)) + j
-        east = i * int(sqrt(dim)) + j + 1
-        south = (i + 1) * int(sqrt(dim)) + j
+    for i in range(1, dim - 1):
+        north = (i - 1) * dim + j
+        index = i * dim + j
+        east = i * dim + j + 1
+        south = (i + 1) * dim + j
+
         AMatrix[index, north] = 1
         # AMatrix[index,west] =1
         AMatrix[index, index] = -4
         AMatrix[index, east] = 1
         AMatrix[index, south] = 1
 
-    j = int(sqrt(dim)) - 1
-    for i in range(1, int(sqrt(dim)) - 1):
-        north = (i - 1) * int(sqrt(dim)) + j
-        west = i * int(sqrt(dim)) + j - 1
-        index = i * int(sqrt(dim)) + j
+    j = dim - 1
+    for i in range(1, dim - 1):
+        north = (i - 1) * dim + j
+        west = i * dim + j - 1
+        index = i * dim + j
         # east = i*n+j+1
-        south = (i + 1) * int(sqrt(dim)) + j
+        south = (i + 1) * dim + j
+
         AMatrix[index, north] = 1
         AMatrix[index, west] = 1
         AMatrix[index, index] = -4
         # a[index,east] =1
         AMatrix[index, south] = 1
 
-    i = int(sqrt(dim)) - 1
-    for j in range(1, int(sqrt(dim)) - 1):
-        north = (i - 1) * int(sqrt(dim)) + j
-        west = i * int(sqrt(dim)) + j - 1
-        index = i * int(sqrt(dim)) + j
-        east = i * int(sqrt(dim)) + j + 1
+    i = dim - 1
+    for j in range(1, dim - 1):
+        north = (i - 1) * dim + j
+        west = i * dim + j - 1
+        index = i * dim + j
+        east = i * dim + j + 1
         # south = (i+1)*n+j
+
         AMatrix[index, north] = 1
         AMatrix[index, west] = 1
         AMatrix[index, index] = -4
@@ -77,69 +82,76 @@ def createMatrix(subDiagonal: int, dim: int):
 
     i = 0
     j = 0
-    index = i * int(sqrt(dim)) + j
-    east = i * int(sqrt(dim)) + j + 1
-    south = (i + 1) * int(sqrt(dim)) + j
+    index = i * dim + j
+    east = i * dim + j + 1
+    south = (i + 1) * dim + j
+
     AMatrix[index, index] = -4
     AMatrix[index, east] = 1
     AMatrix[index, south] = 1
 
     i = 0
-    j = int(sqrt(dim)) - 1
-    west = i * int(sqrt(dim)) + j - 1
-    index = i * int(sqrt(dim)) + j
-    south = (i + 1) * int(sqrt(dim)) + j
+    j = dim - 1
+    west = i * dim + j - 1
+    index = i * dim + j
+    south = (i + 1) * dim + j
+
     AMatrix[index, west] = 1
     AMatrix[index, index] = -4
     AMatrix[index, south] = 1
 
-    i = int(sqrt(dim)) - 1
+    i = dim - 1
     j = 0
-    north = (i - 1) * int(sqrt(dim)) + j
-    index = i * int(sqrt(dim)) + j
-    east = i * int(sqrt(dim)) + j + 1
+    north = (i - 1) * dim + j
+    index = i * dim + j
+    east = i * dim + j + 1
+
     AMatrix[index, north] = 1
     AMatrix[index, index] = -4
     AMatrix[index, east] = 1
 
-    i = int(sqrt(dim)) - 1
-    j = int(sqrt(dim)) - 1
-    north = (i - 1) * int(sqrt(dim)) + j
-    west = i * int(sqrt(dim)) + j - 1
-    index = i * int(sqrt(dim)) + j
+    i = dim - 1
+    j = dim - 1
+    north = (i - 1) * dim + j
+    west = i * dim + j - 1
+    index = i * dim + j
+
     AMatrix[index, north] = 1
     AMatrix[index, west] = 1
     AMatrix[index, index] = -4
 
-    BMatrix = np.zeros([dim, 1])
+    # print(AMatrix, "\n")
 
-    for i in range(0, int(sqrt(dim))):
+    BMatrix = np.zeros([dim**2, 1])
+
+    for i in range(0, dim):
         BMatrix[i] = -100
-        BMatrix[-i] = 100
+        # BMatrix[-i - 1] = 100
 
     return AMatrix, BMatrix
 
 
-def MatrixFull(AMatrix, value):
+def MatrixFull(matrix, value):
 
-    size = AMatrix.shape[0]
+    size = matrix.shape[0]
 
-    AMatrixFull = np.zeros([size + 2, size + 2])
+    matrixFull = np.zeros([size + 2, size + 2])
 
     for i in range(1, size + 1):
         for j in range(1, size + 1):
-            AMatrixFull[i, j] = AMatrix[i - 1, j - 1]
+            matrixFull[i, j] = matrix[i - 1, j - 1]
     for i in range(0, size + 2):
-        AMatrixFull[0, i] = value
+        matrixFull[0, i] = value
+        # matrixFull[size + 1, i] = -value
 
-    return AMatrixFull
+    return matrixFull
 
 
 def u_values(d):
     u = np.zeros((d, d))
     for i in range(d):
         u[0][i] = 100
-        u[d - 1][i] = -100
+        # u[d - 1][i] = -100
     return u
 
 
@@ -170,19 +182,19 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 
     X, Y = np.meshgrid(X, Y)
     ax1.plot_wireframe(X, Y, vMatrixJacobi, color=color)
-    ax1.set_title(f"Jacobian with matrĩ at {steps-2} unknow points")
+    ax1.set_title(f"Jacobian with matrĩ at {(steps-2)**2} unknow points")
 
     ax2.plot_wireframe(X, Y, vMatrixGauss, color=color)
-    ax2.set_title(f"Gaussian-Seidel with matrix at {steps-2} unknow points")
+    ax2.set_title(f"Gaussian-Seidel with matrix at {(steps-2)**2} unknow points")
 
     x = np.linspace(0, grid, grid)
     y = np.linspace(0, grid, grid)
     x, y = np.meshgrid(x, y)
     ax3.plot_wireframe(x, y, GaussWOMatrix, color=color)
-    ax3.set_title(f"Gaussian-Seidel Iterative at {steps-2} unknow points")
+    ax3.set_title(f"Gaussian-Seidel Iterative at {(steps-2)**2} unknow points")
 
-    ax4.plot_wireframe(X, Y, vMatrixGauss, color=color)
-    ax4.set_title(f"Nghiem giai tich su dung matrix at {steps-2} unknow points")
+    ax4.plot_wireframe(X, Y, vGiaiTich, color=color)
+    ax4.set_title(f"Nghiem giai tich su dung matrix at {(steps-2)**2} unknow points")
 
     ax1.view_init(elev=20, azim=45)
     ax2.view_init(elev=20, azim=45)
@@ -213,27 +225,31 @@ def saveLog(file: str, N, Jacobian, Gaussian, i, j):
 def main():
     numberLoop = 100
     ic = 100
-    unknowPoints = 10
+    unknowPoints = 5
     i, j = unknowPoints, unknowPoints
-    dim = unknowPoints**2
+    dim = unknowPoints
     fileSave = "ElectricPotentials.txt"
     filePlot = "ElectricPotentials.png"
 
-    AMatrix, BMatrix = createMatrix(unknowPoints, dim)
-    eigenFunction = np.zeros(dim)
+    AMatrix, BMatrix = createMatrix(dim)
+    eigenFunction = np.zeros([dim**2, 1])
+    print(eigenFunction)
     print((AMatrix))
     print((BMatrix))
     ugauss, loops = solveLoop(AMatrix, BMatrix, dim, FArrMatrixGauss, numberLoop, eigenFunction)
     ujacobi, loops = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, numberLoop, eigenFunction)
     uSolution = np.linalg.solve(AMatrix, BMatrix)
+    print(ugauss)
     print(ujacobi)
-
-    vjacobi = np.reshape(ujacobi, [i, j])
+    print(uSolution)
+    #
     vgauss = np.reshape(ugauss, [i, j])
+    vjacobi = np.reshape(ujacobi, [i, j])
     vSolution = np.reshape(uSolution, [i, j])
 
     vjacobi = MatrixFull(vjacobi, ic)
     vgauss = MatrixFull(vgauss, ic)
+    vSolution = MatrixFull(vSolution, ic)
     print(vjacobi)
 
     UMatrix = u_values(unknowPoints)
