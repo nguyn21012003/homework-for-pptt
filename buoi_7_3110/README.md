@@ -34,18 +34,18 @@ $$
 V_{i,j} = U_{i\times N + j}
 $$
 
-| \(v\) |       | \(u\)                    |
-| ----- | ----- | ------------------------ |
-| \(i\) | \(j\) | \(k = i $\times$ N + j\) |
-| 0     | 0     | 0                        |
-| 0     | 1     | 1                        |
-| 0     | 2     | 2                        |
-| 1     | 0     | 3                        |
-| 1     | 1     | 4                        |
-| 1     | 2     | 5                        |
-| 2     | 0     | 6                        |
-| 2     | 1     | 7                        |
-| 2     | 2     | 8                        |
+| \($v_{i,j}$\) |       | \($u_{k}$\)              |
+| ------------- | ----- | ------------------------ |
+| \(i\)         | \(j\) | \(k = i $\times$ N + j\) |
+| 0             | 0     | 0                        |
+| 0             | 1     | 1                        |
+| 0             | 2     | 2                        |
+| 1             | 0     | 3                        |
+| 1             | 1     | 4                        |
+| 1             | 2     | 5                        |
+| 2             | 0     | 6                        |
+| 2             | 1     | 7                        |
+| 2             | 2     | 8                        |
 
 Như vậy ta hoàn toàn có thể biểu diễn ma trận $V$ dưới dạng ma trận $U$.
 
@@ -93,4 +93,9 @@ Ta có thể giải ma trận trên bằng phương trình hàm riêng trị ri�
 
 ### Kết quả
 
-![Electrostatic Potentials](ElectricPotential.png)
+![Electrostatic Potentials](ElectricPotentials.png)
+![data](ElectricPotentialsData.png)
+
+### Source code
+
+
