@@ -7,16 +7,15 @@ from numpy import typing as npt
 from time import time
 from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
-import sys
 
 # Input variables
 N = 100
 hbar = 658.5  # meV.fs
-chi_0 = 2
+chi_0 = 0.5
 E_R = 4.2  # meV
 delta_t = 20  # femtosecond
 delta_0 = -10  # meV
-t_max = 300  # femtosecond
+t_max = 500  # femtosecond
 t0 = -3 * delta_t
 dt = 2  # femtosecond
 e_max = 300  # meV
@@ -88,7 +87,7 @@ def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.ND
     Y = np.zeros((2, N + 1), dtype=complex)
 
     tSpan = np.linspace(t0, t_max, N)
-    # tSpan = np.arange(t0, t_max, h)
+    # tSpan = np.arange(t0, t_max, 100)
     print(tSpan)
     Polarization = np.zeros(N)
     NumberDensity = np.zeros(N)
@@ -161,7 +160,7 @@ def main():
     # fig3 = plt.figure(figsize=(16, 10))
 
     ax1 = fig1.add_subplot(121, projection="3d")
-    ax1.plot_surface(T, E, fe, cmap=color)
+    ax1.plot_wireframe(T, E, fe)
     ax1.set_ylabel(r"Năng lượng MeV")
     ax1.set_xlabel(r"Thời gian t(fs)")
     ax1.set_title(r"Hàm phân bố $f_e$ theo thời gian và năng lượng")
@@ -192,7 +191,7 @@ def main():
     # ax3 = fig.add_subplot(133, projection="3d")
     # ax3.plot_surface(T, E, P, cmap="copper")
 
-    multipage(f"{delta_t}&{delta_0}fs with N={N}.pdf")
+    multipage(f"{delta_t}&{delta_0}fs with N={N}&{chi_0}.pdf")
 
     plt.show()
 
