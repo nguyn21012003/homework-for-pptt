@@ -126,7 +126,7 @@ def createMatrix(dim: int):
 
     for i in range(0, dim):
         BMatrix[i] = -100
-        # BMatrix[-i - 1] = 100
+        BMatrix[-i - 1] = 100
 
     return AMatrix, BMatrix
 
@@ -142,7 +142,7 @@ def MatrixFull(matrix, value):
             matrixFull[i, j] = matrix[i - 1, j - 1]
     for i in range(0, size + 2):
         matrixFull[0, i] = value
-        # matrixFull[size + 1, i] = -value
+        MatrixFull[size + 1, i] = -value
 
     return matrixFull
 
@@ -156,7 +156,7 @@ def u_values(d):
 
 
 def Gauss(d, N, u):
-    for k in tqdm(range(N), desc="Processing", unit="step"):
+    for k in tqdm(range(N), desc="Gauss", unit="step"):
         for i in range(1, d - 1):
             for j in range(1, d - 1):
                 u[i][j] = 0.25 * (u[i + 1][j] + u[i - 1][j] + u[i][j + 1] + u[i][j - 1])
@@ -182,7 +182,7 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 
     X, Y = np.meshgrid(X, Y)
     ax1.plot_wireframe(X, Y, vMatrixJacobi, color=color)
-    ax1.set_title(f"Jacobian with matrĩ at {(steps-2)**2} unknow points")
+    ax1.set_title(f"Jacobian with matrĩx at {(steps-2)**2} unknow points")
 
     ax2.plot_wireframe(X, Y, vMatrixGauss, color=color)
     ax2.set_title(f"Gaussian-Seidel with matrix at {(steps-2)**2} unknow points")
@@ -207,25 +207,29 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 
 def saveLog(file: str, N, Jacobian, Gaussian, i, j):
     with open(file, "w", newline="") as writefile:
-        header = [f"{"n":^4}", f"{"i":^4}", f"{"j":^4}", f"{"Jacobian":^18}", f"{"Gaussian":^18}"]
+        header = [f"{'n':^4}", f"{'i':^4}", f"{'j':^4}", f"{'Jacobian':^18}", f"{'Gaussian':^18}"]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="|")
         writer.writeheader()
-        for n in range(0, N + 1):
-            writer.writerow(
-                {
-                    f"{"n":^4}": f"{n:^4}",
-                    f"{"i":^4}": f"{i:^4}",
-                    f"{"j":^4}": f"{j:^4}",
-                    f"{"Jacobian":^18}": f"{Jacobian[n]:^18}" if n < len(Jacobian) else f"{"":<18}",
-                    f"{"Gaussian":^18}": f"{Gaussian[n]:^18}" if n < len(Gaussian) else f"{"":<18}",
-                }
-            )
+
+        n = 0
+        for ith in range(0, i):
+            for jth in range(0, j):
+                writer.writerow(
+                    {
+                        f"{'n':^4}": f"{n:^4}",
+                        f"{'i':^4}": f"{ith:^4}",
+                        f"{'j':^4}": f"{jth:^4}",
+                        f"{'Jacobian':^18}": f"{Jacobian[n]:^18}" if n < len(Jacobian) else f"{'':<18}",
+                        f"{'Gaussian':^18}": f"{Gaussian[n]:^18}" if n < len(Gaussian) else f"{'':<18}",
+                    }
+                )
+                n += 1
 
 
 def main():
     numberLoop = 100
     ic = 100
-    unknowPoints = 5
+    unknowPoints = 40
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints
     fileSave = "ElectricPotentials.txt"
