@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import csv
 from tqdm import tqdm
 
-np.set_printoptions(precision=10, linewidth=120, edgeitems=12)
+np.set_printoptions(precision=10, linewidth=120, edgeitems=15)
 
 
 def createMatrix(dim: int):
@@ -126,7 +126,7 @@ def createMatrix(dim: int):
 
     for i in range(0, dim):
         BMatrix[i] = -100
-        BMatrix[-i - 1] = 100
+        # BMatrix[-i - 1] = 100
 
     return AMatrix, BMatrix
 
@@ -142,7 +142,7 @@ def MatrixFull(matrix, value):
             matrixFull[i, j] = matrix[i - 1, j - 1]
     for i in range(0, size + 2):
         matrixFull[0, i] = value
-        MatrixFull[size + 1, i] = -value
+        # MatrixFull[size + 1, i] = -value
 
     return matrixFull
 
@@ -208,28 +208,31 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 def saveLog(file: str, N, Jacobian, Gaussian, i, j):
     with open(file, "w", newline="") as writefile:
         header = [f"{'n':^4}", f"{'i':^4}", f"{'j':^4}", f"{'Jacobian':^18}", f"{'Gaussian':^18}"]
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter="|")
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=f"{"\t":<1}")
         writer.writeheader()
 
         n = 0
         for ith in range(0, i):
             for jth in range(0, j):
+
                 writer.writerow(
                     {
                         f"{'n':^4}": f"{n:^4}",
                         f"{'i':^4}": f"{ith:^4}",
                         f"{'j':^4}": f"{jth:^4}",
-                        f"{'Jacobian':^18}": f"{Jacobian[n]:^18}" if n < len(Jacobian) else f"{'':<18}",
-                        f"{'Gaussian':^18}": f"{Gaussian[n]:^18}" if n < len(Gaussian) else f"{'':<18}",
+                        f"{'Jacobian':^18}": f"{Jacobian[ith][jth]:^18}",
+                        f"{'Gaussian':^18}": f"{Gaussian[ith][jth]:^18}",
                     }
                 )
+                # print(ith, jth)
                 n += 1
+            writer.writerow({})
 
 
 def main():
     numberLoop = 100
     ic = 100
-    unknowPoints = 40
+    unknowPoints = 10
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints
     fileSave = "ElectricPotentials.txt"
@@ -237,15 +240,15 @@ def main():
 
     AMatrix, BMatrix = createMatrix(dim)
     eigenFunction = np.zeros([dim**2, 1])
-    print(eigenFunction)
-    print((AMatrix))
-    print((BMatrix))
+    # print(eigenFunction)
+    # print((AMatrix))
+    # print((BMatrix))
     ugauss, loops = solveLoop(AMatrix, BMatrix, dim, FArrMatrixGauss, numberLoop, eigenFunction)
     ujacobi, loops = solveLoop(AMatrix, BMatrix, dim, FArrMatrixJacobian, numberLoop, eigenFunction)
     uSolution = np.linalg.solve(AMatrix, BMatrix)
-    print(ugauss)
-    print(ujacobi)
-    print(uSolution)
+    # print(ugauss)
+    # print(ujacobi)
+    # print(uSolution)
     #
     vgauss = np.reshape(ugauss, [i, j])
     vjacobi = np.reshape(ujacobi, [i, j])
@@ -254,13 +257,14 @@ def main():
     vjacobi = MatrixFull(vjacobi, ic)
     vgauss = MatrixFull(vgauss, ic)
     vSolution = MatrixFull(vSolution, ic)
-    print(vjacobi)
+    print(vjacobi.T)
+    # (vjacobi[1][2])
 
     UMatrix = u_values(unknowPoints)
     GaussWOMatrix = Gauss(unknowPoints, numberLoop, UMatrix)
 
     plotSol(filePlot, unknowPoints, vjacobi, vgauss, GaussWOMatrix, vSolution)
-    saveLog(fileSave, numberLoop, ujacobi, ugauss, i, j)
+    saveLog(fileSave, numberLoop, vjacobi.T, vgauss.T, i, j)
 
 
 if __name__ == "__main__":
