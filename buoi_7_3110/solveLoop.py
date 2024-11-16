@@ -6,7 +6,7 @@ def solveLoop(AMatrix: npt.NDArray, BMatrix: npt.NDArray, dim: int, F: npt.NDArr
 
     eigenFunction = initInput
     listEigenFunction = [eigenFunction]  ### Lưu giá trị vào mảng để kiểm soát
-    for i in tqdm(range(1, N), desc=f"{F.__qualname__}", unit="step"):
+    for i in tqdm(range(1, N + 1), desc=f"{F.__qualname__}", unit="step"):
 
         eigenFunction = F(AMatrix, BMatrix, dim, eigenFunction)
         listEigenFunction.append(eigenFunction)

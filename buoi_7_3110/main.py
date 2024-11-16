@@ -6,6 +6,9 @@ from math import sqrt
 import matplotlib.pyplot as plt
 import csv
 from tqdm import tqdm
+from os import system, remove
+import subprocess
+
 
 np.set_printoptions(precision=10, linewidth=120, edgeitems=15)
 
@@ -212,8 +215,8 @@ def saveLog(file: str, N, Jacobian, Gaussian, i, j):
         writer.writeheader()
 
         n = 0
-        for ith in range(0, i):
-            for jth in range(0, j):
+        for ith in range(0, i + 2):
+            for jth in range(0, j + 2):
 
                 writer.writerow(
                     {
@@ -229,10 +232,40 @@ def saveLog(file: str, N, Jacobian, Gaussian, i, j):
             writer.writerow({})
 
 
+def gnuPlot():
+    with open("gnuPlot.gp", "w") as gnuplot:
+        gnuplot.write(
+            """
+    set ylabel "y"
+    set xlabel "x"
+    set zlabel "V"
+
+
+    set multiplot layout 1,2
+    set grid
+    # set key horiz
+
+    splot "ElectricPotentials.txt" u 2:3:4 with lines tit "Jacobian"
+    
+    
+    set ylabel "y"
+    set xlabel "x"
+    set zlabel "V"
+    splot "ElectricPotentials.txt" u 2:3:5 with lines tit "Gaussian"
+
+
+    unset multiplot
+
+    pause -1
+"""
+        )
+    subprocess.run(["gnuplot", "gnuPlot.gp"])
+
+
 def main():
-    numberLoop = 100
+    numberLoop = 1000
     ic = 100
-    unknowPoints = 10
+    unknowPoints = 4
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints
     fileSave = "ElectricPotentials.txt"
@@ -257,14 +290,15 @@ def main():
     vjacobi = MatrixFull(vjacobi, ic)
     vgauss = MatrixFull(vgauss, ic)
     vSolution = MatrixFull(vSolution, ic)
-    print(vjacobi.T)
+    print(vjacobi)
     # (vjacobi[1][2])
 
     UMatrix = u_values(unknowPoints)
     GaussWOMatrix = Gauss(unknowPoints, numberLoop, UMatrix)
 
     plotSol(filePlot, unknowPoints, vjacobi, vgauss, GaussWOMatrix, vSolution)
-    saveLog(fileSave, numberLoop, vjacobi.T, vgauss.T, i, j)
+    saveLog(fileSave, numberLoop, vjacobi, vgauss, i, j)
+    gnuPlot()
 
 
 if __name__ == "__main__":
