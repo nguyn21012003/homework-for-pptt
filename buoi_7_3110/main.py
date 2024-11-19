@@ -6,7 +6,6 @@ from math import sqrt
 import matplotlib.pyplot as plt
 import csv
 from tqdm import tqdm
-from os import system, remove
 import subprocess
 
 
@@ -126,10 +125,13 @@ def createMatrix(dim: int):
     # print(AMatrix, "\n")
 
     BMatrix = np.zeros([dim**2, 1])
+    BMatrix[int(len(BMatrix) / 2)][0] = -10
 
-    for i in range(0, dim):
-        BMatrix[i] = -100
-        # BMatrix[-i - 1] = 100
+    # for i in range(0, dim):
+    #    BMatrix[i] = 0
+    # BMatrix[-i - 1] = 100
+
+    print(BMatrix)
 
     return AMatrix, BMatrix
 
@@ -163,6 +165,7 @@ def Gauss(d, N, u):
         for i in range(1, d - 1):
             for j in range(1, d - 1):
                 u[i][j] = 0.25 * (u[i + 1][j] + u[i - 1][j] + u[i][j + 1] + u[i][j - 1])
+
     return u
 
 
@@ -211,7 +214,7 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 def saveLog(file: str, N, Jacobian, Gaussian, i, j):
     with open(file, "w", newline="") as writefile:
         header = [f"{'n':^4}", f"{'i':^4}", f"{'j':^4}", f"{'Jacobian':^18}", f"{'Gaussian':^18}"]
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=f"{"\t":<1}")
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=f"{'\t':<1}")
         writer.writeheader()
 
         n = 0
@@ -263,9 +266,9 @@ def gnuPlot():
 
 
 def main():
-    numberLoop = 1000
-    ic = 100
-    unknowPoints = 4
+    numberLoop = 100
+    ic = 0
+    unknowPoints = 40
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints
     fileSave = "ElectricPotentials.txt"

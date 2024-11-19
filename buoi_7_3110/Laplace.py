@@ -20,6 +20,7 @@ def Gauss(d, N, u):
     return u
 
 
+
 def main():
     N = 10000
     d = 40
