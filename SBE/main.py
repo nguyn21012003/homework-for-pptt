@@ -1,32 +1,37 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from math import sqrt, log, pi, exp
+from math import sqrt, log, pi
 
 from numpy import real as RE, imag as IM, conjugate
 from numpy import typing as npt
 from time import time
 from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
+import csv, os
 
 # Input variables
 N = 100
 hbar = 658.5  # meV.fs
 chi_0 = 0.5
 E_R = 4.2  # meV
-delta_t = 20  # femtosecond
-delta_0 = -10  # meV
-t_max = 500  # femtosecond
+delta_t = 50  # femtosecond ### Bề rộng xung laser
+Delta_0 = 50  # meV
+t_max = 300  # femtosecond
 t0 = -3 * delta_t
 dt = 2  # femtosecond
 e_max = 300  # meV
 delta_e = e_max / N
 T2 = 200  # femtosecond
 a0 = 125  # ban kinh borh
-
-# Egap = 1.77e3  # eV
-# omega0 = Egap / hbar
+E0 = 100
+domega = 200 / N
+Egap = E0  # eV
+omega0 = Egap / hbar
 
 constant = delta_e * sqrt(delta_e)
+C0 = (delta_e * sqrt(delta_e) * 8 * sqrt(8)) / (2 * pi**2 * E_R ** (3 / 2))
+# print(C0)
+#### Nếu mà ∆_0 là hệ số detunning(hệ số vượt rào cao thì sẽ dẫn đến xung(trường điện từ) đi sâu vô hơn, nhưng chi_0 càng bé là cường độ xung càng bé dẫn đến bị tắt dần càng nhanh )
 
 
 def rk4(dF, tn, yn, h):
@@ -40,14 +45,13 @@ def rk4(dF, tn, yn, h):
 
 
 def g(n, n1):
-
     return (1 / sqrt(n * delta_e)) * log(abs((sqrt(n) + sqrt(n1)) / (sqrt(n) - sqrt(n1))))
 
 
 def E_n(n, g, f_e, f_h):
 
     E = 0
-    for n1 in range(1, N + 1):
+    for n1 in range(N + 1):
         if n1 == n:
             continue
         E += (sqrt(E_R) / pi) * delta_e * g(n, n1) * (f_e[n1] + f_h[n1])
@@ -58,18 +62,18 @@ def E_n(n, g, f_e, f_h):
 def omega_R(n, t, g, p_n):
 
     summ = 0
-    for n1 in range(1, N + 1):
+    for n1 in range(N + 1):
         if n1 == n:
             continue
         summ += g(n, n1) * p_n[n1]
-    OMEGA = (0.5 * (hbar * sqrt(pi) / delta_t) * chi_0 * exp(-(t**2) / delta_t**2) + (sqrt(E_R) / pi) * delta_e * summ) / hbar
+    OMEGA = (0.5 * (hbar * sqrt(pi) / delta_t) * chi_0 * np.exp(-(t**2) / delta_t**2) + (sqrt(E_R) / pi) * delta_e * summ) / hbar
 
     return OMEGA
 
 
 def dF(t, Y):
 
-    F = np.zeros((2, N + 1), dtype=complex)
+    F = np.zeros([2, N + 1], dtype="complex")
 
     # print(RE(Y[0]))
     for n in range(1, N + 1):
@@ -77,57 +81,76 @@ def dF(t, Y):
         OMEGA = omega_R(n, t, g, Y[1])
 
         F[0][n] = -2 * IM(OMEGA * conjugate(Y[1][n]))
-        F[1][n] = -(1j / hbar) * (n * delta_e - delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2) * 0
+        F[1][n] = -(1j / hbar) * (n * delta_e - Delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2)
 
     return F
 
 
-def solve_sys_ode(dF: npt.NDArray, h: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
+def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
 
-    Y = np.zeros((2, N + 1), dtype=complex)
+    # tSpan = np.linspace(t0, t_max, N)
+    tSpan = np.arange(t0, t_max, dt)
+    # print(tSpan)
+    # print((t_max - t0) / len(tSpan))
 
-    tSpan = np.linspace(t0, t_max, N)
-    # tSpan = np.arange(t0, t_max, 100)
-    print(tSpan)
-    Polarization = np.zeros(N)
-    NumberDensity = np.zeros(N)
+    Y = np.zeros([2, N + 1], dtype="complex")
+    Polarization = np.zeros(len(tSpan))
+    NumberDensity = np.zeros(len(tSpan))
     EnergyEps = np.zeros(N)
     fe = []
     p = []
-    for ti in tqdm(range(len(tSpan)), desc="Processing", unit="step "):
+    # print(len(Y))
+    for ti in tqdm(range(len(tSpan)), desc="Processing", unit="step ", ascii=" #"):
 
-        Y = rk4(dF, tSpan[ti], Y, h)
+        Y = rk4(dF, tSpan[ti], Y, dt)
+        # print(RE(Y[0]))
         fe_t = []
         p_t = []
         NumberDensity_sum = 0
         Polarization_sum = 0
-        for n in range(N):
-            fe_t.append(RE(Y[0][n]))
-            p_t.append((abs(Y[1][n])))
+        for n in range(N + 1):
+            if RE(Y[0][n]) != 0.0:
+                fe_t.append(RE(Y[0][n]))
+                p_t.append((abs(Y[1][n])))
+            # print(fe_t)
 
-            EnergyEps[n] = (n + 1) * delta_e
+            EnergyEps[n - 1] = n * delta_e
 
-            NumberDensity_sum += sqrt(n + 1) * RE(Y[0][n])
-            Polarization_sum += abs(constant * sqrt(n + 1) * RE(Y[1][n]))
+            NumberDensity_sum += C0 * sqrt(n + 1) * RE(Y[0][n])
+            Polarization_sum += constant * sqrt(n + 1) * RE(Y[1][n])
 
         NumberDensity[ti] = NumberDensity_sum
         Polarization[ti] = Polarization_sum
+        # print(Polarization)
 
         fe.append(fe_t)
         p.append(p_t)
 
-    return tSpan, EnergyEps, fe, p, Polarization, NumberDensity
+    listEom = []
+    listPom = []
+    omega = 0
+    Piomega = np.zeros(len(tSpan), dtype="complex")
+    for omega_i in range(len(tSpan)):
+        omega += omega0 + omega_i * domega
+
+        for i in range(1, len(tSpan)):
+            Piomega[i] = Piomega[i] + delta_t * Polarization[i] * np.exp(1j * omega * delta_t)
+        listPom.append(Piomega)
+
+    np.array(listPom)
+
+    return tSpan, EnergyEps, fe, p, Polarization, NumberDensity, listPom  # , listEom
 
 
-def Et(arg):
-    pass
+def Eom(omega):
+    return E0 * delta_t * sqrt(pi) * np.exp(-((delta_t * hbar * omega) ** 2) / 4)
 
 
 def FourierTrans(arg):
     pass
 
 
-def multipage(filename, figs=None, dpi=200):
+def multipage(filename, figs=None):
 
     pp = PdfPages(filename)
     if figs is None:
@@ -137,27 +160,30 @@ def multipage(filename, figs=None, dpi=200):
     pp.close()
 
 
-def main():
+def createFolder(folderName):
+    if not os.path.exists(folderName):
+        os.makedirs(folderName)
+    else:
+        pass
 
-    start = time()
 
-    t, EnergyEps, fe, p, Polarization, NumberDensity = solve_sys_ode(dF, dt, rk4, N)
+def saveLog(T, E, fe, p, Polarization, NumberDensity, t):
+    file = "SBE.data.txt"
+    with open(file, "w") as writefile:
+        header = ["t"]
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
+        writer.writeheader()
+        print(len(t))
 
-    end = time()
 
-    print(end - start)
-    E, T = np.meshgrid(EnergyEps, t)
-
-    fe = np.array(fe)
-    p = np.array(p)
+def plot(T, E, fe, p, Polarization, NumberDensity, t, Pom):
+    fig1 = plt.figure(figsize=(16, 10))
+    fig2 = plt.figure(figsize=(16, 10))
+    fig3 = plt.figure(figsize=(16, 10))
 
     color = "inferno"
     ombre = "copper"
     transparent = 0.8
-
-    fig1 = plt.figure(figsize=(16, 10))
-    fig2 = plt.figure(figsize=(16, 10))
-    # fig3 = plt.figure(figsize=(16, 10))
 
     ax1 = fig1.add_subplot(121, projection="3d")
     ax1.plot_wireframe(T, E, fe)
@@ -185,15 +211,55 @@ def main():
     ax4.set_xlabel(r"Thời gian t(fs)")
     ax4.set_title(r"Hàm phân bố toàn phần $N(t)$ theo thời gian và năng lượng")
 
-    # ax5 = fig3.add_subplot(122)
-    # ax5.plot(t, Energy)
+    ax5 = fig3.add_subplot(122)
+    ax5.plot(t, Pom)
 
     # ax3 = fig.add_subplot(133, projection="3d")
     # ax3.plot_surface(T, E, P, cmap="copper")
 
-    multipage(f"{delta_t}&{delta_0}fs with N={N}&{chi_0}.pdf")
+    folderName = "data"
+    createFolder(folderName)
+    pdf_path = os.path.join(folderName, f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.pdf")
+
+    multipage(pdf_path)
 
     plt.show()
+
+
+def main():
+
+    start = time()
+
+    t, EnergyEps, fe, p, Polarization, NumberDensity, listPom = solve_sys_ode(dF, dt, rk4, N)
+
+    end = time()
+
+    print(end - start)
+
+    E, T = np.meshgrid(EnergyEps, t)
+    fe = np.array(fe)
+    p = np.array(p)
+
+    # print(fe.shape)
+    # print(T.shape)
+    # print(E.shape)
+    # print(T)
+    # print(len(fe))
+
+    with open("data.txt", "w") as writefile:
+        header = ["t", "Eps", "fe"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(len(T)):
+            writer.writerow(
+                {
+                    "t": f"{i}",
+                    "Eps": f"{E[i]}",
+                    "fe": f"{fe[i]}",
+                }
+            )
+    plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
+    saveLog(T, E, fe, p, Polarization, NumberDensity, t)
 
 
 if __name__ == "__main__":
