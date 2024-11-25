@@ -70,10 +70,10 @@ def saveLog(file: str, N: int, xByhand: list, xMatrix: list, xGauss: list):
 
             writer.writerow(
                 {
-                    f"{"k":^11}": f"{i:^11}",
-                    f"{"Jacobian By Hand":^49}": xByhand[i] if i < len(xByhand) else f"{"":<49}",
-                    f"{"Jacobian Matrix":^49}": xMatrix[i] if i < len(xMatrix) else f"{"":<49}",
-                    f"{"Gaussian Matrix":^49}": xGauss[i] if i < len(xGauss) else f"{"":<49}",
+                    f"{'k':^11}": f"{i:^11}",
+                    f"{'Jacobian By Hand':^49}": xByhand[i] if i < len(xByhand) else f"{'':<49}",
+                    f"{'Jacobian Matrix':^49}": xMatrix[i] if i < len(xMatrix) else f"{'':<49}",
+                    f"{'Gaussian Matrix':^49}": xGauss[i] if i < len(xGauss) else f"{'':<49}",
                 }
             )
 

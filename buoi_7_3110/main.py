@@ -214,7 +214,7 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 def saveLog(file: str, N, Jacobian, Gaussian, i, j):
     with open(file, "w", newline="") as writefile:
         header = [f"{'n':^4}", f"{'i':^4}", f"{'j':^4}", f"{'Jacobian':^18}", f"{'Gaussian':^18}"]
-        writer = csv.DictWriter(writefile, fieldnames=header, delimiter=f"{'\t':<1}")
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
         writer.writeheader()
 
         n = 0
@@ -233,6 +233,7 @@ def saveLog(file: str, N, Jacobian, Gaussian, i, j):
                 # print(ith, jth)
                 n += 1
             writer.writerow({})
+
 
 
 def gnuPlot():
@@ -268,7 +269,7 @@ def gnuPlot():
 def main():
     numberLoop = 100
     ic = 0
-    unknowPoints = 40
+    unknowPoints = 4
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints
     fileSave = "ElectricPotentials.txt"
