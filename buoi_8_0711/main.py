@@ -6,7 +6,31 @@ import matplotlib.pyplot as plt
 np.set_printoptions(precision=10, linewidth=1200, edgeitems=24)
 
 
-def FowardDiff(x, t, eta):
+L = 50  ### Mét
+t = 3000
+
+kappa = 237  #### Thông số lấy trong Rubin
+Cv = 900
+rho = 2700
+dL = 0.005
+dt = 0.1
+eta = kappa / (Cv * rho) * dt / (dL**2)
+
+
+def FowardDiff(x: int, t: int, eta: float) -> list:
+    """Create the main of this code. Its about to solve the PE for Heat equation problem.
+    By using j is the step of time, when we discreted time and L.
+
+    Args:
+        x: (int) take the max length of the rod
+        t: (int) take the max time to heat the rod
+        eta: (float) the constant represent for the thermal conductivity of materials, and the specific heat, and density
+
+    x,t must be interger in order to we will call this as matrix index in later.
+
+    Returns:
+        U: (list) this array will be stored all the value of the "lattice like" index, which I will the matrix in later.
+    """
 
     U = []
     for _ in range(x + 1):
@@ -26,10 +50,11 @@ def FowardDiff(x, t, eta):
         for i in range(1, x):
             U[i][j + 1] = (1 - 2 * eta) * U[i][j] + eta * (U[i + 1][j] + U[i - 1][j])
 
-    return np.array(U)
+    return U
 
 
-def writeLog(x, t, U):
+def writeLog(x: int, t: int, U: list) -> None:
+    """This function responsible for write out data of this code. I need the value of U with respectively x and t, so I also need the value of x and t."""
     file = "heatEquationData.txt"
     with open(file, "w", newline="") as writefile:
         header = [
@@ -52,16 +77,25 @@ def writeLog(x, t, U):
                     }
                 )
             prev_xi = xi
-    print(U)
 
+    U = np.array(U)
+    X = np.linspace(0, int(x), x + 1)
+    T = np.linspace(0, int(t), t + 1)
     fig = plt.figure(figsize=(15, 7))
-    X, T = np.meshgrid(x, t)
+    X, T = np.meshgrid(T, X)
     ax1 = fig.add_subplot(projection="3d")
-    ax1.plot_surface(X, T, U, cmap="viridis")
+    ax1.plot_wireframe(X, T, U, color="purple")
+    ax1.set_xlabel("time (s)")
+    ax1.set_zlabel("T (K)")
+    ax1.set_ylabel("x")
+    ax1.legend([f"time = {t}s , L = {L}m, kappa = {kappa}, C = {Cv}, rho = {rho}"])
+
+    plt.savefig("heatEquationData.png")
     plt.show()
+    return None
 
 
-def gnuPlot(file):
+def gnuPlot(file: str) -> None:
     """
     Không xài dòng nào thì # vào dòng đó
     """
@@ -82,20 +116,8 @@ def gnuPlot(file):
 
     splot "{file}" u 1:2:3 with lines 
 
-    set datafile separator '\t'
-
-    #set ylabel "y"
-    #set xlabel "x"
-    #set zlabel "z"
-    #splot "{file}" u 1:2:4 with lines tit "p_t"
-
-
-    #set xlabel "Omega"
-    #set ylabel "alpha(omega)"
-    #plot "{file}" u 2:3 with lines tit "Phân cực toàn phần"
-    ##plot "{file}" u 2:4 with lines tit "Mật độ toàn phần"
-    #plot "{file}" u 2:5 with lines tit "Phổ hấp thụ"
-
+    #set datafile separator '\t'
+    
 
     #unset multiplot
 
@@ -104,18 +126,10 @@ def gnuPlot(file):
 """
         )
     subprocess.run(["gnuplot", "gnuPlot.gp"])
+    return None
 
 
 def main():
-    L = 10  ### Mét
-    t = 300
-
-    kappa = 210
-    Cv = 900
-    rho = 2700
-    dL = 0.01
-    dt = 0.3
-    eta = kappa / (Cv * rho) * dt / (dL**2)
 
     U = FowardDiff(L, t, eta)
     writeLog(L, t, U)
