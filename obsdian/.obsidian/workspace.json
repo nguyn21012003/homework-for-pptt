@@ -13,24 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Welcome.md",
+                "file": "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
                 "mode": "source",
                 "source": false
-              }
-            }
-          }
-        ]
-      },
-      {
-        "id": "7802dc709faee49a",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "7f2b574fe4b7f62a",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {}
+              },
+              "icon": "lucide-file",
+              "title": "Solve Parabolic Equation - PDE using Numerical Methods"
             }
           }
         ]
@@ -53,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -68,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -76,14 +68,16 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 301.5
   },
   "right": {
     "id": "3ea3fd37edae7066",
@@ -99,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Welcome.md",
+                "file": "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -107,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Solve Parabolic Equation - PDE using Numerical Methods"
             }
           },
           {
@@ -116,10 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Welcome.md",
+                "file": "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Solve Parabolic Equation - PDE using Numerical Methods"
             }
           },
           {
@@ -130,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -139,8 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Welcome.md"
-              }
+                "file": "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Solve Parabolic Equation - PDE using Numerical Methods"
             }
           }
         ]
@@ -162,6 +164,36 @@
   },
   "active": "1be9781770b4e4bb",
   "lastOpenFiles": [
-    "Welcome.md"
+    "tuan8/heatEquationData.png",
+    "tuan7/ReportElectricPotential.md",
+    "tuan7/latiice.png",
+    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+    "Welcome.md",
+    "tuan8",
+    "Tuần 8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+    "Tuần 8",
+    "tuan6/truss.png",
+    "tuan6/nonlinearOSC.png",
+    "tuan6/Nonlinear Oscillations.md",
+    "tuan6/mathematica.png",
+    "tuan6/b2.png",
+    "tuan6/b10.png",
+    "tuan6",
+    "tuan4/sODe.png",
+    "tuan4/sODE.md",
+    "tuan4/pendulumThetaN=50.png",
+    "tuan4/pendulumThetapilon.png",
+    "tuan4/nemxien.pdf",
+    "tuan4",
+    "tuan3/res/data.pdf",
+    "tuan3/res",
+    "tuan3/numericalmethod.gnuplot.pdf",
+    "tuan3/mcrm.md.pdf",
+    "tuan3/mcrm.md.md",
+    "tuan3/ivp.md.pdf",
+    "tuan3/ivp.md.md",
+    "quantumwell/Secant.canvas",
+    "quantumwell/Newton.canvas",
+    "quantumwell/Bisection.canvas"
   ]
 }

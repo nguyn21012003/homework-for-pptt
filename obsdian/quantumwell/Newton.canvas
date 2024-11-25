@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"c333a9316ef564ff","type":"text","text":"Start","x":-1013,"y":-660,"width":250,"height":60},
+		{"id":"158972670488d73b","type":"text","text":"```python\np0_n = p0\n```\n\n\n","x":-1013,"y":-500,"width":250,"height":72},
+		{"id":"d40cd68546c057c0","type":"text","text":"```python\nn = 0\n```","x":-958,"y":-330,"width":140,"height":60},
+		{"id":"bbcc4de2e99d54cb","type":"text","text":"```python\nn += 1\n```","x":-763,"y":-330,"width":164,"height":60},
+		{"id":"5d5f3515853f0798","type":"text","text":"```python\np0_n = p0_n - f(p0_n, z0) / df(p0_n, z0)\n```","x":-1500,"y":-270,"width":473,"height":80},
+		{"id":"0552caabb40b3ba6","type":"text","text":"```python\ndf(p0_n, z0) != 0\n```","x":-1332,"y":-119,"width":250,"height":60},
+		{"id":"6881a07f93f52fd7","type":"text","text":"```python\nreturn p0_n\n```","x":-989,"y":23,"width":200,"height":65},
+		{"id":"7ae317bc893d3c0a","type":"text","text":"```python\nabs(f(p0_n, z0)) < eps\n```","x":-740,"y":-171,"width":282,"height":82}
+	],
+	"edges":[
+		{"id":"afbf9f7fad98676c","fromNode":"158972670488d73b","fromSide":"bottom","toNode":"d40cd68546c057c0","toSide":"top","color":"3"},
+		{"id":"77ce4dc0803242a7","fromNode":"d40cd68546c057c0","fromSide":"left","toNode":"5d5f3515853f0798","toSide":"top","color":"3"},
+		{"id":"e9fa78ca39fa3c06","fromNode":"c333a9316ef564ff","fromSide":"bottom","toNode":"158972670488d73b","toSide":"top","color":"3"},
+		{"id":"4668fb8955480a3e","fromNode":"bbcc4de2e99d54cb","fromSide":"left","toNode":"d40cd68546c057c0","toSide":"right","color":"3"},
+		{"id":"a488e8e1b86a600e","fromNode":"5d5f3515853f0798","fromSide":"bottom","toNode":"0552caabb40b3ba6","toSide":"top","color":"3"},
+		{"id":"6246d5c45bf908b5","fromNode":"0552caabb40b3ba6","fromSide":"bottom","toNode":"6881a07f93f52fd7","toSide":"top","color":"1","label":"False"},
+		{"id":"b3515eb6a98671a8","fromNode":"0552caabb40b3ba6","fromSide":"right","toNode":"7ae317bc893d3c0a","toSide":"left","color":"4","label":"True"},
+		{"id":"e40c86c97f70d9bb","fromNode":"7ae317bc893d3c0a","fromSide":"bottom","toNode":"6881a07f93f52fd7","toSide":"top","color":"4","label":"True"},
+		{"id":"eed253e51d849874","fromNode":"7ae317bc893d3c0a","fromSide":"right","toNode":"bbcc4de2e99d54cb","toSide":"right","color":"1","label":"False"}
+	]
+}
