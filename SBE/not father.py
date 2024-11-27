@@ -11,19 +11,19 @@ from time import time
 from numpy import typing as npt
 
 #### Local Library
-from sbeFile.constant import N, hbar, chi_0, E_R, delta_t, Delta_0, t_max, t0, dt, delta_e, T2, E0, C0
+from sbeFile.constant import N, hbar, chi_0, E_R, delta_t, Delta_0, t_max, t0, dt, delta_e, E0, C0, gamma
 
 
 # print(C0)
 #### Nếu mà ∆_0 là hệ số detunning(hệ số vượt rào cao thì sẽ dẫn đến xung(trường điện từ) đi sâu vô hơn, nhưng chi_0 càng bé là cường độ xung càng bé dẫn đến bị tắt dần càng nhanh )
 
 
-def rk4(dF, tn, yn, h):
+def rk4(dF, tn, yn, h, T2):
     # tn is value in tSpan  array
-    k1 = dF(tn, yn)
-    k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1)
-    k3 = dF(tn + 0.5 * h, yn + 0.5 * h * k2)
-    k4 = dF(tn + h, yn + h * k3)
+    k1 = dF(tn, yn, T2)
+    k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1, T2)
+    k3 = dF(tn + 0.5 * h, yn + 0.5 * h * k2, T2)
+    k4 = dF(tn + h, yn + h * k3, T2)
 
     return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
 
@@ -55,7 +55,7 @@ def omega_R(n, t, g, p_n):
     return OMEGA
 
 
-def dF(t, Y):
+def dF(t, Y, T2):
 
     F = np.zeros([2, N + 1], dtype="complex")
 
@@ -75,7 +75,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
     fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortion.txt"
     # tSpan = np.linspace(t0, t_max, N)
     tSpan = np.arange(t0, t_max, dt)
-    omega = np.linspace(-100, 100, len(tSpan))
+    omega = np.linspace(-200, 200, len(tSpan))
     # print(tSpan)
     # print((t_max - t0) / len(tSpan))
 
@@ -88,6 +88,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
     listAlpha = []
     fe = []
     p = []
+    listT2 = []
     # print(len(Y))
     with open(fileWriteSBE, "w", newline="") as writefile:
         header = [
@@ -101,10 +102,10 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
         writer.writeheader()
         prev_ti = None
-
+        T2 = 210
         for ti in tqdm(range(len(tSpan)), desc="Processing", unit="step ", ascii=" #"):
 
-            Y = rk4(dF, tSpan[ti], Y, dt)
+            Y = rk4(dF, tSpan[ti], Y, dt, T2)
             # print(RE(Y[0]))
             fe_t = []
             p_t = []
@@ -112,7 +113,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             Polarization_sum = 0
             for n in range(N + 1):
                 fe_t.append(RE(Y[0][n]))
-                p_t.append(abs((Y[1][n])))
+                p_t.append(abs(Y[1][n]))
                 # print(fe_t)
 
                 EnergyEps[n] = n * delta_e
@@ -122,14 +123,16 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
 
             NumberDensity[ti] = NumberDensity_sum
             Polarization[ti] = Polarization_sum
-            # print(Polarization)
 
+            T2 = 1 / (1 / 210 + gamma * NumberDensity[ti])
+            listT2.append(T2)
+            # print(Polarization)
             fe.append(fe_t)
             p.append(p_t)
             if prev_ti is not None and ti != prev_ti:
                 writer.writerow({})  ### Để ghi file cách dòng
-
-            for i in range(len(fe_t)):
+            #################################################### Tới đây là hết 1 vòng của ti trong tSpan tiếp tới ti = 1
+            for i in range(N):
 
                 writer.writerow(
                     {
@@ -153,6 +156,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             f"{'IM_POmega':^45}",
             f"{'RE_EOmega':^45}",
             f"{'IM_EOmega':^45}",
+            f"{'T2':^20}",
         ]
         writerfileAbsortion = csv.DictWriter(writefileAbsortion, fieldnames=header, delimiter="\t")
         writerfileAbsortion.writeheader()
@@ -169,7 +173,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             listAlpha.append(alpha)
             writerfileAbsortion.writerow(
                 {
-                    f"{'Thoi gian':^9}": f"{tSpan[i]:^9}",
+                    f"{'Thoi gian':^9}": f"{tSpan[omega_i]:^9}",
                     f"{'tan so omega':^25}": f"{omega[omega_i]:^25}",
                     f"{'Polarization':^60}": f"{Polarization[omega_i]:^60}",
                     f"{'NumberDensity':^45}": f"{NumberDensity[omega_i]:^45}",
@@ -178,6 +182,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
                     f"{'IM_POmega':^45}": f"{IM(Piomega):^45}",
                     f"{'RE_EOmega':^45}": f"{RE(Eiomega):^45}",
                     f"{'IM_EOmega':^45}": f"{IM(Eiomega):^45}",
+                    f"{'T2':^20}": f"{listT2[omega_i]:^45}",
                 }
             )
 
@@ -312,7 +317,7 @@ def main():
     fe = np.array(fe)
     p = np.array(p)
 
-    plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
+    # plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
     gnuPlot()
 
 
