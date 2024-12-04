@@ -73,6 +73,9 @@ def dF(t, Y):
 def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
     fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
     fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortion.txt"
+
+    print(fileWriteSBE)
+    print(fileWriteAbsortion)
     # tSpan = np.linspace(t0, t_max, N)
     tSpan = np.arange(t0, t_max, dt)
     omega = np.linspace(-100, 100, len(tSpan))
@@ -82,7 +85,8 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
     Y = np.zeros([2, N + 1], dtype="complex")
     EnergyEps = np.zeros(N + 1)
 
-    Polarization = np.zeros(len(tSpan), dtype="complex")
+    # Polarization = np.zeros(len(tSpan), dtype="complex")
+    Polarization = np.zeros(len(tSpan))
     NumberDensity = np.zeros(len(tSpan))
     # listEom = []
     listAlpha = []
@@ -118,7 +122,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
                 EnergyEps[n] = n * delta_e
 
                 NumberDensity_sum += C0 * sqrt(n + 1) * RE(Y[0][n])
-                Polarization_sum += delta_e * sqrt(delta_e) * sqrt(n + 1) * (Y[1][n])
+                Polarization_sum += delta_e * sqrt(delta_e) * sqrt(n + 1) * abs(Y[1][n])
 
             NumberDensity[ti] = NumberDensity_sum
             Polarization[ti] = Polarization_sum
@@ -169,7 +173,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             listAlpha.append(alpha)
             writerfileAbsortion.writerow(
                 {
-                    f"{'Thoi gian':^9}": f"{tSpan[i]:^9}",
+                    f"{'Thoi gian':^9}": f"{tSpan[omega_i]:^9}",
                     f"{'tan so omega':^25}": f"{omega[omega_i]:^25}",
                     f"{'Polarization':^60}": f"{Polarization[omega_i]:^60}",
                     f"{'NumberDensity':^45}": f"{NumberDensity[omega_i]:^45}",

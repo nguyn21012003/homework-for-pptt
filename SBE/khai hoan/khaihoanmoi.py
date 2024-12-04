@@ -12,15 +12,15 @@ from tqdm import tqdm
 N = 1000  # Số phương trình
 hbar = 658.5  # meV.fs
 E_R = 4.2  # meV
-delta_t = 50  # femtosecond
-delta_0 = 50  # meV (Độ bơm để electron đi sâu vào dải -> delta_0 càng lớn thì electron càng vào sâu bên trong dải dẫn!) = hbar*omega_0 - E_g
+delta_t = 25  # femtosecond
+delta_0 = 10  # meV (Độ bơm để electron đi sâu vào dải -> delta_0 càng lớn thì electron càng vào sâu bên trong dải dẫn!) = hbar*omega_0 - E_g  #### Để từ 10 - 50
 t_max = 1000  # femtosecond
 t_0 = -3 * delta_t  # femtosecond
 e_max = 300  # meV
 delta_e = e_max / N  # meV
 T20 = 210  # femtosecond
 dt = 2  # femtosecond
-khi_o = 0.1  # Tham số cường độ xung (0.1 - 2)
+khi_o = 0.01  # Tham số cường độ xung (0.1 - 2)
 a0 = 125  # Bán kính Bohr (Amstrong)
 gamma = 6.5 * 1e-20  # cm^{3}.fs^{-1}
 M = int((t_max - t_0) / dt)  # Số bước lặp RK4
@@ -30,7 +30,7 @@ M = int((t_max - t_0) / dt)  # Số bước lặp RK4
 C0 = (delta_e * sqrt(delta_e) * 1e24) / (2 * (pi**2) * E_R ** (3 / 2) * a0**3)
 E0 = khi_o  ## biên độ của trường điện
 
-########### Thông số giữ nguyên
+#################################################################################
 
 # Tính trước giá trị của g(n, n1)
 n_values = np.arange(1, N + 1)
@@ -89,9 +89,9 @@ def main():
     #### Y[1][N] sẽ là pn
 
     steps = np.arange(t_0, t_max, dt)  # Mảng thời gian
-    omega = np.linspace(-200, 200, len(steps))  ### Chia đoạn omega để Fourier Tranform
+    omega = np.linspace(-100, 100, len(steps))  ### Chia đoạn omega để Fourier Tranform
 
-    print(steps)
+    # print(steps)
 
     Mat_do_toan_phan_t = np.zeros(len(steps))  #### Để lưu giá trị hàm mật độ toàn phần
     Ham_phan_cuc_t = np.zeros(len(steps), dtype="complex")  #### Để lưu giá trị của hàm phân cực toàn phần chỗ này phải là REAL vì ta lấy abs của Pt
@@ -106,7 +106,7 @@ def main():
     listFE_t = []
     listFH_t = []
     listPt_t = []
-    listT2 = []
+
     T2 = 210
     for ti in tqdm(range(len(steps)), desc="Processing", unit="step ", ascii=" #"):
         ## Tại thời gian t = ti thì sẽ có 1 lần lặp RK4 và trả về 100 pt của Y. Thì listFE,FH,Pt có tác dụng là sẽ ghi thành phần thứ n trong 100 pt của Y
@@ -136,7 +136,7 @@ def main():
         Mat_do_toan_phan_t[ti] = Mat_do_toan_phan
         Ham_phan_cuc_t[ti] = Ham_phan_cuc
         T2 = 1 / (1 / 210 + gamma * Mat_do_toan_phan)
-        listT2.append(T2)
+        # print(T2)
 
     listAlpha = []  ### Để chứa giá trị của hệ số hấp thụ
 
@@ -157,8 +157,37 @@ def main():
         ### Alpha sẽ lấy tổng của ham_phan_cuc_iomega truong_dien_iomega và chỉ lấy thành phần phức.
         listAlpha.append(Alpha)
 
+    with open("sbe.dat", "w", newline="") as writefile:
+        header = [
+            "t",
+            "RE_E",
+            "IM_E",
+            "RE_P",
+            "IM_P",
+            "Alpha",
+        ]
+        writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
+        writer.writeheader()
+        for i in range(len(steps)):
+            writer.writerow(
+                {
+                    "t": i,
+                    "RE_E": RE(E_dientruong[i]),
+                    "IM_E": IM(E_dientruong[i]),
+                    "RE_P": RE(Ham_phan_cuc_omega[i]),
+                    "IM_P": IM(Ham_phan_cuc_omega[i]),
+                    "Alpha": listAlpha[i],
+                }
+            )
     with open("sbeOMEGA.dat", "w", newline="") as writefile:
-        header = ["omega", "RE_E", "IM_E", "RE_P", "IM_P", "Alpha", "T2"]
+        header = [
+            "omega",
+            "RE_E",
+            "IM_E",
+            "RE_P",
+            "IM_P",
+            "Alpha",
+        ]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
         writer.writeheader()
         for omega_ii in range(len(omega)):
@@ -170,7 +199,6 @@ def main():
                     "RE_P": RE(Ham_phan_cuc_omega[omega_ii]),
                     "IM_P": IM(Ham_phan_cuc_omega[omega_ii]),
                     "Alpha": listAlpha[omega_ii],
-                    "T2": listT2[omega_ii],
                 }
             )
 
