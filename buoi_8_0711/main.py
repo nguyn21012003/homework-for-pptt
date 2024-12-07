@@ -92,6 +92,7 @@ def writeLog(x: int, t: int, U: list) -> None:
 
     plt.savefig("heatEquationData.png")
     plt.show()
+
     return None
 
 

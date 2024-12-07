@@ -7,7 +7,7 @@
 
 ### Kết quả
 
-![heatEquationData](heatEquationData.png)
+![heatEquationData](heatEquationData.jpg)
 
 ### Sour code
 
