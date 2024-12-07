@@ -11,10 +11,14 @@
             "id": "14b18a3c292c3e48",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Solve Parabolic Equation - PDE using Numerical Methods"
             }
           }
         ]
@@ -160,14 +164,15 @@
   },
   "active": "14b18a3c292c3e48",
   "lastOpenFiles": [
+    "tuan8/heatEquationData.jpg",
+    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+    "Welcome.md",
     "tuan3/mcrm.md.md",
     "tuan4/sODE.md",
     "tuan4/nemxien.pdf",
-    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
     "tuan8/heatEquationData.png",
     "tuan7/ReportElectricPotential.md",
     "tuan7/latiice.png",
-    "Welcome.md",
     "tuan8",
     "Tuần 8/Solve Parabolic Equation - PDE using Numerical Methods.md",
     "Tuần 8",
@@ -180,7 +185,6 @@
     "tuan6",
     "tuan4/sODe.png",
     "tuan4/pendulumThetaN=50.png",
-    "tuan4/pendulumThetapilon.png",
     "tuan4",
     "tuan3/res/data.pdf",
     "tuan3/res",
