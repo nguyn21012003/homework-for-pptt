@@ -38,27 +38,6 @@ def FowardDiff(x: int, t: int, beta):
     return U
 
 
-def BackwardDiff(x: int, t: int, beta):
-    U = []
-    for _ in range(x + 1):
-        row = []
-        for _ in range(t + 1):
-            row.append(0.0)
-        U.append(row)
-    for xi in range(1, x):
-        U[xi][0] = 100.0
-
-    for ti in range(1, t + 1):
-        U[0][ti] = 0.0
-        U[x][ti] = 0.0
-
-    for j in range(t):
-        for i in range(1, x):
-            U[i][j + 1] = 2 * (1 - beta**2) * U[i][j] + beta**2 * (U[i + 1][j] + U[i - 1][j]) - U[i][j - 1]
-
-    return U
-
-
 def writeLog(x: int, t: int) -> None:
     """This function responsible for write out data of this code. I need the value of U with respectively x and t, so I also need the value of x and t."""
     file = "HyperbolicEquationData.txt"
