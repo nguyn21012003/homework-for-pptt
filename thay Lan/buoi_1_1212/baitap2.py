@@ -29,6 +29,7 @@ def Solution(N, eps, gamma, x, y):
 
             it = i
             break
+
     return w1
 
 

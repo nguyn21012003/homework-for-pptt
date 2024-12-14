@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt, log, pi
 from numpy import real as RE, imag as IM, conjugate
+import math as m
 
 ########################################################
 from matplotlib.backends.backend_pdf import PdfPages
@@ -11,7 +12,21 @@ from time import time
 from numpy import typing as npt
 
 #### Local Library
-from sbeFile.constant import N, hbar, chi_0, E_R, delta_t, Delta_0, t_max, t0, dt, delta_e, T2, E0, C0
+from sbeFile.constant import (
+    N,
+    hbar,
+    chi_0,
+    E_R,
+    delta_t,
+    Delta_0,
+    t_max,
+    t0,
+    dt,
+    delta_e,
+    T2,
+    E0,
+    C0,
+)
 
 
 # print(C0)
@@ -29,7 +44,9 @@ def rk4(dF, tn, yn, h):
 
 
 def g(n, n1):
-    return (1 / sqrt(n * delta_e)) * log(abs((sqrt(n) + sqrt(n1)) / (sqrt(n) - sqrt(n1))))
+    return (1 / sqrt(n * delta_e)) * log(
+        abs((sqrt(n) + sqrt(n1)) / (sqrt(n) - sqrt(n1)))
+    )
 
 
 def E_n(n, g, f_e, f_h):
@@ -50,7 +67,10 @@ def omega_R(n, t, g, p_n):
         if n1 == n:
             continue
         summ += g(n, n1) * p_n[n1]
-    OMEGA = (0.5 * (hbar * sqrt(pi) / delta_t) * chi_0 * np.exp(-(t**2) / delta_t**2) + (sqrt(E_R) / pi) * delta_e * summ) / hbar
+    OMEGA = (
+        0.5 * (hbar * sqrt(pi) / delta_t) * chi_0 * np.exp(-(t**2) / delta_t**2)
+        + (sqrt(E_R) / pi) * delta_e * summ
+    ) / hbar
 
     return OMEGA
 
@@ -65,7 +85,11 @@ def dF(t, Y):
         OMEGA = omega_R(n, t, g, Y[1])
 
         F[0][n] = -2 * IM(OMEGA * conjugate(Y[1][n]))
-        F[1][n] = -(1j / hbar) * (n * delta_e - Delta_0 - E) * Y[1][n] + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA - (Y[1][n] / T2)
+        F[1][n] = (
+            -(1j / hbar) * (n * delta_e - Delta_0 - E) * Y[1][n]
+            + 1j * (1 - RE(Y[0])[n] - IM(Y[0])[n]) * OMEGA
+            - (Y[1][n] / T2)
+        )
 
     return F
 
@@ -158,7 +182,9 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             f"{'RE_EOmega':^45}",
             f"{'IM_EOmega':^45}",
         ]
-        writerfileAbsortion = csv.DictWriter(writefileAbsortion, fieldnames=header, delimiter="\t")
+        writerfileAbsortion = csv.DictWriter(
+            writefileAbsortion, fieldnames=header, delimiter="\t"
+        )
         writerfileAbsortion.writeheader()
 
         for omega_i in range(len(omega)):
@@ -166,8 +192,15 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             Piomega = 0
             Eiomega = 0
             for i in range(0, len(tSpan)):
-                Piomega += dt * Polarization[i] * np.exp(1j * omega[omega_i] * tSpan[i] / hbar)
-                Eiomega += E0 * dt * np.exp(1j * omega[omega_i] * tSpan[i] / hbar) * np.exp(-(tSpan[i] ** 2) / (delta_t**2))
+                Piomega += (
+                    dt * Polarization[i] * np.exp(1j * omega[omega_i] * tSpan[i] / hbar)
+                )
+                Eiomega += (
+                    E0
+                    * dt
+                    * np.exp(1j * omega[omega_i] * tSpan[i] / hbar)
+                    * np.exp(-(tSpan[i] ** 2) / (delta_t**2))
+                )
 
             alpha = IM(Piomega / Eiomega)
             listAlpha.append(alpha)
@@ -306,7 +339,9 @@ def main():
 
     start = time()
 
-    t, EnergyEps, fe, p, Polarization, NumberDensity, listPom = solve_sys_ode(dF, dt, rk4, N)
+    t, EnergyEps, fe, p, Polarization, NumberDensity, listPom = solve_sys_ode(
+        dF, dt, rk4, N
+    )
 
     end = time()
 

@@ -62,7 +62,9 @@ def omega_R(n, t, fp):
     for n1 in range(N):
         if n1 != n:
             sum += g(n, n1) * fp[1][n1]
-    omega_R = (1 / hbar) * (0.5 * (hbar * sqrt(np.pi) / delta_t) * chi_0 * exp(-(t**2) / delta_t**2)) + (1 / hbar) * ((sqrt(E_R) / np.pi) * dE * sum)
+    omega_R = (1 / hbar) * (
+        0.5 * (hbar * sqrt(np.pi) / delta_t) * chi_0 * exp(-(t**2) / delta_t**2)
+    ) + (1 / hbar) * ((sqrt(E_R) / np.pi) * dE * sum)
     return omega_R
 
 
@@ -114,7 +116,9 @@ def main():
     results = []
 
     with open("sbe.txt", "w") as sbe_w:
-        s0 = "{0:^10} {delim} {1:^10} {delim} {2:^20} {delim} {3:^10} {delim} {4:^20} \n"
+        s0 = (
+            "{0:^10} {delim} {1:^10} {delim} {2:^20} {delim} {3:^10} {delim} {4:^20} \n"
+        )
         sbe_w.write(s0.format("E", "t", "f_e", "f_h", "p_n", delim="|"))
 
         for t in tqdm(t_values):
@@ -124,7 +128,16 @@ def main():
 
             for n in range(N):
                 s1 = "{0:^10.1f} {delim} {1:^10.1f} {delim} {2:^20.15f} {delim} {3:^10.15f} {delim} {4:^20.15f} \n"
-                sbe_w.write(s1.format(E_values[n], t, np.real(fp[0][n]), np.imag(fp[0][n]), abs(fp[1][n]), delim="|"))
+                sbe_w.write(
+                    s1.format(
+                        E_values[n],
+                        t,
+                        np.real(fp[0][n]),
+                        np.imag(fp[0][n]),
+                        abs(fp[1][n]),
+                        delim="|",
+                    )
+                )
 
     f_e_real = np.array([np.real(fp[0]) for fp in results])
     print(f_e_real.shape)
@@ -133,4 +146,5 @@ def main():
     plot(E_values, t_values, f_e_real, p_values)
 
 
-main()
+if __name__ == "__main__":
+    main()

@@ -6,7 +6,7 @@ Thế năng điện từ $U(\mathbf{x})$ có thể được dẫn ra bằng mậ
 
 $$
 \begin{align}
-\nabla^2 U(\mathbf{x}) = - \frac{1}{\epsilon_0} \rho(\mathbf{x}),
+	\nabla^2 U(\mathbf{x}) = - \frac{1}{\epsilon_0} \rho(\mathbf{x}),
 \end{align}\tag{1}
 $$
 
@@ -14,7 +14,7 @@ trong đó $\rho(\mathbf{x})$ là mật độ điện tích. Trong vùng không 
 
 $$
 \begin{align}
-\nabla^2 U(\mathbf{x}) = 0.
+	\nabla^2 U(\mathbf{x}) = 0.
 \end{align}\tag{2}
 $$
 

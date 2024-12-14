@@ -8,7 +8,7 @@ L = 1
 t = 1
 rho = 1
 Tension = 40
-kappa = 1 * 1e-2 * 0
+kappa = 1 * 1e-2
 dL = 0.01
 dt = 0.001
 c = sqrt(Tension / rho)
@@ -19,7 +19,7 @@ frictionConstant = 2 * kappa / rho
 ### Thông số tham khảo có thể là L = 0.7m, dL = 0.7 mm , c = 300 m/s , dt = 5*1e-6 s, kappa = 2.6*1e-5 s/m
 
 
-def FowardDiff(x: int, t: int, beta):
+def FowardDiff(x: int, t: int, beta: float):
 
     U = []
     for _ in range(x + 1):
@@ -37,6 +37,7 @@ def FowardDiff(x: int, t: int, beta):
     for ti in range(1, t + 1):
         U[0][ti] = 0.0
         U[x][ti] = 0.0
+
     if beta <= 1:
         for j in range(0, t):
             for i in range(1, x):
@@ -101,7 +102,6 @@ def writeLog(x: int, t: float) -> None:
 
 
 def main():
-
     writeLog(L, t)
 
 
