@@ -31,10 +31,8 @@ def Solution(N, eps, gamma):
 
         if abs(x1[i] - x1[i - 1]) <= eps:
             it = i
-            print(i)
+
             break
-    print(x1, "\n")
-    print(x2)
     return x1, x2
 
 
