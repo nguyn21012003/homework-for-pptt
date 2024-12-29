@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt, log, pi
 from numpy import real as RE, imag as IM, conjugate
+from math import cos
 
 ########################################################
 from matplotlib.backends.backend_pdf import PdfPages
@@ -9,6 +10,7 @@ from tqdm import tqdm
 import csv, os, subprocess
 from time import time
 from numpy import typing as npt
+from datetime import datetime
 
 #### Local Library
 from sbeFile.constant import N, hbar, chi_0, E_R, delta_t, Delta_0, t_max, t0, dt, delta_e, E0, C0, gamma
@@ -26,6 +28,13 @@ def rk4(dF, tn, yn, h, T2):
     k4 = dF(tn + h, yn + h * k3, T2)
 
     return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+
+
+def leapfrog(dF, tn, yn, h, T2):
+    k1 = dF(tn, yn, T2)
+    k2 = dF(tn + 0.5 * h, yn + 0.5 * h * k1, T2)
+
+    return yn + h * k2
 
 
 def g(n, n1):
@@ -70,9 +79,10 @@ def dF(t, Y, T2):
     return F
 
 
-def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.NDArray:
-    fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
-    fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortionT2change.txt"
+def solve_sys_ode(dF: npt.NDArray, dt: float, solver: npt.NDArray, N: int, fileWrite_fe, fileWriteNtPt, fileWriteAbsortion) -> npt.NDArray:
+    # fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
+    # fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortionT2change.txt"
+
     # tSpan = np.linspace(t0, t_max, N)
     tSpan = np.arange(t0, t_max, dt)
     omega = np.linspace(-200, 200, len(tSpan))
@@ -80,9 +90,10 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
     # print((t_max - t0) / len(tSpan))
 
     Y = np.zeros([2, N + 1], dtype="complex")
-    EnergyEps = np.zeros(N + 1)
+    EnergyEps = np.zeros(N)
 
-    Polarization = np.zeros(len(tSpan))
+    Polarization = np.zeros(len(tSpan), dtype="complex")
+    # Polarization = np.zeros(len(tSpan))
     NumberDensity = np.zeros(len(tSpan))
     # listEom = []
     listAlpha = []
@@ -90,14 +101,12 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
     p = []
     listT2 = []
     # print(len(Y))
-    with open(fileWriteSBE, "w", newline="") as writefile:
+    with open(fileWrite_fe, "w", newline="") as writefile:
         header = [
             f"{'Thoi gian':^9}",
             f"{'EnergyEpsilon':^13}",
             f"{'fe_t':^40}",
             f"{'p_t':^40}",
-            f"{'Mat do toan phan':^40}",
-            f"{'Phan cuc toan phan':^40}",
         ]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
         writer.writeheader()
@@ -105,22 +114,27 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
         T2 = 210
         for ti in tqdm(range(len(tSpan)), desc="Processing", unit="step ", ascii=" #"):
 
-            T2 = 1 / (1 / 210 + gamma * NumberDensity[ti])
-            Y = rk4(dF, tSpan[ti], Y, dt, T2)
-            # print(RE(Y[0]))
+            # T2 = 1 / (1 / 210 + gamma * NumberDensity[ti])
+            T2 = 1 / (1 / T2 + gamma * NumberDensity[ti])
+            Y = solver(dF, tSpan[ti], Y, dt, T2)
             fe_t = []
             p_t = []
             NumberDensity_sum = 0
             Polarization_sum = 0
             for n in range(N + 1):
-                fe_t.append(RE(Y[0][n]))
-                p_t.append(abs(Y[1][n]))
-                # print(fe_t)
+                if RE(Y[0][n]) != 0.0:
+                    fe_t.append(RE(Y[0][n]))
+                    p_t.append(abs(Y[1][n]))
 
-                EnergyEps[n] = n * delta_e
+                EnergyEps[n - 1] = n * delta_e
 
                 NumberDensity_sum += C0 * sqrt(n + 1) * RE(Y[0][n])
-                Polarization_sum += delta_e * sqrt(delta_e) * sqrt(n + 1) * abs((Y[1][n]))
+                Polarization_sum += delta_e * sqrt(delta_e) * sqrt(n + 1) * abs(Y[1][n])
+                # Polarization_sum += delta_e * sqrt(delta_e) * sqrt(n + 1) * (Y[1][n])
+            ### Trong công thức độ phân cực toàn phần nếu lấy trị tyệt đối bên trong tổng thì các thành phần bên trong bị triệt tiêu
+            ### nên là phải lấy abs từng phần
+            ### vẽ phổ hấp thụ thì không lấy abs từng thành phần eg abs(Y[1][n])
+            ### còn vẽ Nt PT thì thì lấy abs
 
             NumberDensity[ti] = NumberDensity_sum
             Polarization[ti] = Polarization_sum
@@ -131,6 +145,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             p.append(p_t)
             if prev_ti is not None and ti != prev_ti:
                 writer.writerow({})  ### Để ghi file cách dòng
+
             #################################################### Tới đây là hết 1 vòng của ti trong tSpan tiếp tới ti = 1
             for i in range(N):
 
@@ -140,11 +155,27 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
                         f"{'EnergyEpsilon':^13}": f"{EnergyEps[i]:^13}",
                         f"{'fe_t':^40}": f"{fe_t[i]:^40}",
                         f"{'p_t':^40}": f"{p_t[i]:^40}",
-                        f"{'Mat do toan phan':^40}": f"{NumberDensity[i]:^40}",
-                        f"{'Phan cuc toan phan':^40}": f"{Polarization[i]:^40}",
                     }
                 )
             prev_ti = ti
+
+    with open(fileWriteNtPt, "w", newline="") as writefileNtPt:
+        header = [
+            f"{'Thoi gian':^9}",
+            f"{'Mat do toan phan':^40}",
+            f"{'Phan cuc toan phan':^40}",
+        ]
+        writer = csv.DictWriter(writefileNtPt, fieldnames=header, delimiter="\t")
+        writer.writeheader()
+        for i in range(len(tSpan)):
+            writer.writerow(
+                {
+                    f"{'Thoi gian':^9}": f"{tSpan[i]:^9}",
+                    f"{'Mat do toan phan':^40}": f"{NumberDensity[i]:^40}",
+                    f"{'Phan cuc toan phan':^40}": f"{RE(Polarization[i]):^40}",
+                }
+            )
+
     with open(fileWriteAbsortion, "w", newline="") as writefileAbsortion:
         header = [
             f"{'Thoi gian':^9}",
@@ -156,10 +187,15 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
             f"{'IM_POmega':^45}",
             f"{'RE_EOmega':^45}",
             f"{'IM_EOmega':^45}",
+            f"{'Et':^45}",
             f"{'T2':^20}",
         ]
         writerfileAbsortion = csv.DictWriter(writefileAbsortion, fieldnames=header, delimiter="\t")
         writerfileAbsortion.writeheader()
+
+        Et = 0
+        for i in range(len(tSpan)):
+            Et += E0 * np.exp(-(tSpan[i] ** 2) / (delta_t**2)) * cos(omega[i] * tSpan[i])
 
         for omega_i in range(len(omega)):
 
@@ -182,6 +218,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, rk4: npt.NDArray, N: int) -> npt.N
                     f"{'IM_POmega':^45}": f"{IM(Piomega):^45}",
                     f"{'RE_EOmega':^45}": f"{RE(Eiomega):^45}",
                     f"{'IM_EOmega':^45}": f"{IM(Eiomega):^45}",
+                    f"{'Et':^45}": f"{Et:^45}",
                     f"{'T2':^20}": f"{listT2[omega_i]:^45}",
                 }
             )
@@ -256,13 +293,13 @@ def plot(T, E, fe, p, Polarization, NumberDensity, t, Pom):
     plt.show()
 
 
-def gnuPlot():
+def gnuPlot(filefe, fileNT, fileAlpha):
     """
     Không xài dòng nào thì # vào dòng đó
     """
-    fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
-    fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortion.txt"
-    print(fileWriteAbsortion)
+    # fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
+    # fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortion.txt"
+
     with open("gnuPlot.gp", "w") as gnuplot:
         gnuplot.write(
             f"""
@@ -278,20 +315,21 @@ def gnuPlot():
     set grid
     set key horiz
 
-    #splot "{fileWriteSBE}" u 1:2:3 with lines tit "fe_t" 
+    #splot "{filefe}" u 1:2:3 with lines tit "fe_t" 
     
     
     #set ylabel "y"
     #set xlabel "x"
     #set zlabel "z"
-    #splot "{fileWriteSBE}" u 1:2:4 with lines tit "p_t"
+    #splot "{fileNT}" u 1:2:4 with lines tit "p_t"
 
 
     set xlabel "Omega"
     set ylabel "alpha(omega)"
-    #plot "{fileWriteAbsortion}" u 2:3 with lines tit "Phân cực toàn phần"
-    #plot "{fileWriteAbsortion}" u 2:4 with lines tit "Mật độ toàn phần"
-    plot "{fileWriteAbsortion}" u 2:5 with lines tit "Phổ hấp thụ"
+    #plot "{fileNT}" u 2:3 with lines tit "Phân cực toàn phần"
+    #plot "{fileNT}" u 2:4 with lines tit "Mật độ toàn phần"
+    #plot "{fileAlpha}" u 2:5 with lines 
+    plot "{fileNT}" u 1:3 with lines 
 
 
     #unset multiplot
@@ -304,10 +342,23 @@ def gnuPlot():
 
 
 def main():
+    time_run = datetime.now().strftime("%H%M")
+
+    # fileWriteSBE = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
+    # fileWriteAbsortion = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.absortion.txt"
+    # fileWriteNtPt = f"{delta_t}&{Delta_0}fs with N={N}&{chi_0}.data.sbe.txt"
+
+    filewritefe = f"fe_ChiKhacNhau_deltaT={delta_t}_delta0={Delta_0}at{time_run}.data.sbe.txt"
+    filewriteNt = f"N(t)_Chi={chi_0}_deltaT={delta_t}_delta0={Delta_0}at{time_run}.data.sbe.txt"
+    filewriteAlpha = f"Alpha_ChiKhacNhau_deltaT={delta_t}_delta0={Delta_0}at{time_run}.data.sbe.txt"
+
+    print(filewritefe)
+    print(filewriteAlpha)
+    print(filewriteNt)
 
     start = time()
 
-    t, EnergyEps, fe, p, Polarization, NumberDensity, listPom = solve_sys_ode(dF, dt, rk4, N)
+    t, EnergyEps, fe, p, Polarization, NumberDensity, listPom = solve_sys_ode(dF, dt, rk4, N, filewritefe, filewriteNt, filewriteAlpha)
 
     end = time()
 
@@ -318,7 +369,7 @@ def main():
     p = np.array(p)
 
     # plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
-    gnuPlot()
+    gnuPlot(filewritefe, filewriteNt, filewriteAlpha)
 
 
 if __name__ == "__main__":
