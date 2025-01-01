@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
+import subprocess
 
 
 def u_values(d):
     u = np.zeros((d, d))
     for i in range(d):
         u[0][i] = 100
-        u[d - 1][i] = -100
+        u[d - 1][i] = -100 * 0
     print(u)
     return u
 
@@ -19,6 +20,22 @@ def Gauss(d, N, u):
                 u[i][j] = 0.25 * (u[i + 1][j] + u[i - 1][j] + u[i][j + 1] + u[i][j - 1])
     return u
 
+
+def gnuPlot():
+    """
+    Không xài dòng nào thì # vào dòng đó
+    """
+    fileWriteLaplace = "Laplace.txt"
+    with open("gnuPlot.gp", "w") as gnuplot:
+        gnuplot.write(
+            f"""
+    splot "{fileWriteLaplace}" u 1:2:3 w l 
+    unset multiplot
+    pause -1
+
+"""
+        )
+    subprocess.run(["gnuplot", "gnuPlot.gp"])
 
 
 def main():
@@ -35,13 +52,13 @@ def main():
     y = np.linspace(0, d, d)
     x_grid, y_grid = np.meshgrid(x, y)
 
-    with open("laplace.txt", "w") as laplace:
+    with open("Laplace.txt", "w") as laplace:
         s0 = "{0:^10} {delim} {1:^11} {delim} {2:^10} \n"
-        # laplace.write(s0.format("x", "y ", "u(x,y)", delim="|"))
+        laplace.write(s0.format("x", "y ", "u(x,y)", delim="|"))
         for i in range(d):
             for j in range(d):
                 s1 = "{0:10.6f} {delim} {1:11.6f} {delim} {2:10.6f} \n"
-                # laplace.write(s1.format(x[i], y[i], u_results[i][j], delim="|"))
+                laplace.write(s1.format(x[i], y[j], u_results[i][j], delim="|"))
 
     fig = plt.figure(figsize=(12, 6))
     ax = plt.axes(projection="3d")
@@ -55,6 +72,8 @@ def main():
     ax.set_zlabel("u(x,y)", labelpad=20)
 
     plt.show()
+
+    gnuPlot()
 
 
 main()
