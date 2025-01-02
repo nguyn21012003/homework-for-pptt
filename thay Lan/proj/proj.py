@@ -13,7 +13,10 @@ def mean(array):
             summ += mean(element)
         else:
             summ += element
-    return summ / len(array)
+
+    mean = summ / len(array)
+
+    return mean
 
 
 def substrac_mean(data):
@@ -36,14 +39,13 @@ def substrac_mean(data):
                 ]
             )
         )
-
     return np.array(substrac_meanarr)
 
 
 def covariant_matrix(N, data):
     substrac_meanarr = substrac_mean(data)
 
-    S = (substrac_meanarr.T @ substrac_meanarr) / (N - 1)
+    S = (substrac_meanarr.T @ substrac_meanarr) / (N)
 
     return S
 
@@ -60,9 +62,11 @@ def pickK(eigenValues, eigenVecs):
     eigenValues = sorted(eigenValues, reverse=True)
 
     sorted_eigenValues = np.array(eigenValues[:dim])
-    sorted_eigenVecs = np.array(eigenVecs[:, :3])
 
-    return sorted_eigenValues, sorted_eigenVecs
+    # ki hieu ":" trong numpy la lay het cac hang, cot, nhng ma "0:dim" la lay tu 0 den dim-1
+    sorted_eigenVecs = np.array(eigenVecs[:, :dim])
+
+    return sorted_eigenVecs
 
 
 def projectedData(data, eigenVecs):
@@ -70,27 +74,28 @@ def projectedData(data, eigenVecs):
 
 
 def main():
-    iris = datasets.load_iris()
+    iris = datasets.load_iris()  ### Load data from sklearn
 
     path = kagglehub.dataset_download("arshid/iris-flower-dataset")
     df = pd.read_csv(path + "/Iris.csv")
 
     sub_mearr = substrac_mean(df)
+
     S = covariant_matrix(len(sub_mearr), df)
     eigenValues, eigenVecs = DiagonalizeMatrx(S)
-    sorted_eigenValues, sorted_eigenVecs = pickK(eigenValues, eigenVecs)
-    projected_data = projectedData(sub_mearr, sorted_eigenVecs)
+    new_eigenVecs = pickK(eigenValues, eigenVecs)
+    projected_data = projectedData(sub_mearr, new_eigenVecs)
 
     fig = plt.figure(figsize=(10, 8))
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
+    ax1 = fig.add_subplot(121, projection="3d")
+    ax2 = fig.add_subplot(122, projection="3d")
 
     color_map = {"Iris-setosa": 0, "Iris-versicolor": 1, "Iris-virginica": 2}
     colors = []
 
     for species in df["species"]:
         colors.append(color_map[species])
-    ax2.scatter(projected_data[:, 0], projected_data[:, 1], c=colors, s=50, edgecolors="k")
+    ax2.scatter(projected_data[:, 0], projected_data[:, 1], projected_data[:, 2], c=colors, s=50, edgecolors="k")
     ax2.set_xlabel("Principal Component 1")
     ax2.set_ylabel("Principal Component 2")
     ax2.set_title("PCA of Iris Dataset")
@@ -105,10 +110,12 @@ def main():
     X = pca.transform(X)
 
     y = np.choose(y, [1, 2, 0]).astype(float)
-    ax1.scatter(X[:, 0], X[:, 1], c=colors, s=50, edgecolor="k")
+    ax1.scatter(X[:, 0], X[:, 1], X[:, 2], c=colors, s=50, edgecolor="k")
     ax1.set_xlabel("Principal Component 1")
     ax1.set_ylabel("Principal Component 2")
     ax1.set_title("PCA of Iris Dataset with Sklearn")
+
+    print(projected_data, X)
 
     # Show the plot
     plt.tight_layout()

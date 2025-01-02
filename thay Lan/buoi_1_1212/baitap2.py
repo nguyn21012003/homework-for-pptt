@@ -16,16 +16,16 @@ def grad(N, x, y, w):
 
 def Solution(N, eps, gamma, x, y):
 
-    w1 = np.zeros(1, N)
+    w1 = np.zeros([1, N])
     vt1 = 0
     w = 0
     b = np.dot(x.T, y)
     A = np.dot(x.T, x)
     for i in range(0, N):
         vt1 = grad(N, x, y, w)
-        w1.append(float(w1[i] - vt1))
+        w1[0][i] = w1[0][i] - vt1
 
-        if abs(w1[i] - w1[i - 1]) <= eps:
+        if abs(w1[0][i] - w1[0][i - 1]) <= eps:
 
             it = i
             break
@@ -36,6 +36,7 @@ def Solution(N, eps, gamma, x, y):
 def generator(N):
     x = rand(N, 1)
     y = 3 + 4 * x + 0.1 * rand(N, 1)
+    return x, y
 
 
 def main():
@@ -43,8 +44,10 @@ def main():
     eps = 1e-15
     gamma = 0.9
     x, y = generator(N)
-    Solution(N, eps, gamma, x, y)
+    w = Solution(N, eps, gamma, x, y)
+
     plt.plot(x, y, "o", markersize="1")
+    plt.plot(y, w.T, "-")
     plt.show()
 
 

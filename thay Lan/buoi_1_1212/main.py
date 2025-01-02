@@ -14,11 +14,10 @@ def g(gamma, eta, vt, x):
     return vt
 
 
-def Solution(N, eps, gamma):
+def Solution(N: int, eps, gamma, eta):
 
-    eta = 0.1
-    x1 = [6]
-    x2 = [-6]
+    x1 = [5]
+    x2 = [-5]
 
     it = 0
     vt1 = 0
@@ -37,14 +36,21 @@ def Solution(N, eps, gamma):
 
 
 def main():
-    N = 1000
-    eps = 1e-15
+    N = 10000
+    eps = 1e-5
     gamma = 0.9
-    x1, x2 = Solution(N, eps, gamma)
-    for i in range(len(x1)):
+    eta = 0.1
+    x1, x2 = Solution(N, eps, gamma, eta)
+    Farr1 = []
+    Farr2 = []
 
-        plt.plot(x1[i], Fx(x1[i]), c="purple")
-        # plt.plot(x2[i], Fx(x2[i]))
+    print((x2))
+    for i in range(len(x1)):
+        Farr1.append(Fx(x1[i]))
+        Farr2.append(Fx(x2[i]))
+
+    plt.plot(x1, Farr1)
+    plt.plot(x2, Farr2)
     plt.show()
 
 
