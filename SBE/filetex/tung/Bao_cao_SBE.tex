@@ -1,0 +1,351 @@
+\documentclass[16Pt]{article}
+\usepackage[utf8]{vietnam}
+\usepackage{xcolor}
+\usepackage[labelformat=empty]{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{fontsize}
+\changefontsize[14pt]{14pt}
+\usepackage{commath}
+\usepackage{blindtext}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{slashed}
+\usepackage{indentfirst,parskip}
+\setlength{\parindent}{2em}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+%\usepackage{tikz-feynman}
+\usepackage{nccmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref}
+\usepackage{dirtytalk,bm,physics}
+\usepackage{tikz}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+%footnote
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}%
+\fancyhf{}%
+\fancyfoot[LE,LO]{Vật lý Lý thuyết}%
+\fancyfoot[C]{\hspace{4cm} \thepage}%
+
+\usetikzlibrary{shapes.geometric, arrows}
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+\renewcommand{\baselinestretch}{2.0}
+\usetikzlibrary{arrows.spaced}
+\usetikzlibrary{animations,quotes}
+%gian do
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered,draw=black, fill=white!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\title{\Huge{Semiconductor Bloch Equation - Final}}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={SBE},
+	pdfpagemode=FullScreen,
+}
+
+\urlstyle{same}
+
+
+\definecolor{mycolor}{RGB}{255,0,0}
+
+\begin{document}
+	\author{Nhóm 4}
+	
+	\maketitle
+	
+	\section{Cơ sở lý thuyết.}
+	Nếu năng lượng đủ từ $E_g$ trở lên $\rightarrow$ Kích thích electron từ dải hóa trị lên dải dẫn, để lại lỗ trống. Chuyển dời đang xét này gọi là chuyển dời vuông góc(thẳng), và đóng vai trò chủ đạo, còn có chuyển dời xiên (nhưng rất yếu). \textbf{Giải thích đây là chuyển dời tốt???}\\
+	
+	Điện tích lỗ trống +, điện tích electron -, có xu hướng tạo cặp.\\
+	
+	\textbf{Bài toán vật lý?}: quan tâm đến mật độ electron ở dải dẫn, và mật độ lỗ trống ở dải hóa trị, quan tâm đến tương quan giữa electron và lỗ trống, được diễn tả qua ma trận mật độ $\rho(t)_{\mu,\nu, \vec{k}}$ với $\mu, \nu$ = c, v. Ma trận như sau:\\
+	\[
+	\begin{pmatrix}
+		\rho_{cc} & \rho_{cv} \\
+		\rho_{vc} & \rho_{vv}
+	\end{pmatrix}
+	\]
+	trong đó $\rho_{vc} = \rho_{cv}^*$ là hàm phân cực, từ đây ta có được $\chi \propto \frac{P}{E} $. $\rho_{vv} = 1 - f_h$, 
+	\[
+	f_h \leftrightarrow	m_h = - m_v > 0
+	\] 
+	\[
+	f_{vv} \leftrightarrow m_v < 0
+	\]
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot195}
+	\end{figure}
+	
+	Lưu ý: phần va chạm collision, chúng ta không làm việc với môi trường atoms, mà làm việc với chất bán dẫn. Va chạm này đến từ 2 cơ chế:
+	\begin{itemize}
+		\item Coulomb
+		\item Phonon
+	\end{itemize}
+	dẫn đến thời gian sống bị ảnh hưởng (Life time). Ta sử dụng gần đúng hiện tượng luận 
+	\[
+	\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \Bigg|_{coh} +\frac{\partial f}{\partial t} \Bigg|_{col} 
+	\]
+	\[
+	\frac{\partial P}{\partial t} = \frac{\partial P}{\partial t} \Bigg|_{coh} + \frac{\partial P}{\partial t} \Bigg|_{col} 
+	\]
+	gần đúng 
+	\[
+	\dot{f}\Bigg|_{col} = \frac{f^{FD} - f}{T_1 \rightarrow \infty} \rightarrow 0
+	\]
+	va chạm rất yếu (Relaxation time).
+	\[
+	\dot{P}\Bigg|_{col} = - \frac{P}{T_2}
+	\]
+	đây là dephasing time (khử pha), ngược pha nhau sẽ khử nhau sau đó tắt dần.\\
+	 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot196}
+	\end{figure}
+	
+	lưu ý rằng thế Coulomb có hai phần
+	\begin{itemize}
+		\item Tham gia tương tác các hạt 
+		\item Số hạng coherence
+	\end{itemize}
+	tạo bắt cặp, quyết định exciton. Và thế coulomb trong công thức năng lượng tái chuẩn hóa không tham gia vào số hạng va chạm, mà tham gia vào coherence.
+	
+	\begin{itemize}
+		\item d là moment lưỡng cực
+		\item $\delta_t$ là bề rộng xung
+		\item $\chi_0$ là biên độ, cường độ xung 
+	\end{itemize}
+	\newpage
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot197}
+	\end{figure}
+	
+	\noindent\textbf{Khi bỏ qua số hạng va chạm coherence thì $f_e = f_h$}\\
+	Ở thời điểm t = t0, xung đi vào bơm electron lên trên, để lại lỗ trống, sau đi qua hết xung, electron xảy ra quá trình tán xạ để trở về vùng đáy, bắt cặp với nhau tạo ra exciton. \\
+	$\chi_0 = 0.1 $ diện tích của xung ứng với số lần $\pi$ \\
+	
+	\newpage
+	\section{Phân bố electron - Độ phân cực.}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot193}
+	\end{figure}
+	
+	Dùng xung Laser có dạng Gauss
+	\[
+	E(t) = e^{-\frac{t^2}{\delta t ^2}} \left(e^{-i\omega t} + e^{i\omega t}\right)
+	\]
+	Ta đã bỏ qua số hạng $e^{i\omega t}$ vì sử dụng gần đúng sóng quay (rotating wave approximation). Nếu dùng Fourier sẽ có dạng
+	\[
+	\frac{1}{\omega - \omega_0} + \frac{1}{\omega + \omega_0}
+	\]
+	chỉ có số hạng đầu tiên có cộng hưởng (rất lớn) lớn hơn so với số hạng thứ hai nên ta bỏ đi. \\
+	\noindent Xung Gauss theo thời gian thì năng lượng có dạng
+	\[
+	E(\omega) \propto e^{-\epsilon^2/ \delta \epsilon^2}
+	\]
+	hay 
+	\[
+	\delta t^2 \propto \frac{1}{\delta \epsilon^2}
+	\]
+	$\delta t$ càng lớn thì  $\delta \epsilon$ càng nhỏ.\\
+	Laser có đặc tính là coherence
+	\[
+	\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \Bigg|_{coh} +\frac{\partial f}{\partial t} \Bigg|_{col} 
+	\]
+	trong thời gian rất ngắn ban đầu, va chạm chưa có, khi vừa bơm lên, electron sẽ bị quấn theo (đồng bộ) với xung laser, chưa kịp tương tác với nha, hay 
+	\[
+	\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \Bigg|_{coh}
+	\]
+	số hạng va chạm xảy ra trễ hơn, vì xung dạng Gauss nên electron sẽ có phân bố Gauss. Ứng với đỉnh của xung Gauss ta biết được có exciton
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.7\linewidth]{screenshot198}
+	\end{figure}
+	
+	tại $\delta_0 = 50$ ta thấy có đỉnh (hợp lý), sau đó tăng $\delta_t = 20$ thì bề rộng $\delta_\epsilon$ sẽ rộng hơn
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.7\linewidth]{screenshot200}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot199}
+	\end{figure}
+	Khi lên tới đỉnh rồi, thì nguyên tắc sẽ chạy về dưới đáy(về mặt thực tế), tuy nhiên trong bài này chúng ta đã tắt đi số hạng tán xạ cho $f_e$, $T_1 \rightarrow \infty$ nên không có tán xạ, bơm thế nào sẽ nằm ở thế đó.\\
+	
+	Vì tính coherence nên dạng Gauss nhìn đối xứng rất tốt.\\
+	
+	Nếu ta giảm deturning xuống $\Delta_0 = 100 \rightarrow 20$ thì hàm phân bố bị thay đổi, và nguyên tắc năng lượng phải chia đôi vì ta đã xem $f_e = f_h$
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot201}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot194}
+	\end{figure}
+	Vì ở công thức phân cực, ta vẫn xét số hạng collision, có $T_2$ nên nó có dạng tắt dần.
+	\newpage
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot202}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot203}
+	\end{figure}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot204}
+	\end{figure}
+	
+	\textbf{Giả sử $\Delta_0 = 0$ thì có phân bố, đủ năng lượng bơm electron không?} $\rightarrow$ Nhắc lại, $\Delta_0 = 0$ nghĩa là $E_g = \Delta_0$, 
+	thì vẫn còn 1 nửa phân bố của Gauss, và $\Delta < 0 $ cũng vẫn còn cái đuôi Gauss.
+	\newpage
+	\section{Mật độ hạt - Độ phân cực}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot205}
+	\end{figure}
+	Xung đi vào bắt đầu bơm từ từ, khi xung đi hết, không tác động nữa, điện tử lỗ trống được bơm lên bao nhiêu thì sẽ giữ nguyên. Tuy nhiên khi thay đổi $\chi_0$ thì lại có dáng điệu lên xuống, và tất cả hiện tượng này xảy ra trong lúc có xung, \textbf{vì sao??} \\
+	Người ta gọi đây là cơ chế của laser \textbf{Inversion}, hiện tượng đảo ngược xảy ra khi xung $\chi_0$ = $\pi, 2\pi ...$ trở lên. Có thể giải thích bằng vector Bloch, hiện tượng echo (tiếng vang). Diện tích 1 lần lên là $\pi/2$.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot207}
+	\end{figure}
+	Theo nguyên tắc, ban đầu các electron đồng bộ với xung, va chạm rất ít, tuy nhiên đường $T_2 = 50$ lại cho thấy va chạm rất nhiều ở ban đầu. Nếu ta dùng $T_2=const$ là không hợp lý, nghĩa là nó kiềm hãm hạt lúc mà nó chưa có. Nên ta cần đổi thành $T_2(t)$.\\
+	Trong hai cơ chế va chạm, cơ chế phụ thuộc vào số hạt là cơ chế Coulomb, còn phonon chỉ tương tác với nền nhiệt
+	\[
+	\frac{1}{T_2} = \frac{1}{T_2^0} + \gamma N(t)
+	\]
+	số hạng đầu là số hạt tương tác phonon, và số hạt thứ hai là số hạng tương tác Coulomb.\\
+	Ở phần này ta nhận xét như sau, theo công thức 
+	\[
+	\frac{dP}{dt} \propto \frac{-P}{T_2} \rightarrow P \propto e^{-\frac{1}{T_2}}
+	\]
+	Từ đây ta thấy rằng nếu $T_2$ càng tăng thì độ kiềm hãm càng nhỏ $\rightarrow$ Tăt dần chậm, nên đồ thị sẽ rộng ra. \\
+	\noindent \textbf{Lưu ý:} Trong công thức 
+	\[
+	P(t) = \sum_k p_k(t)
+	\]
+	nếu ta chỉ lấy suất | | cho mỗi thành phần $p_k(t)$ thì ta được đồ thị như hình trên, còn nếu lấy suất cho cả tổng thì các thành phần $p_k$ này tự khử với nhau $\rightarrow$ Cho ra dáng điệu giống nhau, gần như không thay đổi.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot208}
+	\end{figure}
+	Khi ta tăng số phương trình N càng lớn và khoảng chia omega càng nhiều (khoảng 2000), thì đỉnh của phổ hấp thụ này sẽ càng tiến về $E_R = -4.2 meV$, exciton nằm đúng năng lượng liên kết.\\
+	Đỉnh của phổ hấp thụ tương ứng với vị trí của exciton, bắt cặp giữa electron và lỗ trống. Tuy nhiên việc bắt cặp này khá "mong manh" bởi vì mật độ hạt càng cao, việc bắt cặp này bị phá vỡ bởi tán xạ, hoặc thế chắn Coulomb bị yếu 
+	\[
+	V_q \propto \frac{1}{q^2 + \kappa^2}
+	\]
+	$\kappa$ gọi là hệ số chắn, hệ số chắn càng lớn thì thế Coulomb càng yếu.
+	Khi đó, đỉnh của phổ bị tẩy đi hay 'bleaching', hoặc ion hóa (exciton đang trung hòa điện mà bị tách ra).\\
+	Ngoài ra, thay vì hấp thụ thì còn có gain, nghĩa là phần lõm xuống $\rightarrow$ Đây là cơ chế của Laser.\\
+	
+	\newpage
+	
+	\section*{HÀM PHÂN BỐ ELECTRON VÀ HÀM PHÂN CỰC.}
+	Laser có đặc tính như sau:
+	\[
+	\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \Bigg|_{coh} +\frac{\partial f}{\partial t} \Bigg|_{col} 
+	\]
+	trong thời gian rất ngắn ban đầu, va chạm chưa có, khi vừa bơm lên, electron sẽ bị đồng bộ với xung Laser, chưa kịp tương tác với nhau, hay ta bỏ qua số hạng va chạm 
+	\[
+	\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \Bigg|_{coh}
+	\]
+	số hạng va chạm xảy ra trễ hơn, vì xung dạng Gauss nên electron sẽ có phân bố Gauss. Ứng với đỉnh của xung Gauss ta biết được có exciton.
+	\newpage
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot227}
+		\caption{Hàm phân bố electron với $\delta t = 20 \, \text{fs}$, và $\delta t = 50 \, \text{fs}$, $\Delta_0 = 100 \, \text{meV}$}
+		\label{fig:screenshot227}
+	\end{figure}
+	Từ hai hình vẽ trên ta thấy rằng, khi tăng $\delta t$ từ 20 lên 50, nghĩa là $\delta \epsilon$ sẽ giảm, làm cho bề rộng của hình dạng Gauss này nhỏ đi, hoàn toàn phù hợp với lý thuyết.\\
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot219}
+		\caption{Hàm phân cực với $\delta t = 100 \, \text{fs}$, $\Delta_0 = 100 \, \text{meV}$}
+		\label{fig:screenshot219}
+	\end{figure}
+	\indent Đối với hàm phân cực electron, do ta vẫn xét đến thành phần va chạm nên dáng điệu của đồ thị có xu hướng giảm dần theo thời gian.
+	\newpage
+	\section*{HÀM MẬT ĐỘ TOÀN PHẦN.}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1.0\linewidth]{screenshot228}
+	\caption{Hàm mật độ toàn phần với $\chi_0$ khác nhau, $T_2$ thay đổi, $\delta_t = 10 \, \text{fs}$, $\Delta_0 = 20 \, \text{meV}$.}
+	\label{fig:screenshot228}
+\end{figure}
+	Đối với $\chi_0 < 1$ thì xung đi vào bắt đầu bơm từ từ, khi xung đi hết, không tác động nữa, điện tử lỗ trống được bơm lên bao nhiêu thì sẽ giữ nguyên.\\
+	Từ hình vẽ trên, ta thấy ứng với các giá trị của $\chi_0 = 1,2,3\ldots$ thì đồ thị có dáng điệu lên xuống, và tất cả hiện tượng này xảy ra trong lúc có xung. Điều này có thể giải thích bởi cơ chế \textbf{Population Inversion}.
+	
+	\newpage
+	\section*{HÀM PHÂN CỰC TOÀN PHẦN}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot229}
+		\caption{Hàm phân cực toàn phần với $T_2$ khác nhau, $\delta_t = 10 \, \text{fs}$, $\Delta_0 = 20 \, \text{meV}$.}
+		\label{fig:screenshot229}
+	\end{figure}
+	
+	Theo nguyên tắc, ban đầu các electron đồng bộ với xung, va chạm rất ít, tuy nhiên đường $T_2 = 50$ lại cho thấy va chạm rất nhiều ở ban đầu. Nếu ta dùng $T_2=const$ là không hợp lý, nghĩa là nó kiềm hãm hạt lúc mà nó chưa có. Nên ta xét hệ thức
+	\[
+	\frac{1}{T_2} = \frac{1}{T_2^0} + \gamma N(t)
+	\]
+	số hạng đầu là số hạt tương tác phonon, và số hạt thứ hai là số hạng tương tác Coulomb.\\
+	Ở phần này ta nhận xét như sau, theo công thức 
+	\[
+	\frac{dP}{dt} \propto \frac{-P}{T_2} \rightarrow P \propto e^{-\frac{1}{T_2}}
+	\]
+	Từ đây ta thấy rằng nếu $T_2$ càng tăng thì độ kiềm hãm càng nhỏ $\rightarrow$ Tăt dần chậm, nên đồ thị sẽ rộng ra. \\
+	
+	\newpage
+	\section*{PHỔ HẤP THỤ.}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1.0\linewidth]{screenshot230}
+		\caption{Phổ hấp thụ với $\chi_0$ khác nhau, $\delta_t = 20 \, \text{fs}$, $\Delta_0 = 10 \, \text{meV}$.}
+		\label{fig:screenshot230}
+	\end{figure}
+	Khi ta tăng số phương trình N càng lớn và khoảng chia omega càng nhiều (khoảng 2000), thì đỉnh của phổ hấp thụ này sẽ càng tiến về $E_R = -4.2 meV$, exciton nằm đúng năng lượng liên kết.\\
+	Đỉnh của phổ hấp thụ tương ứng với vị trí của exciton, bắt cặp giữa electron và lỗ trống. Tuy nhiên việc bắt cặp này khá 'mong manh' bởi vì mật độ hạt càng cao, việc bắt cặp này bị phá vỡ bởi tán xạ, hoặc thế chắn Coulomb bị yếu 
+	\[
+	V_q \propto \frac{1}{q^2 + \kappa^2}
+	\]
+	$\kappa$ gọi là hệ số chắn, hệ số chắn càng lớn thì thế Coulomb càng yếu.
+%	Khi đó, đỉnh của phổ bị tẩy đi hay 'bleaching', hoặc ion hóa (exciton đang trung hòa điện mà bị tách ra).\\
+%	Ngoài ra, thay vì hấp thụ thì còn có gain, nghĩa là phần lõm xuống $\rightarrow$ Đây là cơ chế của Laser.\\
+	
+	
+\end{document}

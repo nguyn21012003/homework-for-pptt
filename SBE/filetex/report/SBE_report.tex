@@ -1,0 +1,215 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
+\usepackage{anyfontsize,fontsize}
+\changefontsize[13pt]{13pt}
+\usepackage{commath}
+\usepackage[d]{esvect}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{slashed,cancel}
+\usepackage{indentfirst}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage{upgreek}
+\usepackage{nccmath,nicematrix}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref}
+\usepackage{dirtytalk,bm,physics,upgreek}
+\usepackage{fancyhdr}
+\usepackage{cite}
+%footnote
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}%
+\fancyhf{}%
+\fancyfoot[L]{Theoretical Physics}%
+\fancyfoot[C]{\hspace{6.5cm} \thepage}%
+
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+
+\newcommand{\image}[1]{
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{pic/#1}
+	\end{center}
+}
+\renewcommand{\l}{\ell}
+\newcommand{\dps}{\displaystyle}
+
+\newcommand{\f}[2]{\dfrac{#1}{#2}}
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
+
+
+\renewcommand{\baselinestretch}{2.0}
+
+
+\title{\Huge{Calculation of absorption spectrum using Semiconductor Bloch equations of GaAs}}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={SBE},
+	pdfpagemode=FullScreen,
+}
+
+\urlstyle{same}
+
+\begin{document}
+\setlength{\parindent}{20pt}
+\newpage
+\author{TRAN KHOI NGUYEN \\ THEORETICAL PHYSICS}
+\maketitle
+\section{Numerical Method}
+%Our goal is to determine the physical insight of electron distribution, hole distribution, total density distribution, polarized function and especially is absorption spectrum, through the appoinment of Semiconductor Bloch equations in the approximation formalism\\
+Mục tiêu của chúng ta bây giờ là xác định ý nghĩa vật lý của các hàm phân bố electron (e), lỗ trống (h), mật độ toàn phân, hàm phân cực toàn phần và đặc biệt là phổ hấp thụ thông qua việc sử dụng phương trình Bloch bán dẫn với gần đúng hiện tượng luận
+\begin{equation}
+	\begin{aligned}
+		\f{\partial f_{j,\mathbf{k}} (t)}{\partial t} = - 2 \Im \left[ \Omega_{\mathbf{k}}^{R}(t) p^{*}_{\mathbf{k}}(t)\right], \label{Eq:1}\\
+		\f{\partial p_{\mathbf{k}}(t)}{\partial t} = - \f{i}{\hbar} \left[ e_{e,\mathbf{k}}(t) + e_{h,\mathbf{k}}(t)  \right] p_{\mathbf{k}}(t) \\
+		+ i \left[ 1 - f_{e,\mathbf{k}}(t) - f_{h,\mathbf{k}}(t) \right] \Omega_{\mathbf{k}}^{R}(t) - \f{p_{\mathbf{k}}(t)}{T_{2}}. 
+	\end{aligned}
+\end{equation}
+%By using this approximation, distribution of electrons and holes are identical, but in reality this two must be contradictory. Besides that, we would rather using numerical methods to solve \hyperref[Eq:1]{Eq. (1)} instead of analytics one. We rewrite \hyperref[Eq:1]{Eq. (1)} in energy form
+Bằng cách sử dụng phép gần đúng này, phân bố của electron và lỗ trống là như nhau, nhưng trong thực tế thì lại phải khác nhau. Bên cạnh đó, chúng ta sẽ giải số cặp phương trình \hyperref[Eq:1]{Eq. (1)} thay vì một cách chính xác. Ta viết lại \hyperref[Eq:1]{Eq. (1)} dưới dạng năng lượng
+\begin{gather}
+	\f{\partial f_{j,\varepsilon} (t)}{\partial t} = - 2 \Im \left[ \Omega_{\varepsilon}^{R}(t) p^{*}_{\varepsilon}(t)\right], \label{Eq:2}\\
+	\f{\partial p_{\varepsilon}(t)}{\partial t} = - \f{i}{\hbar} \left[ \varepsilon - \Delta_{0} - E_{\varepsilon}  \right] p_{\varepsilon}(t)
+	+ i \left[ 1 - f_{e,\varepsilon}(t) - f_{h,\varepsilon}(t) \right] \Omega_{\varepsilon}^{R}(t) - \f{p_{\varepsilon}(t)}{T_{2}}. \label{Eq:3}
+\end{gather}
+%The detail of this calculation is given in Appendix A.
+Chi tiết tính toán sẽ được ghi ở phụ lục A.
+%\subsection{Reformulation of the problem}
+\subsection{Cải tiến vấn đề}
+%Differential equations of this type can be solved by using the Runge-Kutta $4^{\text{th}}$ order. As we have metioned above, it is impossible to solve directly the set (\hyperref[Eq:2]{Eq. (2)}, \hyperref[Eq:3]{Eq. (3)}), even by various numerical methods. For simplicity we first use the Riemnann sum intergral by discritize $\varepsilon = n \Delta \varepsilon (n = 1,2,3, ... N)$. We now can rewrite the set (\hyperref[Eq:2]{Eq. (2)}, \hyperref[Eq:3]{Eq. (3)}) in form\\
+Những phương trình đạo hàm riêng có dạng như này có thể giải bằng Runge-Kutta bậc 4. Như chúng tôi đã để cập ở trên, để giải trực tiếp cặp phương trình \hyperref[Eq:2]{Eq. (2)} và \hyperref[Eq:3]{Eq. (3)} là điều không thể. Để đơn giản chúng ta sử dụng tổng riêng phần Riemann bằng cách rời rạc hoá $\varepsilon = n \Delta \varepsilon(n = 1,2,3,... N)$. Chúng ta có thể viết lại cặp \hyperref[Eq:2]{Eq. (2)} và \hyperref[Eq:3]{Eq. (3)} dưới dạng
+\begin{gather}
+	\f{\partial f_{n} (t)}{\partial t} = - 2 \Im \left[ \Omega_{n}^{R}(t) p^{*}_{n}(t)\right], \label{Eq:4}\\
+	\f{\partial p_{n}(t)}{\partial t} = - \f{i}{\hbar} \left[ n \Delta \varepsilon - \Delta_{0} - E_{n}  \right] p_{n}(t)
+	+ i \left[ 1 - 2f_{n}(t) \right] \Omega_{n}^{R}(t) - \f{p_{n}(t)}{T_{2}}, \label{Eq:5}
+\end{gather}
+%in which
+trong đó
+\begin{gather}
+	E_{n} = \f{\sqrt{E_{R}}}{\pi} \Delta \varepsilon \sum_{n_{1} = 1}^{N} g(n,n_{1}) \left[ f_{e,n_{1}} (t) + f_{h,n_{1}}(t) \right],\\
+	\Omega_{n}^{R}(t) =\f{1}{\hbar} \left[ \f{1}{2} \f{\hbar \sqrt{\pi}}{\delta t} \xi_{0} e^{-\frac{t^{2}}{(\delta t)^{2}}} + \f{\sqrt{E_{R}}}{\pi} \delta \varepsilon \sum_{n_{1} = 1}^{N} g(n,n_{1}) p_{n_{1}}(t) \right],\\
+	g(n,n_{1}) = \f{1}{\sqrt{n \Delta \varepsilon}} \ln \abs{\f{\sqrt{n} + \sqrt{n_{1}} }{\sqrt{n} - \sqrt{n_{1}}}}.
+\end{gather}
+%The semiconductor Bloch equations (SBE) take the form of an initial value problem as follows
+Phương trình Bloch bán dẫn có điều kiện ban đầu như sau
+\begin{align}
+	f_{e,n}(t = t_{0}) = f_{h,n}(t = t_{0}) = 0 ; p_{n} (t = t_{0}) = 0 
+\end{align}
+Cặp \hyperref[Eq:4]{Eq. (4)} và \hyperref[Eq:5]{Eq. (5)} có thể được biểu diễn dưới dạng ma trận \begin{gather}
+	\dot{\mathbf{Y}} = \mathbf{F}( \mathbf{Y}, t), \;\text{với}\, 
+	\mathbf{Y} = 
+	\begin{pNiceMatrix}
+		\vv{\dot{f}}_{j}(t)\\
+		\vv{\dot{p}}(t)
+	\end{pNiceMatrix}
+\end{gather}
+%với 
+%%\begin{gather}
+%%	\begin{pNiceMatrix}
+%%		\vv{\dot{f}}_{j}(t)\\
+%%		\vv{\dot{p}}(t)
+%%	\end{pNiceMatrix}
+%%\end{gather}
+%%%\begin{gather}
+%%%	\mathbf{Y}
+%%%	=\begin{pNiceMatrix}
+%%%		\vv{f}_{j}(t)\\
+%%%		\vv{p}(t)
+%%%	\end{pNiceMatrix}
+%%%	\Rightarrow
+%%%	\dot{\mathbf{Y}}=
+%%%	\begin{pNiceMatrix}
+%%%		\vv{\dot{f}}_{j}(t)\\
+%%%		\vv{\dot{p}}(t)
+%%%	\end{pNiceMatrix}
+%%%	= \mathbf{F}( \mathbf{Y}, t)
+%%%\end{gather}
+%\begin{gather}
+%	\mathbf{Y}
+%	=\begin{pNiceMatrix}
+%		\vv{f}_{j}(t)\\
+%		\vv{p}(t)
+%	\end{pNiceMatrix}
+%	\Rightarrow
+%	= \mathbf{F}( \mathbf{Y}, t)
+%\end{gather}
+trong đó $\vv{f}_{j} = (f_{j;1}, f_{j;2}, f_{j;3}, ... f_{j;n})$ và ta đã giả định rằng $\mathbf{F} = (F_{1},F_{2},...,F_{n})$.
+%\subsection{Cut off time $t$}
+%Đa số việc mô phỏng ở trên chưa đưa ra được phương trình đạo hàm riêng phụ thuộc vào thời gian một cách rõ ràng. Điều này có nghĩa là chúng ta sẽ không nhìn thấy biến $t$ ở bên phải phương trình đạo hàm riêng. Chúng ta đã biết giá trị của mỗi phương trình tại thời điểm $t$ với mỗi bước nhảy $t$. Thuật toán RK4 hoạt động dựa trên việc dự đoán tốc độ tại nhiều điểm trong khoảng thời gian $t$ tới $t+h$.
+\subsection{Absorption Coefficent}
+%The linear absorption spectrum in the presence of electronic field is determined by
+Phổ hấp thụ tuyến tính dưới sự góp mặt của điện trường được xác định bởi \cite{doi:10.1142/7184}
+\begin{gather}
+	\alpha(\omega) \propto \Im\left[\f{P(\omega)}{E(\omega)}\right],
+\end{gather}
+%in which $P(\omega) \propto \int_{-\infty}^{+\infty} P(t) e^{i \hbar \omega t} dt, \; E(\omega) \propto \int_{-\infty}^{+\infty} E(t) e^{i \hbar \omega t} dt$ are the Fourier transform for polarization density and electric field. These intergral can be approximated by using the Riemnann sum. In this work, we have used the electric field in the form
+trong đó $P(\omega) \propto \int_{-\infty}^{+\infty} P(t) e^{i \hbar \omega t} dt, \; E(\omega) \propto \int_{-\infty}^{+\infty} E(t) e^{i \hbar \omega t} dt$ là các phép biến đổi Fourier cho hàm phân cực và điện trường. Các tích phân này có thể tính được một cách xấp sỉ bằng cách sử dụng tổng riêng phần Riemnann. Trong bài toán này, chúng ta đã sử dụng điện trường có dạng
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{- t^{2} / (\delta t)^{2}} (e^{i\omega_{0} t} + e^{-i\omega_{0} t}),
+\end{gather}
+%with $E_{0}$ is the amplitude, $\omega_{0}$ is related to frequency of laser, $\delta t$ is the pulse width of laser, all will be calculated in SI units. Notice that, $E_{0}$ are  slowly varying complex amplitude in space $x$ and time $t$, hence we drop resonance term $e^{-i \omega_{0} t}$ by using envelope function approximation (EFA), and $e^{i \omega_{0} t}$ are neglected by using rotating wavefunction approximation(RWA), this leads to
+với $E_{0}$ là biện độ cực đại, $\omega_{0}$ có liên quan tới tần số của Laser, $\delta t$ là biên độ xung Laser, tất cả đều được tính bằng hệ đơn vị SI. Chú ý rằng, $E_{0}$ là biến đổi phức chậm trong không gian $x$ và thời gian $t$, từ đó ta có thể bỏ đi số hạng cộng hưởng $e^{-i \omega_{0} t}$ bằng phép xấp sỉ gần đúng hàm bao (EFA), và $e^{i \omega_{0} t}$ được xem như là không đáng kể khi áp dụng gần đúng sóng quay (RWA), điều này dẫn đến phương trình trường điện của chúng ta là
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{-t^{2} / (\delta t)^{2}}.
+\end{gather}
+%The electric field and its Fourier transform are shown in below figure
+Trường điện và phép biến đổi Fourier của nó được cho biết thông qua hình dưới
+\image{electricfield.pdf}
+\image{electricfieldFT.pdf}
+
+
+
+
+
+
+\bibliographystyle{plain} 
+\bibliography{bib/bib}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+\end{document}

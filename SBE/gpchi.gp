@@ -6,7 +6,7 @@
     set ylabel "y"
     set xlabel "x"
     set zlabel "z"
-    set xrange [-100:200]
+    set xrange [-100:100]
     
 
     set grid
@@ -25,14 +25,13 @@
     set ylabel "alpha(omega)"
     #plot "25&10fs with N=100&0.5.data.absortion.txt" u 2:3 with lines tit "Phân cực toàn phần"
     #plot "25&10fs with N=100&0.5.data.absortion.txt" u 2:10 with lines tit "Mật độ toàn phần"
-    plot "20&10fs with N=100&0.001.data.absortion.txt" u 2:10 with lines tit "chi = 0.001" ,\
-         "20&10fs with N=100&0.01.data.absortion.txt" u 2:10 with lines tit "chi = 0.01" ,\
-         "20&10fs with N=100&0.1.data.absortion.txt" u 2:10 with lines tit "chi = 0.1" ,\
-         "20&10fs with N=100&0.2.data.absortion.txt" u 2:10 with lines tit "chi = 0.2" ,\
-         "20&10fs with N=100&0.5.data.absortion.txt" u 2:10 with lines tit "chi = 0.5" ,\
-         "20&10fs with N=100&2.data.absortion.txt" u 2:10 with lines tit "chi = 2" ,\
-         "20&10fs with N=100&3.data.absortion.txt" u 2:10 with lines tit "chi = 3" ,\
-         "20&10fs with N=100&5.data.absortion.txt" u 2:10 with lines tit "chi = 5" ,\
+    plot "20&10fs with N=100&0.001.data.absortion.txt" u 1:4 with lines tit "chi = 0.001" ,\
+         "20&10fs with N=100&0.01.data.absortion.txt" u 1:4 with lines tit "chi = 0.01" ,\
+         "20&10fs with N=100&0.1.data.absortion.txt" u 1:4 with lines tit "chi = 0.1" ,\
+         "20&10fs with N=100&0.2.data.absortion.txt" u 1:4 with lines tit "chi = 0.2" ,\
+         "20&10fs with N=100&0.5.data.absortion.txt" u 1:4 with lines tit "chi = 0.5" ,\
+         "20&10fs with N=100&2.0.data.absortion.txt" u 1:4 with lines tit "chi = 2" ,\
+
 
 
     #unset multiplot

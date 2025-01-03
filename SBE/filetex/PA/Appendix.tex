@@ -1,0 +1,100 @@
+\documentclass[14Pt]{article}
+\usepackage{pythonhighlight}
+\usepackage[utf8]{vietnam}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{fontsize}
+\changefontsize[14pt]{14pt}
+\usepackage{commath}
+\usepackage{empheq}
+\usepackage{blindtext}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{slashed}
+\usepackage{indentfirst,parskip}
+\setlength{\parindent}{2em}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+%\usepackage{tikz-feynman}
+\usepackage{nccmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref}
+\usepackage{dirtytalk,bm,physics}
+\usepackage{tikz}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+
+
+\begin{document}
+	Với $N(t)$ là mật độ toàn phần, ta có:
+	\begin{equation}
+		N(t) = 2 \sum_k f_{e,k} (t)
+	\end{equation}
+	Từ tổng rời rạc, ta chuyển sang tích phân liên tục:
+	\begin{align*}
+		\sum_k &= \frac{V}{(2\pi)^2} \int \, d\mathbf{k} \\
+		&= \frac{4V\pi}{(2\pi)^3} \int_{0}^{\infty} k^2\, dk \\
+		&= \frac{2V}{(2\pi)^2} \int_{0}^{\infty} \frac{\sqrt{2m\epsilon}}{\hbar} \frac{m}{\hbar^2} \, d\epsilon  \\
+		&= \int_{0}^{\infty} \frac{V}{(2\pi)^2}	(\frac{2m}{\hbar^2})^\frac{3}{2} \sqrt{\epsilon} \, d\epsilon 
+	\end{align*}
+	với 
+	\[
+	\epsilon = \frac{\hbar^2 k^2}{2m} \rightarrow d\epsilon = \frac{\hbar^2}{m} kdk
+	\]
+	
+	Suy ra:
+	\begin{equation*}
+		N(t) = 2 \int_{0}^{\infty} f_{e,\epsilon} (t) \, d\epsilon
+	\end{equation*}
+	
+	Thức hiện "rời rạc hóa", ta thu được:
+	\begin{equation*}
+		N(t) = 2 \frac{V}{(2\pi)^2} (\frac{2m}{\hbar^2})^\frac{3}{2} \sum_n^N \sqrt{n\delta E} f_{e,n} \Delta \epsilon
+		= c_0 \sum_n^N f_{e,n}(t) \Delta \epsilon
+	\end{equation*}
+	Vậy hệ số $C_0$ được xác định bởi:
+	\begin{equation}
+		C_0 = \frac{V}{2\pi^2} (\frac{2m}{\hbar^2})^\frac{3}{2} \sqrt{\Delta \epsilon} \Delta \epsilon
+		= \frac{V}{2\pi^2} (\frac{1}{E_R a_0^2})^\frac{3}{2}  \sqrt{\Delta \epsilon} \Delta \epsilon
+		= \frac{\Delta \epsilon \sqrt{\Delta \epsilon}V}{2\pi^2 (E_R)^\frac{3}{2} a_0^3}
+	\end{equation}
+	Hơn nữa, suất của tổng hàm phân cực $\left| P(t) \right|$ = $\sum_\mathbf{k}$$\left| p_\mathbf{k}(t)\right|$, $\left| P(t) \right|$ biến đổi theo $\mathbf{k}$ thành tổng theo năng lượng $\epsilon$: $\epsilon$ $\equiv$ $\epsilon_k$ = $E_R$ $a_0^2$u.
+	\begin{equation}
+		P(t) = \sum_k p_k(t) = \propto \Delta \epsilon \sqrt{\Delta \epsilon} \sum_n^N \sqrt{n} p_n(t)
+	\end{equation}
+	Và:
+	\begin{equation}
+		E(t) = E_0 e^{-\frac{t^2}{\delta t^2}}
+	\end{equation}
+	Ngoài ra, còn một đại lượng cần quan tâm là phổ hấp thụ \( \alpha(\omega) \equiv \operatorname{Im} \left[\frac{P(\omega)}{E(\omega)}\right] \), trong đó \( P(\omega) \) và \( E(\omega) \) được xác định bằng phép biến đổi Fourier của \( P(t) \) và \( E(t) \).
+	\begin{equation*}
+		\begin{aligned}
+		E(\hbar \omega) \equiv \frac{1}{\hbar}\int_{-\infty}^{\infty} E(t) e^{i\omega t} \, dt = \int_{-\infty}^{\infty}  E_0 e^{-\frac{t^2}{\delta t^2}} e^{i\omega t} \, dt
+		\end{aligned}
+	\end{equation*}
+	Đặt a = $\frac{1}{\delta t^2}$ ; b = $i\omega$
+	\begin{align*}
+			E(\hbar \omega) = \int_{-\infty}^{\infty} e^{-at^2 + bt} \, dt
+	\end{align*}
+	\begin{equation}
+	\implies E(\hbar \omega) = \int_{-\infty}^{\infty} e^{-at^2 + bt} \, dt = E_0 \sqrt{\pi} \delta t e^{\left( -\frac{\delta t^2 \omega^2}{4} \right)}
+	\end{equation}
+	Tương tự cho phép biến đổi $P(\omega)$
+	\begin{equation}
+		P(\hbar \omega) \equiv \frac{1}{\hbar}\int_{-\infty}^{\infty} P(t) e^{i\omega t} \, dt
+	\end{equation}
+	Tích phân theo $t$ trong phương trình trên có thể được rời rạc hoá theo tổng Riemann:
+	\begin{equation*}
+	\int_{-\infty}^{\infty} P(t) e^{i\hbar \omega t} \, dt \rightarrow \Delta t \sum_n P(t_n)
+	\end{equation*}
+	Như đã nhắc đến ở trên, ta có công thức của $P(t)$ nên suy ra:
+	\begin{equation}
+		P(\hbar \omega) \rightarrow \frac{\Delta t \Delta \epsilon \sqrt{\Delta \epsilon}}{\hbar}\sum_n \sqrt{n} p_n(t)
+	\end{equation}
+\end{document}

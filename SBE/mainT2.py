@@ -211,7 +211,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, solver: npt.NDArray, N: int, fileW
                 {
                     f"{'Thoi gian':^9}": f"{tSpan[omega_i]:^9}",
                     f"{'tan so omega':^25}": f"{omega[omega_i]:^25}",
-                    f"{'Polarization':^60}": f"{Polarization[omega_i]:^60}",
+                    f"{'Polarization':^60}": f"{RE(Polarization[omega_i]):^60}",
                     f"{'NumberDensity':^45}": f"{NumberDensity[omega_i]:^45}",
                     f"{'Alpha':^21}": f"{listAlpha[omega_i]:^21}",
                     f"{'RE_POmega':^45}": f"{RE(Piomega):^45}",
@@ -225,7 +225,7 @@ def solve_sys_ode(dF: npt.NDArray, dt: float, solver: npt.NDArray, N: int, fileW
 
         np.array(listAlpha)
 
-    return tSpan, EnergyEps, fe, p, Polarization, NumberDensity, listAlpha  # , listEom
+    return tSpan, EnergyEps, fe, p, RE(Polarization), NumberDensity, listAlpha  # , listEom
 
 
 def multipage(filename, figs=None):
@@ -368,7 +368,7 @@ def main():
     fe = np.array(fe)
     p = np.array(p)
 
-    # plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
+    plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
     gnuPlot(filewritefe, filewriteNt, filewriteAlpha)
 
 

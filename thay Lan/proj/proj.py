@@ -95,7 +95,14 @@ def main():
 
     for species in df["species"]:
         colors.append(color_map[species])
-    ax2.scatter(projected_data[:, 0], projected_data[:, 1], projected_data[:, 2], c=colors, s=50, edgecolors="k")
+    ax2.scatter(
+        projected_data[:, 0],
+        projected_data[:, 1],
+        projected_data[:, 2],
+        c=colors,
+        s=50,
+        edgecolors="k",
+    )
     ax2.set_xlabel("Principal Component 1")
     ax2.set_ylabel("Principal Component 2")
     ax2.set_title("PCA of Iris Dataset")
@@ -110,7 +117,7 @@ def main():
     X = pca.transform(X)
 
     y = np.choose(y, [1, 2, 0]).astype(float)
-    ax1.scatter(X[:, 0], X[:, 1], X[:, 2], c=colors, s=50, edgecolor="k")
+    ax1.scatter(X[:, 0], -1 * X[:, 1], X[:, 2], c=colors, s=50, edgecolor="k")
     ax1.set_xlabel("Principal Component 1")
     ax1.set_ylabel("Principal Component 2")
     ax1.set_title("PCA of Iris Dataset with Sklearn")

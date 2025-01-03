@@ -10,7 +10,8 @@
 \usepackage{hyperref}
 \usepackage[d]{esvect}
 \usepackage{commath}
-\usepackage{graphicx}
+\usepackage{float}
+\usepackage{graphicx,subcaption}
 \newcommand{\f}[2]{\dfrac{#1}{#2}}
 \hypersetup{
 	colorlinks=true,
@@ -30,11 +31,8 @@
 \usepackage{physics,upgreek}
 \urlstyle{same}
 
-\newcommand{\image}[1]{
-	\begin{center}
-		\includegraphics[width=0.6\textwidth]{fig/#1}
-	\end{center}
-}
+
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
 \begin{document}
 
 \preprint{APS/123-QED}
@@ -158,7 +156,8 @@ Phương trình Bloch bán dẫn có điều kiện ban đầu như sau
 \begin{align}
 	f_{e,n}(t = t_{0}) = f_{h,n}(t = t_{0}) = 0 ; p_{n} (t = t_{0}) = 0 
 \end{align}
-Cặp \hyperref[Eq:4]{Eq. (4)} và \hyperref[Eq:5]{Eq. (5)} có thể được biểu diễn dưới dạng ma trận \begin{gather}
+Cặp \hyperref[Eq:4]{Eq. (4)} và \hyperref[Eq:5]{Eq. (5)} có thể được biểu diễn dưới dạng ma trận 
+\begin{gather}
 	\dot{\mathbf{Y}} = \mathbf{F}( \mathbf{Y}, t), \;\text{với}\, 
 	\mathbf{Y} = 
 	\begin{pNiceMatrix}
@@ -182,14 +181,78 @@ với $E_{0}$ là biện độ cực đại, $\omega_{0}$ có liên quan tới t
 \end{gather}
 Trường điện và phép biến đổi Fourier của nó được cho biết thông qua hình dưới \cite{simon2013oxford} \cite{PhysRevLett.108.196802}
 
-%\section{\label{sec:level3} KẾT QUẢ SỐ}
+\section{\label{sec:level3} KẾT QUẢ SỐ}
+Laser có đặc tính như sau:
+\begin{equation}
+	\begin{aligned}
+		\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \at{\text{coh}}{} +\frac{\partial f}{\partial t} \at{\text{col}}{}
+	\end{aligned}
+\end{equation}
+trong thời gian rất ngắn ban đầu, va chạm chưa có, khi vừa bơm lên, electron sẽ bị đồng bộ với xung Laser, chưa kịp tương tác với nhau, hay ta bỏ qua số hạng va chạm 
+\begin{equation}
+	\begin{aligned}
+		\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \at{\text{coh}}{}
+	\end{aligned}
+\end{equation}
+số hạng va chạm xảy ra trễ hơn, vì xung dạng Gauss nên electron sẽ có phân bố Gauss. Ứng với đỉnh của xung Gauss ta biết được có exciton.\\
+\noindent Từ \hyperref[fig:distribution of e]{Hình (1)}, khi tăng $\delta t$ từ 20 lên 50, nghĩa là $\delta \epsilon$ sẽ giảm, làm cho bề rộng của hình dạng Gauss này nhỏ đi, hoàn toàn phù hợp với lý thuyết.
+\begin{figure*}[ht]
+	\centering
+	% Hình đầu tiên (a)
+	\begin{subfigure}[b]{0.46\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/HamPhanBoElectronDeltat=20.pdf}
+		\caption{}
+		\label{fig:subfig1}
+	\end{subfigure}
+	% Hình thứ hai (b)
+	\begin{subfigure}[b]{0.46\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig/HamPhanBoElectronDeltat=50.pdf}
+		\caption{}
+		\label{fig:subfig2}
+	\end{subfigure}
+	% Chú thích tổng
+	\caption{
+		(a) Hình phân bố electron với $\Delta t = 20$. 
+		(b) Hình phân bố electron với $\Delta t = 50$. 
+	}
+	\label{fig:distribution of e}
+\end{figure*}
+
+\noindent Đối với hàm phân cực electron, do ta vẫn xét đến thành phần va chạm nên dáng điệu của đồ thị có xu hướng giảm dần theo thời gian.\\
+\begin{figure*}[htb]
+	\centering
+	\includegraphics[width=0.2\textwidth]{fig/hamphancuce.pdf}
+	\caption{Hình phân cực electron với $\Delta t = 50, \Delta_{0} = 100$}
+	\label{fig:subfig3}
+\end{figure*}
+Đối với $\chi_0 < 1$ thì xung đi vào bắt đầu bơm từ từ, khi xung đi hết, không tác động nữa, điện tử lỗ trống được bơm lên bao nhiêu thì sẽ giữ nguyên.\\
+Từ hình vẽ trên, ta thấy ứng với các giá trị của $\chi_0 = 1,2,3\ldots$ thì đồ thị có dáng điệu lên xuống, và tất cả hiện tượng này xảy ra trong lúc có xung. Điều này có thể giải thích bởi cơ chế Population Inversion.\\
+
+CHỖ NÀY ĐỂ ẢNH HÀM PHÂN CỰC TOÀN PHẦN.\\
+
+Theo nguyên tắc, ban đầu các electron đồng bộ với xung, va chạm rất ít, tuy nhiên đường $T_2 = 50$ lạ cho thấy va chạm rất nhiều ở ban đầu. Nếu ta dùng $T_2=const$ là không hợp lý, nghĩa là nó kiềm hãm hạt lúc mà nó chưa có. Nên ta xét hệ thức
+\[
+\frac{1}{T_2} = \frac{1}{T_2^0} + \gamma N(t)
+\]
+số hạng đầu là số hạt tương tác phonon, và số hạt thứ hai là số hạng tương tác Coulomb.\\
+Ở phần này ta nhận xét như sau, theo công thức 
+\[
+\frac{dP}{dt} \propto \frac{-P}{T_2} \rightarrow P \propto e^{-\frac{1}{T_2}}
+\]
+Từ đây ta thấy rằng nếu $T_2$ càng tăng thì độ kiềm hãm càng nhỏ $\rightarrow$ Tăt dần chậm, nên đồ thị sẽ rộng ra. \\
+
+CHỖ NÀY ĐỂ PHỔ HẤP THỤ.\\
+
+Khi ta tăng số phương trình N càng lớn và khoảng chia omega càng nhiều (khoảng 2000), thì đỉnh của phổ hấp thụ này sẽ càng tiến về $E_R = -4.2 \text{ }meV$, exciton nằm đúng năng lượng liên kết.\\
+Đỉnh của phổ hấp thụ tương ứng với vị trí của exciton, bắt cặp giữa electron và lỗ trống. Tuy nhiên việc bắt cặp này khá 'mong manh' bởi vì mật độ hạt càng cao, việc bắt cặp này bị phá vỡ bởi tán xạ, hoặc thế chắn Coulomb bị yếu 
+\[
+V_q \propto \frac{1}{q^2 + \kappa^2}
+\]
+$\kappa$ gọi là hệ số chắn, hệ số chắn càng lớn thì thế Coulomb càng yếu.
 \section{\label{sec:level4} TỔNG KẾT}
 %\image{HamPhanBoElectrondeltat=20.pdf}
-\begin{figure}[htb]
-	\includegraphics{fig/HamPhanBoElectrondeltat=20.pdf}
-	\caption{\label{fig:epsart} A figure caption. The figure captions are
-		automatically numbered.}
-\end{figure}
 Trong bài này chúng tôi đã tập trung vào việc làm rõ cơ chế hình thành exciton trong chất bán dẫn GaAs khi tương tác với ánh sáng laser. Bằng cách áp dụng phương pháp giải số Runge-Kutta bậc 4 để giải phương trình Bloch bán dẫn, chúng tôi đã xây dựng một mô hình lý thuyết chi tiết để mô tả quá trình tương tác này.
 
 Thông quá trình tính toán số, chúng tôi đã xác định chính xác năng lượng liên kết exciton là -4.2 MeV. Kết quả này không chỉ cung cấp một giá trị tham số quan trọng cho vật liệu GaAs mà còn chứng tỏ tính chính xác và hiệu quả của mô hình đã xây dựng.

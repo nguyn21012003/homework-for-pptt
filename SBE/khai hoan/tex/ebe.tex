@@ -1,0 +1,152 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
+\usepackage{anyfontsize,fontsize}
+\changefontsize[13pt]{13pt}
+\usepackage{commath}
+\usepackage[d]{esvect}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{slashed,cancel}
+\usepackage{indentfirst}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage{upgreek}
+\usepackage{nccmath,nicematrix}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme,bbold}
+\usepackage[thinc]{esdiff}
+\usepackage{hyperref}
+\usepackage{dirtytalk,bm,physics,upgreek}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+%footnote
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}%
+\fancyhf{}%
+\fancyfoot[L]{Vật lý Lý thuyết}%
+\fancyfoot[C]{\hspace{6.5cm} \thepage}%
+
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+
+\newcommand{\image}[1]{
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{pic/#1}
+	\end{center}
+}
+\renewcommand{\l}{\ell}
+\newcommand{\dps}{\displaystyle}
+
+\newcommand{\f}[2]{\dfrac{#1}{#2}}
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
+
+
+\renewcommand{\baselinestretch}{2.0}
+
+
+\title{\Huge{Cơ học lượng tử 3}}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=red,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={QM3},
+	pdfpagemode=FullScreen,
+}
+
+\urlstyle{same}
+
+\begin{document}
+%\image{pic1.png}
+%Hình bên trái là phân bố electron. Dùng xung Laser có dạng Gauss, áp dụng gần đúng sóng quay. Xung Gauss theo thời gian thì năng lượng có dạng:
+%\begin{align}
+%	E(\omega) \propto e^{-\varepsilon / \delta \varepsilon}
+%\end{align}
+%hay
+%\begin{align}
+%	\delta t^{2} \propto \f{1}{\delta \varepsilon ^{2}}
+%\end{align}
+%Ứng với đỉnh của xung Gauss ta dự đoán có được exciton, tại $\delta_{0} = 50$, ta thấy có đỉnh, tăng dần $\delta_{t}$ thì bề rộng $\delta_{\varepsilon}$ sẽ rộng hơn. Trong hình vẽ ta đã tắt đi số hạng tán xạ cho phân bố electron, nên bơm thế nào sẽ giữ nguyên dáng điệu. Tham số Detunning cũng có tham gia vào việc xác định dáng điệu của phân bố, nếu ta giảm Detunning $\Delta_{0}$ từ 100 xuống còn 10, thì hàm phân bố bị thay đổi.\\
+%Hình bên trái ta đã có xét số hạng tán xạ, nên có dạng tắt dần, nhưng vẫn giữ dạng xung Gauss.
+%\image{pic2.png}
+%\image{pic3.png}
+%Hình 3 với các tham số thay đổi là $\delta_{t} = 10$ , $\Delta_{0} = 20$, tmax = 1000, $\chi_{0} = 0.2$
+%\image{pic4.png}
+%Hình 4 là các phổ hấp thụ với các thông số như hình 3, $\chi$ thay đổi như hình. Khi ta tăng số phương trình N càng lớn và khoảng chia omega càng nhiều
+%(khoảng 2000), thì đỉnh của phổ hấp thụ này sẽ càng tiến về $E_{R}$ = -4.2 meV,
+%exciton nằm đúng năng lượng liên kết. Đỉnh của phổ hấp thụ tương ứng với vị trí của exciton, bắt cặp giữa electron và
+%lỗ trống. Tuy nhiên việc bắt cặp này khá "mong manh"bởi vì mật độ hạt càng
+%cao, việc bắt cặp này bị phá vỡ bởi tán xạ, hoặc thế chắn Coulomb bị yếu
+%\begin{align}
+%	V_{q} \propto \f{1}{q^{2} + \kappa^{2}}
+%\end{align}
+%$\kappa$ là hệ số chắn. $\kappa \gg \Rightarrow V_{q} \ll$
+
+\section{Giải thích chi tiết}
+\subsection{Phân bố electron}
+Sử dụng xung Laser có dạng Gauss như sau
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{t^{2} / (\delta t)^{2}} (e^{i\omega_{0} t} + e^{-i\omega_{0} t}),
+\end{gather}
+Áp dụng Fourier Transform cho Eq. (4), ta được
+\begin{equation}
+	\begin{aligned}
+		\mathcal{F}\{ E(t) \}(\omega)
+		 & = \int_{-\infty}^{+\infty} E(t) e^{-i \omega t} dt                                                                                                     \\
+		 & = \f{E_{0}}{2} \int_{-\infty}^{+\infty}  e^{t^{2} / (\delta t)^{2}} (e^{i\omega_{0} t} + e^{-i\omega_{0} t} ) e^{-i \omega t} dt                       \\
+		 & = \f{E_{0}}{2} \sqrt{\pi} \delta t ( e^{- \frac{\delta t^{2} (\omega - \omega_{0})^{2} }{4}} + e^{- \frac{\delta {t}^{2} (\omega + \omega_{0})^{2}}{4}} )\\
+	\end{aligned}
+\end{equation}
+Chú ý rằng ở đây $E_{0}$ là biến đổi chậm so trong không gian và thời gian $t$, do đó ta có thể áp dụng gần đúng hàm bao lên trường điện từ. Gần đúng hàm bao (EFA) được áp dụng khi có mặt điện trường hoặc từ trường không phụ thuộc vào thời gian và biến đổi chậm trong không gian, nên từ đó có thể xem số hạng $e^{- \frac{\delta {t}^{2} (\omega + \omega_{0})}{4}}$ là không đáng kể so với ô mạng cơ sở, bên cạnh đó ta đã áp dụng gần đúng sóng quay nên cũng có thể loại bỏ luôn số hạng $e^{- \frac{\delta t^{2} (\omega - \omega_{0})^{2} }{4}}$. Eq .(1) bây giờ trở thành
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{-t^{2} / (\delta t)^{2}}
+\end{gather}
+Eq .(2) cho phân bố có dạng điệu giống phân bố Gauss. Khi bơm xung vào giai đoạn đầu($t\ll$), ta có hàm phân bố electron(e), lỗ trống(h) và hàm phân cực
+\begin{equation}
+	\begin{aligned}
+		\dot{f}_{e,h,\mathbf{k}} 
+		&= -2 \Im\left[ \Omega_{\mathbf{k}}^{R}(t) p_{\mathbf{k}}^{*}(t) \right] + \f{\partial f_{e,h,\mathbf{k}}(t)}{\partial t}.
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\begin{aligned}
+		\f{\partial p_{\mathbf{k}}(t)}{\partial t}
+		&= -\f{i}{\hbar} \left[ e_{e,\mathbf{k}} + e_{h,\mathbf{k}}\right] p_{\mathbf{k}}(t) + i \left[ 1 - f_{e,\mathbf{k}}(t) - f_{h,\mathbf{k}}(t)  \right] \Omega_{\mathbf{k}}^{R}(t) + \f{\partial p_{\mathbf{k}}(t)}{\partial t}.
+	\end{aligned}
+\end{equation}
+Bằng phép gần đúng hiện tượng đã đề cập ở trên số hạng $ \frac{\partial f_{e,h,\mathbf{k}}(t)}{\partial t} \rightarrow 0$ và $\frac{\partial p_{\mathbf{k}}(t)}{\partial t} \rightarrow - \frac{p_{\mathbf{k}}(t)}{T_{2}}$.
+Trên thực tế, tại $t \ll $ số hạng thứ 2 chưa có, e và h sẽ bị quấn theo xung laser do tính chất coherence của laser làm cho phân bố của e và h cũng có dạng Gauss, trong bài toán này khi đã xét gần đúng hiện tượng luận tức là bỏ qua số hạng thứ hai của Eq .(7) ta cũng cho ra kết quả của phân bố e và h là cũng có dạng Gauss. Điều này cho ta thấy kết quả từ hình là hợp lý với thời gian $t \ll$. Nhưng trong hình bên phải tức là phân bố của lỗ trống, ta vẫn còn thành phần tán xạ do gần đúng hiện tượng luận, ta thấy phân bố của hole tắt dần theo thời gian nhưng dạng Gauss vẫn còn khi ta xét phân bố theo năng lượng, khi xét ở thời gian đủ lớn $t_{max} > 1000$ và $\delta {t} = \delta_{0} = 100 fs$ với $T_2$ lần lượt là 210 và 500 fs, ta có đồ thị sau
+\image{pic8.png}
+\image{pic7.png}
+Hệ số Detunning $\Delta_{0} = \hbar \omega_{0} - E_{gap}$ cũng ảnh hưởng tới phân bố electron. Khi ta bơm xung bé($\omega_{0} \ll$) tức là Detunning bé, trong bài này ta đã áp dụng gần đúng cho $f_{e} = f_{h}$ nên khi ta bơm với Detunning = 100 thì đỉnh của phân bố electron phải là tại 50 khi nhìn về mặt năng lượng
+\image{pic5.png}
+là hình khi chưa cho $f_e = f_{h}$
+\image{pic6.png}
+là hình khi cho $f_e = f_{h}$. năng lượng phải chia 2 cho dải dẫn và dải hoá trị nên đồ thị cho ra kết quả là chính xác với lý thuyết.
+
+%\subsection{Phân bố toàn phần N(t)}
+%Phân bố toàn phần là hàm phân bố của tất cả các trạng thái khả dĩ trên dải dẫn, khi xung đi qua thì đồ thị N(t) phải là hằng số, kể cả khi có xét thành phần tán xạ của e.\\
+%Ở phân bố N(t), bằng hệ đơn vị SI, tổng số hạt phải $\approx 10^{17} /\text{cm}^{3}$ $\Rightarrow$ kết quả cho thấy cũng gần đó, nên đơn vị là đúng
+%
+%\subsection{Phân bố hàm phân cực Pt}
+%\image{pt210.pdf}
+%\image{pt500.pdf}
+%Khi ta cho thông số như sau $\delta t = 10, \Delta_0 = 20, \chi_0 = 5.0, T20 = 210, T20 = 500$. Khi ta xét T2 thay đổi theo thời gian cho ra được hình như trên,
+%\begin{gather}
+%	\dot{p} \propto -\f{P}{T_{2}} \Rightarrow P \propto e^{-t/T2}
+%\end{gather}
+%Phương trình trên cho thấy đồ thị phải giảm theo hàm exp và giảm rất nhanh, trùng khớp với hai hình $\Rightarrow$ dáng điệu đúng ý nghĩa vật lý.
+
+
+\end{document}

@@ -1,0 +1,383 @@
+\documentclass[%
+reprint,
+amsmath,amssymb,
+superscriptaddress,
+aps,
+]{revtex4-2}
+\usepackage[provide=vietnam]{babel}
+\usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
+\usepackage{dcolumn}
+\usepackage{bm}
+\usepackage{datetime}
+\usepackage{hyperref}
+\usepackage[d]{esvect}
+\usepackage{commath}
+\usepackage{float}
+\usepackage{graphicx,subcaption}
+\newcommand{\f}[2]{\dfrac{#1}{#2}}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=black,
+	citecolor=black,
+	pdftitle={SBE},
+	pdfpagemode=FullScreen,
+}
+\usepackage{slashed,cancel}
+\usepackage{nccmath,nicematrix}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath,systeme}
+\usepackage[thinc]{esdiff}
+\usepackage{physics,upgreek}
+\urlstyle{same}
+
+
+\newcommand{\at}[2]{\bigg\rvert_{#1}^{#2} }
+\begin{document}
+
+\preprint{APS/123-QED}
+
+\title{Ứng Dụng Phương Trình Bloch Bán Dẫn\\ Trong Mô Tả Xung Laser Ngắn Và Phổ Hấp Thụ GaAs}% Force line breaks with \\
+%\thanks{A footnote to the article title}%
+
+\author{Đào Duy Tùng}
+\affiliation{Vật lý Lý thuyết, Đại học Khoa Học Tự Nhiên, Đại học Quốc Gia Việt Nam, Thành phố Hồ Chí Minh, Việt Nam}
+\author{Trần Khôi Nguyên}
+\affiliation{Vật lý Lý thuyết, Đại học Khoa Học Tự Nhiên, Đại học Quốc Gia Việt Nam, Thành phố Hồ Chí Minh, Việt Nam}
+\author{Phan Thuý Vy}
+\affiliation{Vật lý Lý thuyết, Đại học Khoa Học Tự Nhiên, Đại học Quốc Gia Việt Nam, Thành phố Hồ Chí Minh, Việt Nam}
+\author{Phạm Nguyễn Thành Đạt}
+\affiliation{Vật lý Lý thuyết, Đại học Khoa Học Tự Nhiên, Đại học Quốc Gia Việt Nam, Thành phố Hồ Chí Minh, Việt Nam}
+\author{Lê Thượng Phương Anh}
+\affiliation{Vật lý Lý thuyết, Đại học Khoa Học Tự Nhiên, Đại học Quốc Gia Việt Nam, Thành phố Hồ Chí Minh, Việt Nam}
+
+\begin{abstract}
+	\begin{description}
+		\item [Tóm tắt] Trong bài báo này chúng tôi trình bày kết quả nghiên cứu về phổ hấp thụ của hệ bán dẫn GaAs dưới tác động của xung laser. Bằng cách giải số phương trình Bloch và phân tích hàm phân bố electron, hàm mật độ phân cực và mật độ toàn phần, chúng tôi đã xác định được đỉnh hấp thụ đặc trưng tại năng lượng $E_{R}=-4.2$ meV, tương ứng với sự hình thành của hạt exciton. Kết quả này không chỉ cung cấp bằng chứng thực nghiệm cho mô hình lý thuyết mà còn mở ra hướng nghiên cứu mới trong việc điều khiển và ứng dụng các tính chất quang học của vật liệu bán dẫn.
+		\item[Từ khoá]
+		Phổ hấp thụ, GaAs, SBE.
+	\end{description}
+\end{abstract}
+\maketitle
+\section{\label{sec:level1}Giới thiệu bài toán vật lý}
+Tương tác ánh sáng với vật liệu bán dẫn đóng vai trò quan trọng trong nhiều quá trình vật lý. Nhiều nghiên cứu đã được thực hiện để xây dựng lý thuyết giải thích cơ chế của hiện tượng này.\\
+Trong bài báo này, chúng tôi nghiên cứu sự tương tác giữa ánh sáng và vật liệu bán dẫn GaAs. Chúng tôi xem xét hệ bán dẫn gồm 2 dải là dải dẫn và dải hóa trị. Khi đó, hệ được kích thích bởi trường laser phù hợp, các electron nằm ở dải hóa trị sẽ bị kích thích bởi trường ngoài là laser và chúng chuyển dời lên dải dẫn.\\
+Khi các electron nhảy lên dải dẫn, tạo ra các electron tự do trong dải hóa trị. Quá trình này để lại lỗ trống ở dải hóa trị nơi mà electron bị kích thích đã rời đi. Kết quả của quá trình này sẽ tạo ra một hạt exciton khi electron trong dải dẫn bắt cặp với lỗ trống ở dải hóa trị.
+
+Để đơn giản hóa bài toán, chúng tôi đã áp dụng một số xấp xỉ. Cụ thể, khi xét các dải năng lượng, chúng tôi sử dụng xấp xỉ lân cận $k$ nhỏ ($k\rightarrow 0$) và xấp xỉ bước sóng lớn ($\lambda\rightarrow\infty$). Điều này cho phép chúng tôi khai triển trường ngoài (xung laser) theo cấp số lũy thừa của k và giữ lại đến số hạng lưỡng cực. Như vậy tương tác giữa ánh sáng và vật chất sẽ được dừng lại ở mức độ lưỡng cực khi xem xét bước sóng dài đây là một gần đúng tốt.\\
+Với mục tiêu tập trung vào các quá trình cộng hưởng, chúng sử dụng xấp xỉ parabol để đơn giản hóa cấu trúc các dải năng lượng và áp dụng xấp xỉ sóng quay để loại bỏ các thành phần không liên quan đến cộng hưởng 
+
+Cường độ xung laser trong biểu diễn năng lượng có dạng :
+\begin{align}
+	E(\varepsilon)=\delta t\sqrt{\pi}\exp[\f{-\varepsilon^2}{4\delta t}]. \label{Eq:1}
+\end{align}
+Mục tiêu nghiên cứu của chúng tôi là hiểu rõ về động lực học của các hạt mang điện (electron và lỗ trống) và quá trình hình thành exciton trong bán dẫn khi tương tác với ánh sáng laser, để mô tả đầy đủ hệ chúng tôi cần biết thông tin về hàm sóng của electron cũng như lỗ trống. Tuy nhiên, việc giải chính xác phương trình Schrödinger cho một hệ nhiều hạt như vậy là rất phức tạp. Do đó, chúng tôi sẽ tập trung vào các đại lượng vật lý có thể đo được như mật độ electron $f_e$ và mật độ lỗ trống $f_h$,hàm phân cực $P(t)$  biểu diễn sự phân cực điện môi của vật liệu dưới tác dụng của điện trường ngoài.
+
+Trong trường hợp của bán dẫn, sự phân cực này chủ yếu do sự dịch chuyển tương đối giữa electron và lỗ trống khi chúng tạo thành các cặp exciton, bằng cách phân tích hàm phân cực, chúng tôi có thể hiểu rõ hơn về tính chất của exciton đồng thời có mối liên hệ chặt chẽ với ma trận mật độ của hệ.\\
+Ma trận mật độ có thể được biểu diễn dưới dạng:
+\begin{align*}
+	\rho = \begin{pmatrix}
+		\rho_{cc} & \rho_{cv} \\
+		\rho_{vc} & \rho_{vv}
+	\end{pmatrix} .
+\end{align*}
+Phần tử $\rho_{cv}$ trong ma trận mật độ, mô tả sự chồng chất giữa trạng thái electron ở dải hóa trị (valence band) và lỗ trống ở dải dẫn (conduction band), đóng góp trực tiếp vào hàm phân cực.\\
+Từ đó, hàm phân cực $P(t)$ cho phép chúng tôi nghiên cứu động lực học của exciton, bao gồm quá trình tạo thành, di chuyển và tái hợp của các cặp electron-lỗ trống \cite{doi:10.1142/7184}. 
+\begin{align}
+	\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t). \label{Eq:2}
+\end{align}
+Bằng cách tính toán độ cảm quang $\chi$ từ hàm phân cực chúng ta có thể trích xuất phần ảo của $\chi$ khi đó có thể xác định dáng điệu của phổ hấp thụ $\alpha{(\omega)}$ từ đó có thể xác định được tính chất của hạt
+
+Để mô tả đầy đủ động lực học của hệ bán dẫn tương tác với ánh sáng, chúng ta cần theo dõi sự thay đổi của hàm mật độ electron, hàm mật độ lỗ trống và hàm phân cực. Thông tin về các đại lượng này được chứa trong ma trận mật độ $\rho$. Phương trình Bloch bán dẫn, là phương trình chi phối sự biến thiên của ma trận mật độ theo thời gian, nó sẽ cung cấp cho chúng ta một bức tranh toàn diện về quá trình tương tác này. Phương trình Bloch bán dẫn đã được dẫn ra chi tiết trong {\cite{doi:10.1142/7184}}.
+
+Trong hệ bán dẫn, do sự tương tác giữa nhiều hạt, động lực học của các đại lượng quan sát như mật độ electron, mật độ lỗ trống và hàm phân cực trở nên phức tạp. Những tương tác này làm cho cấu trúc phương trình không thể đóng kín. Mặc dù phương pháp giải tích mang lại những hiểu biết sâu sắc về các cơ chế cơ bản của hệ tuy nhiên trong nhiều trường hợp, phương pháp giải tích không đủ linh hoạt để áp dụng cho các hệ phức tạp. Vì vậy, việc sử dụng các phương pháp giải số trở thành lựa chọn cần thiết, cho phép giải quyết hiệu quả các hệ phương trình Bloch bán dẫn, đặc biệt khi số lượng phương trình lớn hoặc khi xét đến các hiệu ứng phi tuyến và tương tác nhiều hạt.
+\section{\label{sec:level2} PHƯƠNG PHÁP SỐ}
+Mục tiêu của chúng ta bây giờ là xác định ý nghĩa vật lý của các hàm phân bố electron (e), lỗ trống (h), mật độ toàn phần, hàm phân cực toàn phần và đặc biệt là phổ hấp thụ thông qua việc sử dụng phương trình Bloch bán dẫn với gần đúng hiện tượng luận
+\begin{equation}
+	\begin{aligned}
+		\f{\partial f_{j,\mathbf{k}} (t)}{\partial t} = - 2 \Im \left[ \Omega_{\mathbf{k}}^{R}(t) p^{*}_{\mathbf{k}}(t)\right], \label{Eq:3}\\
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\begin{aligned}
+		\f{\partial p_{\mathbf{k}}(t)}{\partial t} 
+		&= - \f{i}{\hbar} \left[ e_{e,\mathbf{k}}(t) + e_{h,\mathbf{k}}(t)  \right] p_{\mathbf{k}}(t) \\
+		&+ i \left[ 1 - f_{e,\mathbf{k}}(t) - f_{h,\mathbf{k}}(t) \right] \Omega_{\mathbf{k}}^{R}(t) - \f{p_{\mathbf{k}}(t)}{T_{2}}. \label{Eq:4}
+	\end{aligned}
+\end{equation}
+Bằng cách sử dụng phép gần đúng này, phân bố của electron và lỗ trống là như nhau, nhưng trong thực tế thì lại phải khác nhau. Bên cạnh đó, chúng ta sẽ giải số cặp phương trình \hyperref[Eq:3]{(3)} và \hyperref[Eq:4]{(4)} thay vì một cách chính xác. Ta viết lại \hyperref[Eq:3]{(3)},\hyperref[Eq:4]{(4)} dưới dạng năng lượng
+\begin{equation}
+	\begin{aligned}
+		\f{\partial f_{j,\varepsilon} (t)}{\partial t} = - 2 \Im \left[ \Omega_{\varepsilon}^{R}(t) p^{*}_{\varepsilon}(t)\right], \label{Eq:5}
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\begin{aligned}
+		\f{\partial p_{\varepsilon}(t)}{\partial t} 
+		&= - \f{i}{\hbar} \left[ \varepsilon - \Delta_{0} - E_{\varepsilon}  \right] p_{\varepsilon}(t) \\
+		&+ i \left[ 1 - f_{e,\varepsilon}(t) - f_{h,\varepsilon}(t) \right] \Omega_{\varepsilon}^{R}(t) - \f{p_{\varepsilon}(t)}{T_{2}}. \label{Eq:6}
+	\end{aligned}
+\end{equation}
+\subsection{Cải tiến vấn đề}
+Những phương trình đạo hàm riêng có dạng như này có thể giải bằng Runge-Kutta bậc 4. Như chúng tôi đã để cập ở trên, để giải trực tiếp cặp phương trình \hyperref[Eq:5]{(5)} và \hyperref[Eq:6]{(6)} là điều không thể. Để đơn giản chúng ta sử dụng tổng riêng phần Riemann bằng cách rời rạc hoá $\varepsilon = n \Delta \varepsilon(n = 1,2,3,... N)$. Chúng ta có thể viết lại cặp phương trình \hyperref[Eq:5]{(5)} và \hyperref[Eq:6]{(6)} dưới dạng
+\begin{equation}
+	\begin{aligned}
+		\f{\partial f_{n} (t)}{\partial t} = - 2 \Im \left[ \Omega_{n}^{R}(t) p^{*}_{n}(t)\right], \label{Eq:7}
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\begin{aligned}
+		\f{\partial p_{n}(t)}{\partial t} = - \f{i}{\hbar} \left[ n \Delta \varepsilon - \Delta_{0} - E_{n}  \right] p_{n}(t) \\
+		+ i \left[ 1 - 2f_{n}(t) \right] \Omega_{n}^{R}(t) - \f{p_{n}(t)}{T_{2}}, \label{Eq:8}
+	\end{aligned}
+\end{equation}
+trong đó
+\begin{gather}
+	E_{n} = \f{\sqrt{E_{R}}}{\pi} \Delta \varepsilon \sum_{n_{1} = 1}^{N} g(n,n_{1}) \left[ f_{e,n_{1}} (t) + f_{h,n_{1}}(t) \right],\\
+	\Omega_{n}^{R}(t) =\f{1}{\hbar} \left[ \f{1}{2} \f{\hbar \sqrt{\pi}}{\delta t} \xi_{0} e^{-\frac{t^{2}}{(\delta t)^{2}}} + \f{\sqrt{E_{R}}}{\pi} \delta \varepsilon \sum_{n_{1} = 1}^{N} g(n,n_{1}) p_{n_{1}}(t) \right],\\
+	g(n,n_{1}) = \f{1}{\sqrt{n \Delta \varepsilon}} \ln \abs{\f{\sqrt{n} + \sqrt{n_{1}} }{\sqrt{n} - \sqrt{n_{1}}}}.
+\end{gather}
+Phương trình Bloch bán dẫn có điều kiện ban đầu như sau
+\begin{align}
+	f_{e,n}(t = t_{0}) = f_{h,n}(t = t_{0}) = 0 ; p_{n} (t = t_{0}) = 0 
+\end{align}
+Cặp phương trình \hyperref[Eq:7]{(7)} và \hyperref[Eq:8]{(8)} có thể được biểu diễn dưới dạng ma trận 
+\begin{gather}
+	\dot{\mathbf{Y}} = \mathbf{F}( \mathbf{Y}, t), \;\text{với}\, 
+	\mathbf{Y} = 
+	\begin{pNiceMatrix}
+		\vv{\dot{f}}_{j}(t)\\
+		\vv{\dot{p}}(t)
+	\end{pNiceMatrix}
+\end{gather}
+trong đó $\vv{f}_{j} = (f_{j;1}, f_{j;2}, f_{j;3}, ... f_{j;n})$ và ta đã giả định rằng $\mathbf{F} = (F_{1},F_{2},...,F_{n})$.
+\subsection{Hệ số hấp thụ}
+\begin{figure*}[htb]
+	\centering
+	\begin{subfigure}[b]{0.46\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{HamPhanBoElectronDeltat=20.pdf}
+		\caption{}
+		\label{fig:HamPhanBoElectronDeltat=20}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.46\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{HamPhanBoElectronDeltat=50.pdf}
+		\caption{}
+		\label{fig:HamPhanBoElectronDeltat=50}
+	\end{subfigure}
+	\caption{
+		(a) Hình phân bố electron với $\delta t = 20 fs$. 
+		(b) Hình phân bố electron với $\delta t = 50 fs$. 
+	}
+\end{figure*}
+Phổ hấp thụ tuyến tính dưới sự góp mặt của điện trường được xác định bởi \cite{doi:10.1142/7184}
+\begin{gather}
+	\alpha(\omega) \propto \Im\left[\f{P(\omega)}{E(\omega)}\right],
+\end{gather}
+trong đó $P(\omega)\propto\int_{-\infty}^{+\infty} P(t) e^{i \hbar \omega t} dt$, $ E(\omega)\propto\int_{-\infty}^{+\infty} E(t) e^{i \hbar \omega t} dt$ là các phép biến đổi Fourier cho hàm phân cực và điện trường. Các tích phân này có thể tính được một cách xấp sỉ bằng cách sử dụng tổng riêng phần Riemnann. Trong bài toán này, chúng ta đã sử dụng điện trường có dạng
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{- t^{2} / (\delta t)^{2}} (e^{i\omega_{0} t} + e^{-i\omega_{0} t}),
+\end{gather}
+với $E_{0}$ là biện độ cực đại, $\omega_{0}$ có liên quan tới tần số của Laser, $\delta t$ là biên độ xung Laser, tất cả đều được tính bằng hệ đơn vị SI. Chú ý rằng, $E_{0}$ là biến đổi phức chậm trong không gian $x$ và thời gian $t$, từ đó ta có thể bỏ đi số hạng cộng hưởng $e^{-i \omega_{0} t}$ bằng phép xấp xỉ gần đúng hàm bao (EFA) \cite{sakurai2020modern}, và $e^{i \omega_{0} t}$ được xem như là không đáng kể khi áp dụng gần đúng sóng quay (RWA), điều này dẫn đến phương trình trường điện của chúng ta là
+\begin{gather}
+	E(t) = \f{E_{0}}{2} e^{-t^{2} / (\delta t)^{2}}.
+\end{gather}
+Trường điện và phép biến đổi Fourier của nó được biểu diễn thông qua \hyperref[fig:electric field]{Hình (2)}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[h]{4.25cm}
+		\centering
+		\includegraphics[width=4.25cm,height=3.5cm]{electricfield.pdf}
+		\caption{}
+		\label{fig:electric field}
+	\end{subfigure}
+	\begin{subfigure}[h]{4.25cm}
+		\centering
+		\includegraphics[width=4.25cm,height=3.4cm]{electricfieldFT.pdf}
+		\caption{}
+		\label{fig:electric field FT}
+	\end{subfigure}
+	\caption{
+		Trường điện và biến đổi Fourier cho trường điện. 
+	}
+\end{figure}
+
+
+
+\section{\label{sec:level3} KẾT QUẢ SỐ}
+Laser có đặc tính như sau:
+\begin{equation}
+	\begin{aligned}
+		\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \at{\text{coh}}{} +\frac{\partial f}{\partial t} \at{\text{col}}{},
+	\end{aligned}
+\end{equation}
+trong thời gian rất ngắn ban đầu, va chạm chưa có, khi vừa bơm lên, electron sẽ bị đồng bộ với xung Laser, chưa kịp tương tác với nhau, hay ta bỏ qua số hạng va chạm 
+\begin{equation}
+	\begin{aligned}
+		\frac{\partial f}{\partial t} = \frac{\partial f}{\partial t} \at{\text{coh}}{}.
+	\end{aligned}
+\end{equation}
+số hạng va chạm xảy ra trễ hơn, vì xung dạng Gauss nên electron sẽ có phân bố Gauss. Ứng với đỉnh của xung Gauss ta biết được có exciton.
+
+Từ \hyperref[fig:HamPhanBoElectronDeltat=50]{Hình (1)}, khi tăng $\delta t$ từ 20 fs lên 50fs, nghĩa là $\delta \varepsilon$ sẽ giảm, làm cho bề rộng của hình dạng Gauss này nhỏ đi, hoàn toàn phù hợp với lý thuyết.\\
+\begin{figure}[H]
+	\includegraphics[width=0.5\textwidth]{hamphancuce.pdf}
+	\caption{\label{fig:Ham phan cuc} Hàm phân cực electron với $\delta t = 50, \Delta_{0} = 100$.}
+\end{figure}
+Đối với hàm phân cực electron, do ta vẫn xét đến thành phần va chạm nên dáng điệu của đồ thị có xu hướng giảm dần theo thời gian. 
+
+Đối với $\chi_0 < 1$ thì xung đi vào bắt đầu bơm từ từ, khi xung đi hết, không tác động nữa, điện tử lỗ trống được bơm lên bao nhiêu thì sẽ giữ nguyên.
+\begin{figure*}[htb]
+	\centering
+	\begin{subfigure}[b]{0.485\textwidth}
+		\centering
+		\includegraphics[width=1.0\textwidth]{phancuctoanphan_T2constvaT2thaydoi_deltat=10_delta0=20.pdf}
+		\caption{}
+		\label{fig:phan cuc toan phan}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.485\textwidth}
+		\centering
+		\includegraphics[width=1.0\textwidth]{matdotoanphan_khi0khacnhau_deltat=10_delta0=20.pdf}
+		\caption{}
+		\label{fig:mat do toan phan}
+	\end{subfigure}
+	\caption{
+		(a) Hàm phân cực, 
+		(b) Hàm mật độ toàn phần với $\delta t = 10$, $\Delta_{0}=20$. 
+	}
+\end{figure*}
+Từ hình vẽ trên, ta thấy ứng với các giá trị của $\chi_0 = 1,2,3\ldots$ thì đồ thị có dáng điệu lên xuống, và tất cả hiện tượng này xảy ra trong lúc có xung. Điều này có thể giải thích bởi cơ chế Population Inversion.
+
+Theo nguyên tắc, ban đầu các electron đồng bộ với xung, va chạm rất ít, tuy nhiên đường $T_2 = 50 fs$ là cho thấy va chạm rất nhiều ở ban đầu. Nếu ta dùng $T_2 = \text{const}$ là không hợp lý, hạt bị kiềm hãm lúc chưa được hình thành. Nên ta xét hệ thức
+\begin{gather}
+	\frac{1}{T_2} = \frac{1}{T_2^0} + \gamma N(t),
+\end{gather}
+số hạng đầu là số hạt tương tác phonon, và số hạt thứ hai là số hạng tương tác Coulomb.\\
+Ở phần này ta nhận xét như sau, theo công thức 
+\begin{gather}
+	\frac{dP}{dt} \propto \frac{-P}{T_2} \rightarrow P \propto e^{-\frac{1}{T_2}}.
+\end{gather}
+Từ đây ta thấy rằng nếu $T_2$ càng tăng thì độ kiềm hãm càng nhỏ. Nên đồ thị có dáng điệu bị tắt dần chậm và đồ thị sẽ rộng ra.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8.0cm,height=5.0cm]{phohapthu.pdf}
+	\caption{Phổ hấp thụ với $\delta t = 10, \Delta_{0} = 20$.}
+	\label{fig:pho hap thu}
+\end{figure}
+
+Khi ta tăng số phương trình N càng lớn và khoảng chia $\omega$ càng nhiều (khoảng 2000), thì đỉnh của phổ hấp thụ này sẽ càng tiến về $E_R = -4.2$ meV, exciton nằm đúng vị trí giá trị năng lượng liên kết.\\
+Đỉnh của phổ hấp thụ tương ứng với vị trí của exciton, bắt cặp giữa electron và lỗ trống. Tuy nhiên việc bắt cặp này khá ``mong manh'' bởi vì mật độ hạt càng cao, việc bắt cặp này bị phá vỡ bởi tán xạ, hoặc thế chắn Coulomb bị yếu 
+\begin{equation}
+	\begin{aligned}
+		V_q \propto \frac{1}{q^2 + \kappa^2},
+	\end{aligned}
+\end{equation}
+trong đó $\kappa$ gọi là hệ số chắn, hệ số chắn càng lớn thì thế Coulomb càng yếu.
+
+\section*{Lời cảm ơn}
+Chúng tôi xin gửi lời cảm ơn chân thành đến Thầy Vũ Quang Tuyên vì những hỗ trợ quý báu trong quá trình thực hiện nghiên cứu này. Bên cạnh đó, chúng tôi cũng xin cảm ơn các bạn học vì những góp ý khoa học và định hướng trong suốt quá trình hoàn thiện bài báo.
+
+\section{\label{sec:level4} TỔNG KẾT}
+Trong bài này chúng tôi đã tập trung vào việc làm rõ cơ chế hình thành exciton trong chất bán dẫn GaAs khi tương tác với ánh sáng laser. Bằng cách áp dụng phương pháp giải số Runge-Kutta bậc 4 để giải phương trình Bloch bán dẫn, chúng tôi đã xây dựng một mô hình lý thuyết chi tiết để mô tả quá trình tương tác này. Tuy nhiên, trong bài này vẫn còn những hạn chế đáng kể, như việc áp dụng các phương pháp gần đúng thấp như gần đúng hiện tượng luận và gần đúng parabol cho bài toán và những hạn chế liên quan tới vấn đề kỹ thuật. Điều này dẫn đến khả năng mô hình không phản ánh được tính chính xác nhất trong việc mô tả các tính chất của vật liệu với điều kiện thời gian dài và cường độ xung lớn.
+
+Thông qua quá trình tính toán số, chúng tôi đã xác định chính xác năng lượng liên kết exciton là $-4.2$ meV. Kết quả này không chỉ cung cấp một giá trị tham số quan trọng cho vật liệu GaAs mà còn chứng tỏ tính chính xác và hiệu quả của mô hình đã xây dựng.
+
+Việc phân tích sâu hơn các hàm phân bố electron, hàm phân cực và mật độ toàn phần đã giúp chúng tôi hiểu rõ hơn về động lực học của quá trình tạo cặp electron-lỗ trống và sự hình thành exciton trong GaAs. Đặc biệt, phổ hấp thụ thu được từ mô hình đã cho thấy sự xuất hiện của một đỉnh hấp thụ rõ rệt tại vị trí tương ứng với năng lượng liên kết exciton đã tính toán.
+
+Kết quả thu được không chỉ có ý nghĩa khoa học cơ bản mà còn mở ra nhiều triển vọng ứng dụng trong các lĩnh vực như quang điện tử, điện tử lượng tử và vật liệu mới. Chúng tôi hy vọng rằng nghiên cứu này sẽ mở ra những hướng nghiên cứu mới, kích thích sự sáng tạo và thúc đẩy sự hợp tác giữa các nhóm nghiên cứu trên toàn thế giới nhằm khám phá đầy đủ tiềm năng của exciton trong các vật liệu bán dẫn.
+
+\appendix
+\section{\label{apendix A}Hệ số $\mathbf{C}_0$}
+\noindent Với $N(t)$ là mật độ toàn phần, ta có:
+\begin{equation}
+	N(t) = 2 \sum_k f_{e,k} (t).
+\end{equation}
+Từ tổng rời rạc, ta chuyển sang tích phân liên tục:
+\begin{equation}
+	\begin{aligned}
+		\sum_k 
+		&= \frac{V}{(2\pi)^2} \int \, d\mathbf{k} \\
+		&= \frac{4V\pi}{(2\pi)^3} \int_{0}^{\infty} k^2\, dk \\
+		&= \frac{2V}{(2\pi)^2} \int_{0}^{\infty} \frac{\sqrt{2m\epsilon}}{\hbar} \frac{m}{\hbar^2} \, d\epsilon  \\
+		&= \int_{0}^{\infty} \frac{V}{(2\pi)^2}	(\frac{2m}{\hbar^2})^\frac{3}{2} \sqrt{\epsilon} \, d\epsilon ,
+	\end{aligned}
+\end{equation}
+với 
+\begin{align}
+	\epsilon = \frac{\hbar^2 k^2}{2m} \rightarrow d\epsilon = \frac{\hbar^2}{m} kdk.
+\end{align}.
+Từ đó ta có:
+\begin{equation}
+	\begin{aligned}
+		N(t) = 2 \int_{0}^{\infty} f_{e,\epsilon} (t) \, d\epsilon. \label{A4}
+	\end{aligned}
+\end{equation}
+Thực hiện ``rời rạc hóa'' cho \hyperref[A4]{(A4)}, ta có được:
+\begin{equation}
+	\begin{aligned}
+		N(t) 
+		&= 2 \frac{V}{(2\pi)^2} (\frac{2m}{\hbar^2})^\frac{3}{2} \sum_n^N \sqrt{n\delta E} f_{e,n} \Delta \epsilon \\
+		&= c_0 \sum_n^N f_{e,n}(t) \Delta \epsilon.
+	\end{aligned}
+\end{equation}
+Vậy hệ số $C_0$ được xác định bởi:
+\begin{equation}
+	\begin{aligned}
+		C_0 
+		&= \frac{V}{2\pi^2} (\frac{2m}{\hbar^2})^\frac{3}{2} \sqrt{\Delta \epsilon} \Delta \epsilon\\
+		&= \frac{V}{2\pi^2} (\frac{1}{E_R a_0^2})^\frac{3}{2}  \sqrt{\Delta \epsilon} \Delta \epsilon\\
+		&= \frac{\Delta \epsilon \sqrt{\Delta \epsilon}V}{2\pi^2 (E_R)^\frac{3}{2} a_0^3}
+	\end{aligned}
+\end{equation}
+
+\section{\label{APPENDIX B} Phép biến đổi Fourier}
+Suất của tổng hàm phân cực $\left| P(t) \right|$ = $\sum_\mathbf{k}$$\left| p_\mathbf{k}(t)\right|$ mà $\left| P(t) \right|$ biến đổi theo $\mathbf{k}$ thành tổng theo năng lượng $\epsilon$. Do đó, ta có $\epsilon \equiv \epsilon_k = E_R a_{0}^{2} u$.
+\begin{equation}
+	\begin{aligned}
+		P(t) 
+		&= \sum_k p_k(t) \\ 
+		&\propto \Delta \epsilon \sqrt{\Delta \epsilon} \sum_n^N \sqrt{n} p_n(t).
+	\end{aligned}
+\end{equation}
+Và:
+\begin{gather}
+	E(t) = E_0 e^{-\frac{t^2}{\delta t^2}}.
+\end{gather}
+Ngoài ra, còn một đại lượng cần quan tâm là phổ hấp thụ $\alpha(\omega) \propto \operatorname{Im} \left[\frac{P(\omega)}{E(\omega)}\right]$, trong đó $P(\omega)$ và $E(\omega)$ được xác định bằng phép biến đổi Fourier của $P(t)$ và $E(t)$.
+\begin{equation}
+	\begin{aligned}
+		E(\hbar \omega) \equiv \frac{1}{\hbar}\int_{-\infty}^{\infty} E(t) e^{i\omega t} \, dt = \int_{-\infty}^{\infty}  E_0 e^{-\frac{t^2}{\delta t^2}} e^{i\omega t} \, dt.
+	\end{aligned}
+\end{equation}
+Đặt $a = \f{1}{\delta t^2}$ ; $b = i\omega$
+\begin{equation}
+	\begin{aligned}
+		E(\hbar \omega) 
+		&= \int_{-\infty}^{\infty} e^{-at^2 + bt} dt\\
+		&= E_0 \sqrt{\pi} \delta t e^{\left( -\frac{\delta t^2 \omega^2}{4} \right)}.
+	\end{aligned}
+\end{equation}
+
+Tương tự cho phép biến đổi $P(\omega)$
+\begin{equation}
+	P(\hbar \omega) \equiv \frac{1}{\hbar}\int_{-\infty}^{\infty} P(t) e^{i\omega t} \, dt.
+\end{equation}
+Tích phân theo $t$ trong phương trình trên có thể được rời rạc hoá theo tổng Riemann:
+\begin{equation*}
+	\int_{-\infty}^{\infty} P(t) e^{i\hbar \omega t} \, dt \rightarrow \Delta t \sum_n P(t_n).
+\end{equation*}
+Như đã nhắc đến ở trên, ta có công thức của $P(t)$ nên suy ra:
+\begin{equation}
+	P(\hbar \omega) \rightarrow \frac{\Delta t \Delta \epsilon \sqrt{\Delta \epsilon}}{\hbar}\sum_n \sqrt{n} p_n(t).
+\end{equation}
+\nocite{*}
+
+\bibliography{apssamp}% Produces the bibliography via BibTeX.
+
+\end{document}
+%
+% ****** End of file apssamp.tex ******
