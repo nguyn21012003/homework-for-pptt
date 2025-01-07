@@ -1,0 +1,1 @@
+plot "table.txt" u 2:3 with lines

@@ -11,14 +11,12 @@
             "id": "14b18a3c292c3e48",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "tuan7/ReportElectricPotential.md",
-                "mode": "source",
-                "source": false
+                "file": "tuan7/amatrix.png"
               },
-              "icon": "lucide-file",
-              "title": "ReportElectricPotential"
+              "icon": "lucide-image",
+              "title": "amatrix"
             }
           }
         ]
@@ -162,17 +160,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "14b18a3c292c3e48",
+  "active": "f0f98e43f277660c",
   "lastOpenFiles": [
-    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+    "tuan4/nemxien.pdf",
+    "quantumwell/Secant.canvas",
+    "quantumwell/Newton.canvas",
+    "quantumwell/Bisection.canvas",
     "tuan7/ReportElectricPotential.md",
+    "Welcome.md",
+    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
     "tuan10",
     "tuan9",
     "tuan8/heatEquationData.jpg",
-    "Welcome.md",
     "tuan3/mcrm.md.md",
     "tuan4/sODE.md",
-    "tuan4/nemxien.pdf",
     "tuan8/heatEquationData.png",
     "tuan7/latiice.png",
     "tuan8",
@@ -191,9 +192,6 @@
     "tuan3/res/data.pdf",
     "tuan3/res",
     "tuan3/numericalmethod.gnuplot.pdf",
-    "tuan3/ivp.md.md",
-    "quantumwell/Secant.canvas",
-    "quantumwell/Newton.canvas",
-    "quantumwell/Bisection.canvas"
+    "tuan3/ivp.md.md"
   ]
 }

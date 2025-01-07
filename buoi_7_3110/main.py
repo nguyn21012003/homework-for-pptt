@@ -125,11 +125,11 @@ def createMatrix(dim: int):
     # print(AMatrix, "\n")
 
     BMatrix = np.zeros([dim**2, 1])
-    BMatrix[int(len(BMatrix) / 2)][0] = -10
+    # BMatrix[int(len(BMatrix) / 2)][0] = -10
 
-    # for i in range(0, dim):
-    #    BMatrix[i] = 0
-    # BMatrix[-i - 1] = 100
+    for i in range(0, dim):
+        BMatrix[i] = -100
+        # BMatrix[-i - 1] = 100
 
     print(BMatrix)
 
@@ -235,7 +235,6 @@ def saveLog(file: str, N, Jacobian, Gaussian, i, j):
             writer.writerow({})
 
 
-
 def gnuPlot():
     with open("gnuPlot.gp", "w") as gnuplot:
         gnuplot.write(
@@ -268,7 +267,7 @@ def gnuPlot():
 
 def main():
     numberLoop = 100
-    ic = 0
+    ic = 100
     unknowPoints = 4
     i, j = unknowPoints, unknowPoints
     dim = unknowPoints

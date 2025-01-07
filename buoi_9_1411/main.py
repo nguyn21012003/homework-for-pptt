@@ -35,8 +35,8 @@ def FowardDiff(x: int, t: int, beta: float):
             U[xi][0] = (5 - 5 * xi) / L
 
     for ti in range(1, t + 1):
-        U[0][ti] = 0.0
-        U[x][ti] = 0.0
+        U[0][ti] = 10.0
+        U[x][ti] = 10.0
 
     if beta <= 1:
         for j in range(0, t):
