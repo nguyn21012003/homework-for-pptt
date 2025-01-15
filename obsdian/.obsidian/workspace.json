@@ -4,19 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "fa22e975612532a2",
+        "id": "7a5fc139ec2abb06",
         "type": "tabs",
         "children": [
           {
-            "id": "14b18a3c292c3e48",
+            "id": "9048a6edfe9cc182",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "tuan7/amatrix.png"
-              },
-              "icon": "lucide-image",
-              "title": "amatrix"
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -160,15 +158,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "f0f98e43f277660c",
+  "active": "9048a6edfe9cc182",
   "lastOpenFiles": [
+    "tuan7/ReportElectricPotential.md",
+    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
+    "tuan7/amatrix.png",
     "tuan4/nemxien.pdf",
     "quantumwell/Secant.canvas",
     "quantumwell/Newton.canvas",
     "quantumwell/Bisection.canvas",
-    "tuan7/ReportElectricPotential.md",
     "Welcome.md",
-    "tuan8/Solve Parabolic Equation - PDE using Numerical Methods.md",
     "tuan10",
     "tuan9",
     "tuan8/heatEquationData.jpg",
@@ -187,7 +186,6 @@
     "tuan6/b10.png",
     "tuan6",
     "tuan4/sODe.png",
-    "tuan4/pendulumThetaN=50.png",
     "tuan4",
     "tuan3/res/data.pdf",
     "tuan3/res",

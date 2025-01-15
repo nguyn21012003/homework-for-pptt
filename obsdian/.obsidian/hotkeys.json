@@ -1,0 +1,20 @@
+{
+  "obsidian-latex-environments:change-latex-env": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "C"
+    }
+  ],
+  "obsidian-latex-environments:insert-latex-env": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "I"
+    }
+  ]
+}

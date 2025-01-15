@@ -24,6 +24,34 @@ Giả sử bài toán đang xét cho trường hợp 2-D, ta chia nhỏ không g
 
 ![lattice](latiice.png)
 
+#### Lý thuyết
+
+Ta khai triển Taylor cho phương trình (2)
+$$
+	u(x - \Delta x,y) = u(x,y) - \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} - ...\tag{3}
+$$
+$$
+	u(x + \Delta x,y) = u(x,y) + \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} + ... \tag{4}
+$$
+(3) + (4)
+$$
+\Rightarrow \frac{\partial^{2} u}{\partial x^{2}} \approx \frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}} \tag{5}
+$$
+Một cách tương tự ta có cho
+
+$$
+\Rightarrow \frac{\partial^{2} u}{\partial y^{2}} \approx \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}} \tag{6}
+$$
+
+$$
+\frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}} + \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}} = 0
+$$
+
+Đặt $\Delta x \equiv h, \Delta y \equiv k$, cộng (5) và (6), ta có
+
+$$
+2 \left[ \frac{h^{2}}{k^{2}} + 1 \right]u(x,y) - \left[ u(x+h,y) + u(x-h,y) \right] - \frac{h^{2}}{k^{2}}\left[ u(x,y+k) + u(x,y-k) \right]
+$$
 #### Phương pháp ma trận
 
 Ta xem ''mạng'' trên như là ma trận, với các điểm màu đỏ là điểm cần giải, mỗi điểm cách nhau một $h = 1/4$. Tại $y_{max}$ tất cả giá trị bằng điều kiện đầu, như vậy với $n$ điểm màu đỏ, thì ứng với $n$ điểm màu xanh là điều kiện đầu, và có tổng cộng $n+2$ điểm màu xanh.
