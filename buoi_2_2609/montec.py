@@ -1,9 +1,10 @@
-from random import randrange
-from random import uniform
-import numpy as np
 import csv
-import matplotlib.pyplot as plt
+import subprocess
+from random import randrange, uniform
 from time import time
+
+import matplotlib.pyplot as plt
+import numpy as np
 from tabulate import tabulate
 
 
@@ -26,24 +27,38 @@ def monte(N):
         else:
             xout.append(xi)
             yout.append(yi)
+    print(len(xin))
+    print(len(xout))
+
     return pi, count, xin, yin, xout, yout
 
 
-def save_log(file, pi, x, y, count, N):
+def save_log(fileWrite_IN, fileWrite_Out, pi, xin, yin, xout, yout, count, N):
 
-    with open(file, "w", newline="") as writefile:
+    with open(fileWrite_IN, "w", newline="") as writefile:
         header = [f"{'n':<4}", f"{'pi':^18}", f"{'x':^25}", f"{'y':^25}", f"{'x^2+y^2':^25}"]
         writer = csv.DictWriter(writefile, fieldnames=header)
         writer.writeheader()
-        for i in range(len(pi)):
+        for i in range(len(xin)):
             writer.writerow(
                 {
                     f"{'n':<4}": f"{count[i]:<4}",
                     f"{'pi':^18}": f"{pi[i]:^18}",
-                    f"{'x':^25}": f"{x[i]:^25}",
-                    f"{'y':^25}": f"{y[i]:^25}",
-                    f"{'x^2+y^2':^25}": f"{x[i]**2+y[i]**2:^25}",
+                    f"{'x':^25}": f"{xin[i]:^25}",
+                    f"{'y':^25}": f"{yin[i]:^25}",
+                    f"{'x^2+y^2':^25}": f"{xin[i]**2+yin[i]**2:^25}",
                 },
+            )
+    with open(fileWrite_Out, "w", newline="") as writefile:
+        header = [f"{'xout':^25}", f"{'yout':^25}"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(len(xout)):
+            writer.writerow(
+                {
+                    f"{'xout':^25}": f"{xout[i]:^25}",
+                    f"{'yout':^25}": f"{yout[i]:^25}",
+                }
             )
 
 
@@ -73,18 +88,39 @@ def plot_fig(count, pi, xin, yin, xout, yout):
 
 
 def main():
-    N = 1000
+    N = 100000
     start = time()
     pi, count, xin, yin, xout, yout = monte(N)
     end = time()
     print(end - start)
     ########################### save file
-    file = "log_draw_circle.txt"
-    save_log(file, pi, xin, yin, count, N)
-    read = read_log(file, pi, xin, yin, count, N)
-    print(read)
+    file = "dataCircle.csv"
+    fileWriteOut = "dataCircle_out.csv"
+    save_log(file, fileWriteOut, pi, xin, yin, xout, yout, count, N)
+    # read = read_log(file, pi, xin, yin, count, N)
+    # print(read)
     ########################### setting plot
-    plot_fig(count, pi, xin, yin, xout, yout)
+    # plot_fig(count, pi, xin, yin, xout, yout)
+
+    gnuplot(file, fileWriteOut)
+
+
+def gnuplot(fileCircle, fileOut):
+    with open("gnuPlot.gp", "w") as writefile:
+        writefile.write(
+            f"""
+    set xlabel "x"
+    set ylabel "y"
+    set grid 
+    set datafile separator ","
+
+    plot "{fileCircle}" u 3:4 with points ps 1 pt 7,\
+    "{fileOut}" u 1:2 with points ps 1 pt 7
+    pause -1
+
+            """
+        )
+    subprocess.run(["gnuplot", "gnuPlot.gp"])
 
 
 if __name__ == "__main__":
