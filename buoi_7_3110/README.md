@@ -6,7 +6,7 @@ Thế năng điện từ $U(\mathbf{x})$ có thể được dẫn ra bằng mậ
 
 $$
 \begin{align}
-\nabla^2 U(\mathbf{x}) = - \frac{1}{\epsilon_0} \rho(\mathbf{x}),
+	\nabla^2 U(\mathbf{x}) = - \frac{1}{\epsilon_0} \rho(\mathbf{x}),
 \end{align}\tag{1}
 $$
 
@@ -14,7 +14,7 @@ trong đó $\rho(\mathbf{x})$ là mật độ điện tích. Trong vùng không 
 
 $$
 \begin{align}
-\nabla^2 U(\mathbf{x}) = 0.
+	\nabla^2 U(\mathbf{x}) = 0.
 \end{align}\tag{2}
 $$
 
@@ -23,6 +23,76 @@ Giả sử bài toán đang xét cho trường hợp 2-D, ta chia nhỏ không g
 ### Thuật toán
 
 ![lattice](latiice.png)
+
+#### Lý thuyết
+
+Ta khai triển Taylor cho phương trình (2)
+
+$$
+	u(x - \Delta x,y) = u(x,y) - \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} - ...\tag{3}
+$$
+
+$$
+	u(x + \Delta x,y) = u(x,y) + \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} + ... \tag{4}
+$$
+
+(3) + (4)
+
+$$
+\Rightarrow \frac{\partial^{2} u}{\partial x^{2}} \approx \frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}} \tag{5}
+$$
+
+Một cách tương tự ta có cho
+
+$$
+\Rightarrow \frac{\partial^{2} u}{\partial y^{2}} \approx \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}} \tag{6}
+$$
+
+$$
+\frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}} + \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}} = 0
+$$
+
+Đặt $\Delta x \equiv h, \Delta y \equiv k$, cộng (5) và (6), ta có
+
+$$
+\begin{gather}
+	2 \left[ \frac{h^{2}}{k^{2}} + 1 \right]u(x,y) - \left[ u(x+h,y) + u(x-h,y) \right] - \frac{h^{2}}{k^{2}}\left[ u(x,y+k) + u(x,y-k) \right] \\
+	- \frac{h^{2}}{k^{2}} \left[ u(x,y + k) + u(x,y - k)  \right] = 0 \tag{7}
+\end{gather}
+$$
+
+### Finite Difference
+
+$$
+\begin{gather}
+	x \rightarrow x_{0} + i h \tag{8} \\
+	y \rightarrow y_{0} + i k \tag{9}
+\end{gather}
+$$
+
+và
+
+$$
+\begin{gather}
+u_{ij} \equiv u(x_{i},y_{j}); \quad i = 1,...n - 1, ; \quad j = 1,..., - 1
+\end{gather} \tag{10}
+$$
+
+Ta có:
+
+$$
+\begin{gather}
+2\left[ \frac{h^{2}}{k^{2}} + 1 \right] u_{ij} - \left[ u_{i + 1, j} + u_{i - 1, j} \right] - \frac{h^{2}}{k^{2}} \left[ u_{i, j+1} + u_{i,j - 1} \right]
+\end{gather} \tag{11}
+$$
+
+đặt $h=k$, từ đó ta có viết lại (11)
+
+$$
+\begin{gather}
+u_{ij} = \frac{1}{4} (u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1}) \tag{12}
+\end{gather}
+$$
 
 #### Phương pháp ma trận
 
@@ -49,7 +119,7 @@ $$
 
 Như vậy ta hoàn toàn có thể biểu diễn ma trận $V$ dưới dạng ma trận $U$.
 
-### Dẫn ra ma trận
+#### Dẫn ra ma trận
 
 Từ phương trình
 
@@ -64,7 +134,7 @@ $$
 &100  - 4 u_0 + u_1 + \quad + u_3 + \quad + \quad = 0\\
 &\quad  100 + u_0 - 4u_1 + u_2 + \quad + u_4 + \quad = 0\\
 &\quad  \quad  100 + u_1 - 4u_2 + \quad + \quad + u_5 = 0
-\end{align}\tag{1}
+\end{align}\tag{13}
 $$
 
 $$
@@ -72,7 +142,7 @@ $$
 &u_0 \quad \quad - 4u_3 + u_4 + \quad + u_6 = 0 \\
 &\quad u_1 \quad \quad + u_3 - 4u_4 + u_5 + \quad u_7 = 0 \\
 &\quad \quad u_2 \quad \quad + u_4 - 4u_5 \quad \quad u_8 = 0
-\end{align}\tag{2}
+\end{align}\tag{14}
 $$
 
 $$
@@ -80,7 +150,7 @@ $$
 &u_3 \quad \quad - 4u_6 + u_7 \quad = 0 \\
 & \quad u_4 \quad + u_6 - 4u_7 + u_8 = 0 \\
 & \quad \quad u_5  \quad + u_7 - 4u_8 = 0
-\end{align}\tag{3}
+\end{align}\tag{15}
 $$
 
 Như vậy $A$ sẽ có dạng đường chéo
@@ -91,6 +161,34 @@ Hình trên là với $11$ điểm chưa biết.
 
 Ta có thể giải ma trận trên bằng phương trình hàm riêng trị riêng, với trị riêng $U$. Ta phải chuyển đổi chỉ số từ $U\rightarrow V$.
 
+> Để chéo hoá ma trận $A$, ta có thể sử dụng một số phương pháp để chéo hoá như là phương trình hàm riêng trị riêng , v.v. Một trong số đó là cách giải số theo phương pháp Jacobian và Gaussian-Seidel. Đồng thời phải đảm bảo tính ma trận chéo trội
+
+$$
+\begin{gather}
+|a_{ij}| > \sum^{N}_{i \neq j;j = 1} |a_{ij}| \tag{16}
+\end{gather}
+$$
+
+#### Jacobian Iterative Method
+
+Phương pháp Jacobian cho ta kết quả là nghiệm duy nhất của cả hệ phương trình (13), (14), (15). Bằng cách cô lập biến $u_{1}$ cho phương trình thứ nhất và $u_{2}$ cho phương trình thứ 2 và cứ thế tiếp tục ta có được nghiệm là
+
+$$
+\begin{gather}
+u_{1} = \frac{1}{a_{11}} (b_{1} - a_{12}u_{2} - a_{13}u_{3} - ... a_{1n}u_{n})\\
+u_{2} = \frac{1}{a_{22}} (b_{2} - a_{21}u_{1} - a_{23}u_{3} - ... a_{2n}u_{n})\\
+u_{n} = \frac{1}{a_{nn}} (b_{n} - a_{n1}u_{1} - a_{n2}u_{2} - ... a_{n,n-1}u_{n-1})\\
+\end{gather}
+$$
+
+ta viết lại thành
+
+$$
+\begin{gather}
+u_{i} = \frac{1}{a_{ii}} \left[ \sum_{j=1,i\neq j}^{N} - a_{ij} u_{j} + b_{i} \right]
+\end{gather} \tag{17}
+$$
+
 ### Kết quả
 
 ![Electrostatic Potentials](ElectricPotentials.png)
@@ -98,4 +196,4 @@ Ta có thể giải ma trận trên bằng phương trình hàm riêng trị ri�
 
 ### Source code
 
-
+[Sourcode on Github](https://github.com/nguyn21012003/homework-for-pptt/tree/main/buoi_7_3110)

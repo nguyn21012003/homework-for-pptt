@@ -60,7 +60,7 @@ def writeLog(x: int, t: int, U: list) -> None:
     with open(file, "w", newline="") as writefile:
         header = [
             f"{'x':^4}",
-            f"{'t':^8}",
+            f"{'t':^8}",    
             f"{'U':^10}",
         ]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
@@ -97,10 +97,7 @@ def writeLog(x: int, t: int, U: list) -> None:
     return None
 
 
-def gnuPlot(file: str) -> None:
-    """
-    Không xài dòng nào thì # vào dòng đó
-    """
+def gnuPlot(file):
     with open("gnuPlot.gp", "w") as gnuplot:
         gnuplot.write(
             f"""
