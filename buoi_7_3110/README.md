@@ -89,9 +89,9 @@ $$
 đặt $h=k$, từ đó ta có viết lại (11)
 
 $$
-\begin{gather}
+\begin{align}
 u_{ij} = \frac{1}{4} (u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1}) \tag{12}
-\end{gather}
+\end{align}
 $$
 
 #### Phương pháp ma trận
