@@ -29,23 +29,31 @@ Giả sử bài toán đang xét cho trường hợp 2-D, ta chia nhỏ không g
 Ta khai triển Taylor cho phương trình (2)
 
 $$
-	u(x - \Delta x,y) = u(x,y) - \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} - ...\tag{3}
+\begin{gather}
+	u(x - \Delta x,y) = u(x,y) - \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} - ...
+\end{gather}\tag{3}
 $$
 
 $$
-	u(x + \Delta x,y) = u(x,y) + \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} + ... \tag{4}
+\begin{gather}
+    u(x + \Delta x,y) = u(x,y) + \frac{\partial u}{\partial x} + \frac{1}{2} \frac{\partial^{2} u}{\partial x^{2}} (\Delta x)^{2} + ...
+\end{gather}\tag{4}
 $$
 
 (3) + (4)
 
 $$
-\Rightarrow \frac{\partial^{2} u}{\partial x^{2}} \approx \frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}} \tag{5}
+\begin{gather}
+    \Rightarrow \frac{\partial^{2} u}{\partial x^{2}} \approx \frac{u(x - \Delta x,y) + u(x + \Delta x,y) + 2u(x,y)}{(\Delta x)^{2}}
+\end{gather} \tag{5}
 $$
 
 Một cách tương tự ta có cho
 
 $$
-\Rightarrow \frac{\partial^{2} u}{\partial y^{2}} \approx \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}} \tag{6}
+\begin{gather}
+    \Rightarrow \frac{\partial^{2} u}{\partial y^{2}} \approx \frac{u(x,y-\Delta y) + u(x ,y + \Delta y) + 2u(x,y)}{(\Delta y)^{2}}
+\end{gather}\tag{6}
 $$
 
 $$
