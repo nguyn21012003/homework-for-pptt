@@ -90,7 +90,7 @@ $$
 
 $$
 \begin{align}
-u_{ij} = \frac{1}{4} (u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1}) \tag{12}
+    u_{ij} = \frac{1}{4} (u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1}) \tag{12}
 \end{align}
 $$
 
