@@ -1,8 +1,9 @@
-import math
-from math import exp as e
-from math import cos, sin
-
 import csv
+import math
+from math import cos
+from math import exp as e
+from math import sin
+
 import numpy as np
 
 
@@ -28,6 +29,7 @@ def bisection(fx, a, b, file):
 
     na[0] = a
     nb[0] = b
+    
     for i in range(N):
         if i + 1 < N:
             c[i] = (na[i] + nb[i]) / 2

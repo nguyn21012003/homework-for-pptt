@@ -1,14 +1,14 @@
-import numpy as np
-from random import random, uniform
-from math import sqrt, pi
-from numpy import sin, cos
-import sympy as sym
-from sympy.printing import latex
-import matplotlib.pyplot as plt
 import time
-from numba import njit
-import numba as nb
+from math import pi, sqrt
+from random import random, uniform
 
+import matplotlib.pyplot as plt
+import numba as nb
+import numpy as np
+import sympy as sym
+from numba import njit
+from numpy import cos, sin
+from sympy.printing import latex
 
 nb.set_num_threads(6)
 

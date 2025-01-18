@@ -1,10 +1,3 @@
-###########
-# Newton Raphson
-#################### f(p) = f(p0) + (p-p0)f'(p0)
-#################### f(p) = 0(vi p la nghiem) nen 0 = f(p0) + (p-p0)f'(p0)
-#################### tao chuoi pn = pn+1 - f(pn-1)
-
-
 import numpy as np
 
 # from sympy import diff, symbols
