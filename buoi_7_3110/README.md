@@ -22,8 +22,6 @@ Giả sử bài toán đang xét cho trường hợp 2-D, ta chia nhỏ không g
 
 ### Thuật toán
 
-![lattice](latiice.png)
-
 <p align="center">
   <img src="latiice.png" />
 </p>
