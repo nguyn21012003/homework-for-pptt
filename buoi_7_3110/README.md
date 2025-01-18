@@ -57,17 +57,17 @@ $$
 $$
 \begin{gather}
 	2 \left[ \frac{h^{2}}{k^{2}} + 1 \right]u(x,y) - \left[ u(x+h,y) + u(x-h,y) \right] - \frac{h^{2}}{k^{2}}\left[ u(x,y+k) + u(x,y-k) \right] \\
-	- \frac{h^{2}}{k^{2}} \left[ u(x,y + k) + u(x,y - k)  \right] = 0 \tag{7}
-\end{gather}
+	- \frac{h^{2}}{k^{2}} \left[ u(x,y + k) + u(x,y - k)  \right] = 0
+\end{gather}\tag{7}
 $$
 
 ### Finite Difference
 
 $$
 \begin{gather}
-	x \rightarrow x_{0} + i h \tag{8} \\
-	y \rightarrow y_{0} + i k \tag{9}
-\end{gather}
+	x \rightarrow x_{0} + i h  \\
+	y \rightarrow y_{0} + i k
+\end{gather}\tag{9}
 $$
 
 và
