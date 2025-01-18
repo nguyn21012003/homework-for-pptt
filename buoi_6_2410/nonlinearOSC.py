@@ -1,17 +1,17 @@
 import numpy as np
-from numpy import typing as npt, pi, sqrt, sin
+from numpy import sqrt, sin
 import matplotlib.pyplot as plt
 import csv
-
+import subprocess
 
 alphax = 1.1
 k = 2
 m = 0.5
 omega0 = sqrt(k / m)
-b = 10 * m * omega0
+b = 1.5 * m * omega0
 
 
-def FArr(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
+def FArr(t, initInput):
     x, velocity = initInput
 
     F = np.zeros(2)
@@ -22,20 +22,20 @@ def FArr(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     return F
 
 
-def FArrExt(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
+def FArrExt(t, initInput):
     x, velocity = initInput
 
     F = np.zeros(2)
 
-    F_Ext = 15 * sin(omega0 * t)
+    F_Ext = 5 * sin(omega0 * t)
 
     F[0] = velocity
-    F[1] = -(k * x - k * x * alphax) / m + F_Ext
+    F[1] = -(k * x - k * x * alphax * 0 + F_Ext) / m
 
     return F
 
 
-def FArrVis(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
+def FArrVis(t, initInput):
     x, velocity = initInput
 
     F = np.zeros(2)
@@ -48,7 +48,7 @@ def FArrVis(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     return F
 
 
-def FArrExtVis(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
+def FArrExtVis(t, initInput):
     x, velocity = initInput
 
     F = np.zeros(2)
@@ -62,7 +62,7 @@ def FArrExtVis(t: npt.NDArray, initInput: npt.NDArray) -> npt.NDArray:
     return F
 
 
-def rk4(fArr: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.NDArray:
+def rk4(fArr, tn, yn, h):
 
     k1 = fArr(tn, yn)
     k2 = fArr(tn + 0.5 * h, yn + 0.5 * h * k1)
@@ -71,23 +71,7 @@ def rk4(fArr: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.ND
     return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
 
 
-def savelog(file: str, N: int, solution: npt.NDArray):
-    with open(file, "w", newline="") as writefile:
-        header = ["n", "x", "velocity"]
-        writer = csv.DictWriter(writefile, fieldnames=header)
-        writer.writeheader()
-        for i in range(N):
-            writer.writerow({"n": i, "x": solution[i][0], "velocity": solution[i][1]})
-
-
-def plot(
-    file: str,
-    t: npt.NDArray,
-    solutionWOExtField: npt.NDArray,
-    solutionWExtField: npt.NDArray,
-    solutionWVis: npt.NDArray,
-    solutionWExtFieldVis: npt.NDArray,
-):
+def plot(file, fileWrite, t, solutionWOExtField, solutionWExtField, solutionWVis, solutionWExtFieldVis, N):
     x = {"xWOExtField": [], "xWExtField": [], "xWVis": [], "xWExtFieldVis": []}
 
     velocity = {"vWOExtField": [], "vWExtField": [], "vWVis": [], "vWExtFieldVis": []}
@@ -104,6 +88,21 @@ def plot(
 
         x["xWExtFieldVis"].append(solutionWExtFieldVis[n][0])
         velocity["vWExtFieldVis"].append(solutionWExtFieldVis[n][1])
+
+    with open(fileWrite, "w", newline="") as writefile:
+        header = ["n", "xWOExtField", "xWExtField", "xWVis", "xWExtFieldVis"]
+        writer = csv.DictWriter(writefile, fieldnames=header)
+        writer.writeheader()
+        for i in range(N):
+            writer.writerow(
+                {
+                    "n": i,
+                    "xWOExtField": x["xWOExtField"][i],
+                    "xWExtField": x["xWExtField"][i],
+                    "xWVis": x["xWVis"][i],
+                    "xWExtFieldVis": x["xWExtFieldVis"][i],
+                }
+            )
 
     fig, ax = plt.subplots(2, 2, figsize=(15, 7))
     ax[0][0].plot(t, x["xWOExtField"])
@@ -130,10 +129,10 @@ def plot(
     plt.show()
 
 
-def solve(F: npt.NDArray, N: int, t0: float, t1: float, h: float, solver: npt.NDArray) -> npt.NDArray:
+def solve(F, N, t0, t1, h, solver):
 
     initInput = np.zeros(2)
-    initInput[0] = 5  # Điều kiện đầu cho tại x = 1 so với vị trí cân bằng là x = 0
+    initInput[0] = 5  # Điều kiện đầu cho  vật tại x = 1 so với vị trí cân bằng là x = 0
     initInput[1] = 0  # Điều kiện đầu cho vật tại x = 1 là lúc thả tay ra thì v = 0
 
     t = np.linspace(t0, t1, N)
@@ -144,6 +143,36 @@ def solve(F: npt.NDArray, N: int, t0: float, t1: float, h: float, solver: npt.ND
         solution.append(initInput)
 
     return t, solution
+
+
+def gnuPlot(file):
+    with open("gnuPlot.gp", "w") as gnuplot:
+        gnuplot.write(
+            f"""
+    set ylabel "y"
+    set xlabel "x"
+    set zlabel "z"
+
+
+    set grid
+    set key horiz
+
+    set datafile separator ","
+    
+
+    plot "{file}" u 1:2 with lines tit "không có trường ngoài và ma sát",\
+        "{file}" u 1:3 with lines tit "có trường ngoài và không có ma sát",\
+        "{file}" u 1:4 with lines tit "không có trường ngoài và có ma sát",\
+        "{file}" u 1:5 with lines tit "có trường ngoài và ma sát"
+
+
+    unset multiplot
+
+    pause -1
+
+"""
+        )
+    subprocess.run(["gnuplot", "gnuPlot.gp"])
 
 
 def main():
@@ -158,9 +187,8 @@ def main():
     t, solutionWVis = solve(FArrVis, N, t0, t1, h, rk4)
     t, solutionWExtFieldVis = solve(FArrExtVis, N, t0, t1, h, rk4)
 
-    plot(filePlot, t, solutionWOExtField, solutionWExtField, solutionWVis, solutionWExtFieldVis)
-
-    savelog(fileWrite, N, solutionWOExtField)
+    # plot(filePlot, fileWrite, t, solutionWOExtField, solutionWExtField, solutionWVis, solutionWExtFieldVis, N)
+    gnuPlot(fileWrite)
 
 
 if __name__ == "__main__":
