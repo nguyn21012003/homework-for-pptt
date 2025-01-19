@@ -177,11 +177,7 @@ Ta có thể giải ma trận trên bằng phương trình hàm riêng trị ri�
 
 $$
 \begin{align}
-<<<<<<< HEAD
 \lvert a\_{ij} \rvert > \sum^{N}{i \neq j;j = 1} \lvert a{ij} \rvert
-=======
- \lvert a_{ij} \rvert > \sum^{N}_{i \neq j;j = 1} \lvert a_{ij} \rvert
->>>>>>> ae072c3837e0092e1a12f797dd15aed774ab7c18
 \end{align}\tag{16}
 $$
 
