@@ -165,7 +165,9 @@ $$
 
 Như vậy $A$ sẽ có dạng đường chéo
 
-![amatrix.png](amatrix.png)
+<p align="center">
+  <img src="amatrix.png" />
+</p>
 
 Hình trên là với $11$ điểm chưa biết.
 
@@ -202,7 +204,13 @@ $$
 ### Kết quả
 
 ![Electrostatic Potentials](ElectricPotentials.png)
-![data](ElectricPotentialsData.png)
+
+<p align="center">
+  <img src="ElectricPotentials.png"/>
+</p>
+<p align="center">
+  <img src="ElectricPotentialsData.png"/>
+</p>
 
 ### Source code
 
