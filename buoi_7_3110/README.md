@@ -176,9 +176,9 @@ Ta có thể giải ma trận trên bằng phương trình hàm riêng trị ri�
 > Để chéo hoá ma trận $A$, ta có thể sử dụng một số phương pháp để chéo hoá như là phương trình hàm riêng trị riêng , v.v. Một trong số đó là cách giải số theo phương pháp Jacobian và Gaussian-Seidel. Đồng thời phải đảm bảo tính ma trận chéo trội
 
 $$
-\begin{gather}
-|a_{ij}| > \sum^{N}_{i \neq j;j = 1} |a_{ij}| \tag{16}
-\end{gather}
+\begin{align}
+	|a_{ij}| > \sum^{N}_{i \neq j;j = 1} |a_{ij}| \tag{16}
+\end{align}
 $$
 
 #### Jacobian Iterative Method
@@ -203,11 +203,10 @@ $$
 
 ### Kết quả
 
-![Electrostatic Potentials](ElectricPotentials.png)
-
 <p align="center">
   <img src="ElectricPotentials.png"/>
 </p>
+
 <p align="center">
   <img src="ElectricPotentialsData.png"/>
 </p>
