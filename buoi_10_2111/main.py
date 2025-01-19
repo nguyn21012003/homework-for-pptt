@@ -48,17 +48,17 @@ def solveEquation(Nt, Nx, dt, dx, psi, V):
 
 
 def main():
-    # Nx = 301
-    # Nt = 5001
-    dx = 0.01
-    dt = 0.001
+    Nx = 301
+    Nt = 5001
+    dx = 1 / (Nx - 1)
+    dt = 1e-7
     L = 1  # met
     tmax = 3  # s
-    # x = np.linspace(0, L, Nx)
-    # t = np.linspace(0, tmax, Nt)
-    x = np.arange(0, L + dx, dx)
-    t = np.arange(0, tmax + dt, dt)
-
+    x = np.linspace(0, L, Nx)
+    t = np.linspace(0, tmax, Nt)
+    # = np.arange(0, L + dx, dx)
+    # t = np.arange(0, tmax + dt, dt)
+    #
     mu = L / 2
     sigma = L / 20
 
