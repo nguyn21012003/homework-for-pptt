@@ -1,10 +1,9 @@
 import numpy as np
-from numpy import abs
 import csv
-from numpy import typing as npt
+import subprocess
 
 
-def FArr(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa mảng vào bằng tay
+def FArr(AMatrix, BMatrix, dim, x):  ## Đưa mảng vào bằng tay
     F = np.zeros(dim)
     F[0] = 1 / 10 * x[1] - 1 / 5 * x[2] + 6 / 10
     F[1] = 1 / 11 * x[0] + 2 / 11 * x[2] - 3 / 11 * x[3] + 25 / 11
@@ -14,7 +13,7 @@ def FArr(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa m
     return F
 
 
-def FArrMatrixJacobian(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa mảng vào bằng ma trận sử dụng pp Jacobian
+def FArrMatrixJacobian(AMatrix, BMatrix, dim, x):  ## Đưa mảng vào bằng ma trận sử dụng pp Jacobian
     F = np.zeros(dim)
 
     for i in range(dim):
@@ -28,7 +27,7 @@ def FArrMatrixJacobian(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArra
     return F
 
 
-def FArrMatrixGauss(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray:  ## Đưa mảng vào bằng ma trận sử dụng pp Gaussian-Seidel
+def FArrMatrixGauss(AMatrix, BMatrix, dim, x):  ## Đưa mảng vào bằng ma trận sử dụng pp Gaussian-Seidel
     F = np.zeros(dim)
 
     for i in range(dim):
@@ -44,7 +43,7 @@ def FArrMatrixGauss(AMatrix, BMatrix, dim: int, x: npt.NDArray) -> npt.NDArray: 
     return F
 
 
-def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> list:
+def solveLoop(AMatrix, BMatrix, dim, F, N, initInput):
     x = initInput
     listX = [x]  ### Lưu giá trị vào mảng để kiểm soát
     for i in range(1, N):
@@ -59,7 +58,7 @@ def solveLoop(AMatrix, BMatrix, dim: int, F: npt.NDArray, N: int, initInput) -> 
     return listX, i
 
 
-def saveLog(file: str, N: int, xByhand: list, xMatrix: list, xGauss: list):
+def saveLog(file, N, xByhand, xMatrix, xGauss):
 
     with open(file, "w", newline="") as writefile:
         header = [f"{"k":^11}", f"{"Jacobian By Hand":^49}", f"{"Jacobian Matrix":^49}", f"{"Gaussian Matrix":^49}"]
@@ -76,6 +75,9 @@ def saveLog(file: str, N: int, xByhand: list, xMatrix: list, xGauss: list):
                     f"{'Gaussian Matrix':^49}": xGauss[i] if i < len(xGauss) else f"{'':<49}",
                 }
             )
+
+
+
 
 
 def main():
@@ -97,6 +99,7 @@ def main():
     xMatrix, i = solveLoop(AConst, BConst, dim, FArrMatrixJacobian, N, x)
     xGauss, i = solveLoop(AConst, BConst, dim, FArrMatrixGauss, N, x)
     saveLog(fileLog, N, xByhand, xMatrix, xGauss)
+
 
 
 if __name__ == "__main__":

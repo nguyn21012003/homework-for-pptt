@@ -129,9 +129,7 @@ def createMatrix(dim: int):
 
     for i in range(0, dim):
         BMatrix[i] = -100
-        # BMatrix[-i - 1] = 100
-
-    print(BMatrix)
+        BMatrix[-i - 1] = 100
 
     return AMatrix, BMatrix
 
@@ -147,7 +145,7 @@ def MatrixFull(matrix, value):
             matrixFull[i, j] = matrix[i - 1, j - 1]
     for i in range(0, size + 2):
         matrixFull[0, i] = value
-        # MatrixFull[size + 1, i] = -value
+        matrixFull[size + 1, i] = -value
 
     return matrixFull
 
@@ -188,7 +186,7 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 
     X, Y = np.meshgrid(X, Y)
     ax1.plot_wireframe(X, Y, vMatrixJacobi, color=color)
-    ax1.set_title(f"Jacobian with matrĩx at {(steps-2)**2} unknow points")
+    ax1.set_title(f"Jacobian with matrix at {(steps-2)**2} unknow points")
 
     ax2.plot_wireframe(X, Y, vMatrixGauss, color=color)
     ax2.set_title(f"Gaussian-Seidel with matrix at {(steps-2)**2} unknow points")
@@ -212,6 +210,7 @@ def plotSol(file, grid, vMatrixJacobi, vMatrixGauss, GaussWOMatrix, vGiaiTich):
 
 
 def saveLog(file: str, N, Jacobian, Gaussian, i, j):
+
     with open(file, "w", newline="") as writefile:
         header = [f"{'n':^4}", f"{'i':^4}", f"{'j':^4}", f"{'Jacobian':^18}", f"{'Gaussian':^18}"]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")

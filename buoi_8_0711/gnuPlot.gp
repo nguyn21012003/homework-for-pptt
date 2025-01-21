@@ -2,11 +2,12 @@
 
     #set multiplot layout 1,3
 
+    set datafile separator '	'
 
-    set ylabel "y"
-    set xlabel "x"
-    set zlabel "z"
-
+    set title "Heat Equation Solution"
+    set xlabel "xnguyendz"
+    set ylabel "ynguyendz"
+    set zlabel "T(x,y)"
 
     set grid
     #set key horiz

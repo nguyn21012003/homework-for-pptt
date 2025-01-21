@@ -1,14 +1,14 @@
-import numpy as np
-import subprocess
 import csv
+import subprocess
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 np.set_printoptions(precision=10, linewidth=1200, edgeitems=24)
 
 
 L = 50  ### Mét
 t = 3000
-
 kappa = 237  #### Thông số lấy trong Rubin
 Cv = 900
 rho = 2700
@@ -17,7 +17,7 @@ dt = 0.1
 eta = kappa / (Cv * rho) * dt / (dL**2)
 
 
-def FowardDiff(x: int, t: int, eta: float) -> list:
+def ForwardDiff(x: int, t: int, eta: float) -> list:
     """Create the main of this code. Its about to solve the PE for Heat equation problem.
     By using j is the step of time, when we discreted time and L.
 
@@ -60,7 +60,7 @@ def writeLog(x: int, t: int, U: list) -> None:
     with open(file, "w", newline="") as writefile:
         header = [
             f"{'x':^4}",
-            f"{'t':^8}",    
+            f"{'t':^8}",
             f"{'U':^10}",
         ]
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
@@ -83,13 +83,13 @@ def writeLog(x: int, t: int, U: list) -> None:
     X = np.linspace(0, int(x), x + 1)
     T = np.linspace(0, int(t), t + 1)
     fig = plt.figure(figsize=(15, 7))
-    X, T = np.meshgrid(T, X)
+    T, X = np.meshgrid(T, X)
     ax1 = fig.add_subplot(projection="3d")
     ax1.plot_wireframe(X, T, U, color="purple")
-    ax1.set_xlabel("time (s)")
+    ax1.set_xlabel("x")
+    ax1.set_ylabel("time (s)")
     ax1.set_zlabel("T (K)")
-    ax1.set_ylabel("x")
-    ax1.legend([f"time = {t}s , L = {L}m, kappa = {kappa}, C = {Cv}, rho = {rho}"])
+    ax1.set_title(f"time = {t}s , L = {L}m, kappa = {kappa}, C = {Cv}, rho = {rho}")
 
     plt.savefig("heatEquationData.png")
     plt.show()
@@ -130,7 +130,7 @@ def gnuPlot(file):
 
 def main():
 
-    U = FowardDiff(L, t, eta)
+    U = ForwardDiff(L, t, eta)
     writeLog(L, t, U)
     gnuPlot(file="heatEquationData.txt")
 

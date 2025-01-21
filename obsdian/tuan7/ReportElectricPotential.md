@@ -50,8 +50,40 @@ $$
 Đặt $\Delta x \equiv h, \Delta y \equiv k$, cộng (5) và (6), ta có
 
 $$
-2 \left[ \frac{h^{2}}{k^{2}} + 1 \right]u(x,y) - \left[ u(x+h,y) + u(x-h,y) \right] - \frac{h^{2}}{k^{2}}\left[ u(x,y+k) + u(x,y-k) \right]
+\begin{gather}
+	2 \left[ \frac{h^{2}}{k^{2}} + 1 \right]u(x,y) - \left[ u(x+h,y) + u(x-h,y) \right] - \frac{h^{2}}{k^{2}}\left[ u(x,y+k) + u(x,y-k) \right] \\
+	- \frac{h^{2}}{k^{2}} \left[ u(x,y + k) + u(x,y - k)  \right] = 0 \tag{7}
+\end{gather}
 $$
+
+### Finite Difference
+
+$$
+\begin{gather}
+	x \rightarrow x_{0} + i h \tag{8} \\
+	y \rightarrow y_{0} + i k \tag{9}
+\end{gather}
+$$
+và
+$$
+\begin{gather}
+u_{ij} \equiv u(x_{i},y_{j}); \quad i = 1,...n - 1, ; \quad j = 1,..., - 1
+\end{gather} \tag{10}
+$$
+Ta có:
+$$
+\begin{gather}
+2\left[ \frac{h^{2}}{k^{2}} + 1 \right] u_{ij} - \left[ u_{i + 1, j} + u_{i - 1, j} \right] - \frac{h^{2}}{k^{2}} \left[ u_{i, j+1} + u_{i,j - 1} \right] 
+\end{gather} \tag{11}
+$$
+đặt $h=k$, từ đó ta có viết lại (11)
+
+$$
+\begin{align}
+u_{ij} = \frac{1}{4} (u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1}) \tag{12}
+\end{align}
+$$
+
 #### Phương pháp ma trận
 
 Ta xem ''mạng'' trên như là ma trận, với các điểm màu đỏ là điểm cần giải, mỗi điểm cách nhau một $h = 1/4$. Tại $y_{max}$ tất cả giá trị bằng điều kiện đầu, như vậy với $n$ điểm màu đỏ, thì ứng với $n$ điểm màu xanh là điều kiện đầu, và có tổng cộng $n+2$ điểm màu xanh.
@@ -77,7 +109,7 @@ $$
 
 Như vậy ta hoàn toàn có thể biểu diễn ma trận $V$ dưới dạng ma trận $U$.
 
-### Dẫn ra ma trận
+#### Dẫn ra ma trận
 
 Từ phương trình
 
@@ -92,7 +124,7 @@ $$
 &100  - 4 u_0 + u_1 + \quad + u_3 + \quad + \quad = 0\\
 &\quad  100 + u_0 - 4u_1 + u_2 + \quad + u_4 + \quad = 0\\
 &\quad  \quad  100 + u_1 - 4u_2 + \quad + \quad + u_5 = 0
-\end{align}\tag{1}
+\end{align}\tag{13}
 $$
 
 $$
@@ -100,7 +132,7 @@ $$
 &u_0 \quad \quad - 4u_3 + u_4 + \quad + u_6 = 0 \\
 &\quad u_1 \quad \quad + u_3 - 4u_4 + u_5 + \quad u_7 = 0 \\
 &\quad \quad u_2 \quad \quad + u_4 - 4u_5 \quad \quad u_8 = 0
-\end{align}\tag{2}
+\end{align}\tag{14}
 $$
 
 $$
@@ -108,7 +140,7 @@ $$
 &u_3 \quad \quad - 4u_6 + u_7 \quad = 0 \\
 & \quad u_4 \quad + u_6 - 4u_7 + u_8 = 0 \\
 & \quad \quad u_5  \quad + u_7 - 4u_8 = 0
-\end{align}\tag{3}
+\end{align}\tag{15}
 $$
 
 Như vậy $A$ sẽ có dạng đường chéo
@@ -119,11 +151,35 @@ Hình trên là với $11$ điểm chưa biết.
 
 Ta có thể giải ma trận trên bằng phương trình hàm riêng trị riêng, với trị riêng $U$. Ta phải chuyển đổi chỉ số từ $U\rightarrow V$.
 
+>Để chéo hoá ma trận $A$, ta có thể sử dụng một số phương pháp để chéo hoá như là phương trình hàm riêng trị riêng , v.v. Một trong số đó là cách giải số theo phương pháp Jacobian và Gaussian-Seidel. Đồng thời phải đảm bảo tính ma trận chéo trội
+
+$$
+\begin{gather}
+|a_{ij}| > \sum^{N}_{i \neq j;j = 1} |a_{ij}| \tag{16}
+\end{gather}
+$$
+#### Jacobian Iterative Method
+
+Phương pháp Jacobian cho ta kết quả là nghiệm duy nhất của cả hệ phương trình (13), (14), (15). Bằng cách cô lập biến $u_{1}$ cho phương trình thứ nhất và $u_{2}$ cho phương trình thứ 2 và cứ thế tiếp tục ta có được nghiệm là
+$$
+\begin{gather}
+u_{1} = \frac{1}{a_{11}} (b_{1} - a_{12}u_{2} - a_{13}u_{3} - ... a_{1n}u_{n})\\
+u_{2} = \frac{1}{a_{22}} (b_{2} - a_{21}u_{1} - a_{23}u_{3} - ... a_{2n}u_{n})\\
+u_{n} = \frac{1}{a_{nn}} (b_{n} - a_{n1}u_{1} - a_{n2}u_{2} - ... a_{n,n-1}u_{n-1})\\
+\end{gather}
+$$
+ta viết lại thành 
+$$
+\begin{gather}
+u_{i} = \frac{1}{a_{ii}} \left[ \sum_{j=1,i\neq j}^{N} - a_{ij} u_{j} + b_{i} \right]
+\end{gather} \tag{17}
+$$
 ### Kết quả
 
 ![Electrostatic Potentials](ElectricPotentials.png)
+
 ![data](ElectricPotentialsData.png)
 
 ### Source code
 
-[Sourcode on Github](https://github.com/nguyn21012003/homework-for-pptt/tree/main/buoi_7_3110)
+[Source code on Github](https://github.com/nguyn21012003/homework-for-pptt/blob/main/buoi_7_3110/main.py)

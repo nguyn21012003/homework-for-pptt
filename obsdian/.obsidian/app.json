@@ -1,1 +1,8 @@
-{}
+{
+  "pdfExportSettings": {
+    "pageSize": "A3",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  }
+}

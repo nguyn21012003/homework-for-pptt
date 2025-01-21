@@ -8,11 +8,11 @@ import numpy as np
 
 
 def fx1(x):
-    return float(x - 2 ** (-x))
+    return x - 2 ** (-x)
 
 
 def fx2(x):
-    return float(e(x) - 2 - cos(e(x) - 2))
+    return e(x) - 2 - cos(e(x) - 2)
 
 
 def bisection(fx, a, b, file):
@@ -29,7 +29,7 @@ def bisection(fx, a, b, file):
 
     na[0] = a
     nb[0] = b
-    
+
     for i in range(N):
         if i + 1 < N:
             c[i] = (na[i] + nb[i]) / 2

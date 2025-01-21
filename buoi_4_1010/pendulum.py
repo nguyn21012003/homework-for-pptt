@@ -3,6 +3,7 @@ import numpy.typing as npt
 from numpy import sin, cos, pi
 import matplotlib.pyplot as plt
 import csv
+import subprocess
 
 
 def fArr1(t: float, y0: float):
@@ -93,6 +94,30 @@ def saveLog(file, t, big_theta, small_theta):
             )
 
 
+def gnuPlot(file):
+    with open("gnuPlot.gp", "w") as gnuplot:
+        gnuplot.write(
+            f"""
+    set ylabel "y"
+    set xlabel "x"
+    set zlabel "z"
+
+    set datafile separator "|"
+
+    set grid
+    set key horiz
+
+    plot "{file}" u 1:2 with lines ,\
+    "{file}" u 1:3 with lines title"
+
+    
+    pause -1
+
+"""
+        )
+    subprocess.run(["gnuplot", "gnuPlot.gp"])
+
+
 def main():
 
     N = 500
@@ -114,6 +139,7 @@ def main():
 
     saveLog(file, t, big_theta, small_theta)
     plotTheta(t, big_theta, small_theta)
+    gnuPlot(file)
 
 
 if __name__ == "__main__":

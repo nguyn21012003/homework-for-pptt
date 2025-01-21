@@ -9,6 +9,9 @@ import sympy as sym
 from numba import njit
 from numpy import cos, sin
 from sympy.printing import latex
+from numba_progress import ProgressBar
+from tqdm import tqdm
+
 
 nb.set_num_threads(6)
 
@@ -81,9 +84,10 @@ def promp_user(id: int):
 
             start_rm = time.time()
             ans3 = riemann10D(f4, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, a, b, N, eps)
+
             end_rm = time.time()
             print(f"Nghiệm tính theo phương pháp Monter-Carlo là {ans2} với thời gian là {end_mc - start_mc}s \n")
-            # print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3} với thời gian là {end_rm - start_rm}s")
+            print(f"Nghiệm tính theo phương pháp tổng Rieman là {ans3} với thời gian là {end_rm - start_rm}s")
 
 
 def f(x):
@@ -94,12 +98,10 @@ def f1(x, y):
     return cos(x**4) + 3 * y**2
 
 
-@njit
 def f2(x, y):
     return x * sin(x + y)
 
 
-@njit
 def f3(x, y, z):
     return x**2 + y**2 + z**2
 
@@ -116,7 +118,7 @@ def monte(f, a, b, N, eps):
     ans = 0
     list_x = np.zeros(N)
     list_y = np.zeros(N)
-    for i in range(N):
+    for i in tqdm(range(N)):
         x = uniform(a, b)
         y = uniform(f(0), f(x))
         S[i] = f(x)
@@ -134,14 +136,13 @@ def riemann(f, x0, a, b, N, eps):
     ans = 0
     x = np.zeros(N)
     x[0] = x0
-    for i in range(1, N):
+    for i in tqdm(range(1, N)):
         x[i] = a + i * h
         S[i] = f(x[i])
         ans += h * S[i]
     return ans, x, h
 
 
-@njit(parallel=True)
 def monte2D(f, a, b, c, d, N, eps):
     S = np.zeros(N)
     count = 0
@@ -149,7 +150,7 @@ def monte2D(f, a, b, c, d, N, eps):
     ans = 0
     list_x = np.zeros(N)
     list_y = np.zeros(N)
-    for i in range(N):
+    for i in tqdm(range(N)):
         x = uniform(a, b)
         y = uniform(c, d)
         S[i] = f(x, y)
@@ -160,7 +161,6 @@ def monte2D(f, a, b, c, d, N, eps):
     return ans, list_x, list_y
 
 
-@njit(parallel=True)
 def monte3D(f, a, b, c, d, g, h, N, eps):
     S = np.zeros(N)
     count = 0
@@ -169,7 +169,7 @@ def monte3D(f, a, b, c, d, g, h, N, eps):
     list_x = np.zeros(N)
     list_y = np.zeros(N)
     list_z = np.zeros(N)
-    for i in nb.prange(N):
+    for i in tqdm(range(N)):
         x = uniform(a, b)
         y = uniform(c, d)
         z = uniform(g, h)
@@ -182,12 +182,11 @@ def monte3D(f, a, b, c, d, g, h, N, eps):
     return ans, list_x, list_y, list_z
 
 
-@njit(parallel=True)
 def monte10D(fx, a, b, N, eps):
     S = np.zeros(N)
     S[0] = 0
     ans = 0
-    for i in range(N):
+    for i in tqdm(range(N)):
         x1 = uniform(a, b)
         x2 = uniform(a, b)
         x3 = uniform(a, b)
@@ -204,7 +203,6 @@ def monte10D(fx, a, b, N, eps):
     return ans
 
 
-@njit(parallel=True)
 def riemann2D(f, x0, y0, a, b, c, d, N, eps):
     ans = 0
 
@@ -219,7 +217,7 @@ def riemann2D(f, x0, y0, a, b, c, d, N, eps):
     x[0] = x0
     y[0] = y0
 
-    for i in range(1, N):
+    for i in tqdm(range(1, N), desc="Vòng lặp theo x"):
         x[i] = x0 + i * hx
         for j in range(1, N):
             y[j] = y0 + j * hy
@@ -229,7 +227,6 @@ def riemann2D(f, x0, y0, a, b, c, d, N, eps):
     return ans, x, y, hx, hy
 
 
-@njit(parallel=True)
 def riemann3D(f, x0, y0, z0, a, b, c, d, g, h, N, eps):
     ans = 0
 
@@ -247,7 +244,7 @@ def riemann3D(f, x0, y0, z0, a, b, c, d, g, h, N, eps):
     y[0] = y0
     z[0] = z0
 
-    for i in nb.prange(1, N):
+    for i in tqdm(range(1, N)):
         x[i] = x0 + i * hx
         for j in range(1, N):
             y[j] = y0 + j * hy
@@ -258,7 +255,7 @@ def riemann3D(f, x0, y0, z0, a, b, c, d, g, h, N, eps):
     return ans, x, y, z, hx, hy, hz
 
 
-@njit(parallel=True)
+@njit(nogil=True, parallel=True)
 def riemann10D(f, x1_0, x2_0, x3_0, x4_0, x5_0, x6_0, x7_0, x8_0, x9_0, x10_0, a, b, N, eps):
     count = 0
     ans = 0
@@ -377,6 +374,7 @@ def main():
     id = int(input("Nhập câu thứ ... để in ra kết quả của câu đó(có 5 câu): "))
 
     promp_user(id)
+
     # test print
     # print(list_x2)
 

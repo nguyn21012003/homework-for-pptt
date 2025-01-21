@@ -4,22 +4,23 @@ import csv
 import matplotlib.pyplot as plt
 from math import sqrt
 
+
 L = 1
 t = 1
 rho = 1
 Tension = 40
-kappa = 1 * 1e-2
+kappa = 1 * 1e-2 * 0
 dL = 0.01
 dt = 0.001
 c = sqrt(Tension / rho)
 beta = c * dt / dL
 # beta = 0.01
 print(beta)
-frictionConstant = 2 * kappa / rho
+frictionConstant = 2 * kappa / rho * 0
 ### Thông số tham khảo có thể là L = 0.7m, dL = 0.7 mm , c = 300 m/s , dt = 5*1e-6 s, kappa = 2.6*1e-5 s/m
 
 
-def FowardDiff(x: int, t: int, beta: float):
+def FowardDiff(x, t, beta):
 
     U = []
     for _ in range(x + 1):
@@ -39,7 +40,7 @@ def FowardDiff(x: int, t: int, beta: float):
         U[x][ti] = 10.0
 
     if beta <= 1:
-        for j in range(0, t):
+        for j in tqdm(range(0, t)):
             for i in range(1, x):
                 U[i][j + 1] = (
                     1
@@ -54,7 +55,7 @@ def FowardDiff(x: int, t: int, beta: float):
     return U
 
 
-def writeLog(x: int, t: float) -> None:
+def writeLog(x, t):
     """This function responsible for write out data of this code. I need the value of U with respectively x and t, so I also need the value of x and t."""
     file = "HyperbolicEquationData.txt"
     X = np.arange(0, x + dL, dL)
@@ -66,6 +67,7 @@ def writeLog(x: int, t: float) -> None:
             f"{'t':^8}",
             f"{'U':^10}",
         ]
+
         writer = csv.DictWriter(writefile, fieldnames=header, delimiter="\t")
         writer.writeheader()
         prev_xi = None
@@ -93,9 +95,7 @@ def writeLog(x: int, t: float) -> None:
     ax1.set_ylabel("x")
     ax1.legend([f"time = {t}s , L = {L}m, tension = {Tension} N, rho = {rho}"])
 
-    plt.savefig(
-        f"HyperbolicEquationData & L = {L} & time = {t} & dL = {dL} & dt = {dt}.png"
-    )
+    plt.savefig(f"HyperbolicEquationData & L = {L} & time = {t} & dL = {dL} & dt = {dt}.png")
     plt.show()
 
     return None

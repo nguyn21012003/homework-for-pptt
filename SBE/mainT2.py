@@ -368,7 +368,7 @@ def main():
     fe = np.array(fe)
     p = np.array(p)
 
-    plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
+    # plot(T, E, fe, p, Polarization, NumberDensity, t, listPom)
     gnuPlot(filewritefe, filewriteNt, filewriteAlpha)
 
 

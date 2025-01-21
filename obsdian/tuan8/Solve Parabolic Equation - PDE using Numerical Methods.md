@@ -1,9 +1,45 @@
 
 # Heat Equation
 
-## Method
+## Theoritcal approach
+
+![pipe](pipe.png)
+
+Phân bố nhiệt độ theo thời gian và chiều dài $x$ trong thanh dài $l$
+
+$$
+\begin{align}
+\frac{K}{C \rho} \frac{\partial^{2} T(x,t)}{\partial x^{2}} = \frac{\partial T(x,t)}{\partial t}, \quad \quad 0 < x < l,\quad t > 0
+\end{align} \tag{1}
+$$
+với điều kiện biên là
+$$
+\begin{gather}
+T(x,t=0) = 100^{\circ}C \\
+T(x=0,t) = T(x = l,t) = 0^{\circ}C
+\end{gather}
+$$
+và 
+- $K$ là độ dẫn điện
+- $C$ là nhiệt dung riêng
+- $\rho$ là mật độ
+
+## Numerical Method
 
 ### Forward Difference
+
+$$
+\begin{align}
+\alpha^{2} \frac{\partial^{2}u(x,t)}{\partial x^{2}} = \frac{\partial u(x,t)}{\partial t}
+\end{align}
+$$
+ta đặt $x \rightarrow x_{i} = 0 + ih, \quad t \rightarrow t_{j} = 0 + jk$ với $i,j = 0 ...n$
+Ta khai triển Taylor
+$$
+\begin{align}
+u(x,t+k) \approx u(x,t) + \frac{\partial u}{\partial t} k + \frac{1}{2} \frac{\partial^{2} u}{\partial t^{2}} \Rightarrow
+\end{align}
+$$
 
 ### Kết quả
 

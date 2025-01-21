@@ -1,22 +1,23 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from numpy import exp
-import numpy.typing as npt
 import csv
 
+import matplotlib.pyplot as plt
+import numpy as np
+import numpy.typing as npt
+from numpy import exp
 
-def fArr(tn: float, yn: float) -> npt.NDArray:
+
+def fArr(tn, yn):
     F = np.zeros(2)
     F[0] = -4 * yn[0] + 3 * yn[1] + 6
     F[1] = -2.4 * yn[0] + 1.6 * yn[1] + 3.6
     return F
 
 
-def mem(fArr: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.NDArray:
+def mem(fArr, tn, yn, h):
     return yn + h * (fArr(tn, yn) + fArr(tn, yn + h * fArr(tn, yn))) / 2
 
 
-def rk4(fArr: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.NDArray:
+def rk4(fArr, tn, yn, h):
 
     k1 = fArr(tn, yn)
     k2 = fArr(tn + 0.5 * h, yn + 0.5 * h * k1)
@@ -25,7 +26,7 @@ def rk4(fArr: npt.NDArray, tn: npt.NDArray, yn: npt.NDArray, h: float) -> npt.ND
     return yn + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
 
 
-def solve_sys_ode(fArr: npt.NDArray, a: float, b: float, h: float, solver: npt.NDArray, N: int) -> npt.NDArray:
+def solve_sys_ode(fArr, a, b, h, solver, N):
     y = []
     yn = np.zeros(2)
     tspan = np.arange(a, b + h, h)
@@ -43,7 +44,7 @@ def fExactArr(x: npt.NDArray) -> npt.NDArray:
     return F
 
 
-def plotY(file: str, x: npt.NDArray, y: list, N: int):
+def plotY(file, x, y, N):
 
     fig, axs = plt.subplots(figsize=(15, 7))
 
@@ -65,7 +66,16 @@ def plotY(file: str, x: npt.NDArray, y: list, N: int):
         y2_MEM.append(ymem[i][1])
     print(ymem)
     print(yrk4)
-    axs.plot(x, yExact1, "r", lw=2, ls=":", marker="D", markevery=10, label="Nghiệm giải tích")
+    axs.plot(
+        x,
+        yExact1,
+        "r",
+        lw=2,
+        ls=":",
+        marker="D",
+        markevery=10,
+        label="Nghiệm giải tích",
+    )
     axs.plot(x, yExact2, "r", lw=2, ls=":", marker="D", markevery=10)
     axs.plot(x, y1_RK4, "g", lw=2, ls=":", marker="v", markevery=11, label="Nghiệm RK4")
     axs.plot(x, y2_RK4, "g", lw=2, ls=":", marker="v", markevery=11)
@@ -79,7 +89,7 @@ def plotY(file: str, x: npt.NDArray, y: list, N: int):
     plt.show()
 
 
-def saveLog(file: str, y: list, N: int):
+def saveLog(file, y, N):
     yrk4 = y["rk4"]
     ymem = y["ymem"]
     yExact1 = y["yExact1"]
